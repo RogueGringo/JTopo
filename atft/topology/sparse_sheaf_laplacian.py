@@ -194,3 +194,77 @@ class SparseSheafLaplacian:
 
         L = sp.coo_matrix((data_exp, (row_exp, col_exp)), shape=(dim, dim))
         return L.tocsr()
+
+    def smallest_eigenvalues(
+        self, epsilon: float, k: int = 100
+    ) -> NDArray[np.float64]:
+        """Compute the k smallest eigenvalues of the sheaf Laplacian.
+
+        Uses shift-invert eigsh (targeting eigenvalues near 0) with
+        fallback to standard eigsh if shift-invert fails.
+
+        Args:
+            epsilon: Rips complex scale parameter.
+            k: Number of eigenvalues to compute.
+
+        Returns:
+            Sorted 1D array of k smallest eigenvalues (float64).
+        """
+        N = self._N
+        K = self._K
+        dim = N * K
+
+        # Degenerate: no edges
+        if epsilon <= 0:
+            return np.zeros(k, dtype=np.float64)
+
+        L = self.build_matrix(epsilon)
+
+        # Don't request more eigenvalues than matrix dimension allows
+        # eigsh requires k < dim for sparse matrices
+        k_actual = min(k, dim - 2) if dim > 2 else dim
+
+        if k_actual <= 0:
+            return np.zeros(k, dtype=np.float64)
+
+        # If matrix is small enough, use dense eigensolver
+        if dim <= 500:
+            eigs = np.sort(np.linalg.eigvalsh(L.toarray()).real)
+            eigs = np.maximum(eigs[:k], 0.0)
+            if len(eigs) < k:
+                eigs = np.concatenate([eigs, np.zeros(k - len(eigs))])
+            return eigs
+
+        # Try shift-invert (targets eigenvalues near sigma)
+        try:
+            eigs, _ = eigsh(L, k=k_actual, sigma=1e-8, which='LM', tol=1e-6)
+            eigs = np.sort(eigs.real)
+            # Clamp tiny negatives from numerical noise
+            eigs = np.maximum(eigs, 0.0)
+        except Exception:
+            # Fallback: standard eigsh targeting smallest eigenvalues
+            try:
+                eigs, _ = eigsh(L, k=k_actual, which='SM', tol=1e-6)
+                eigs = np.sort(eigs.real)
+                eigs = np.maximum(eigs, 0.0)
+            except Exception:
+                # Last resort: dense
+                eigs = np.sort(np.linalg.eigvalsh(L.toarray()).real)
+                eigs = np.maximum(eigs[:k], 0.0)
+                if len(eigs) < k:
+                    eigs = np.concatenate([eigs, np.zeros(k - len(eigs))])
+                return eigs
+
+        # Pad with zeros if we got fewer than k
+        if len(eigs) < k:
+            eigs = np.concatenate([eigs, np.zeros(k - len(eigs))])
+        return eigs[:k]
+
+    def spectral_sum(self, epsilon: float, k: int = 100) -> float:
+        """Sum of the k smallest eigenvalues (primary metric).
+
+        This is the total "constraint energy" in the near-kernel of the
+        sheaf Laplacian. Lower values indicate more globally consistent
+        sections (stronger topological signal).
+        """
+        return float(np.sum(self.smallest_eigenvalues(epsilon, k)))

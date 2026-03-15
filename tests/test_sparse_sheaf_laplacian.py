@@ -184,3 +184,49 @@ class TestBuildMatrix:
             zeros, builder, 1.5, "fe", True
         )
         npt.assert_allclose(L_sparse.toarray(), L_dense, atol=1e-12)
+
+
+class TestEigensolver:
+    """Tests for smallest_eigenvalues() and spectral_sum()."""
+
+    def test_eigenvalues_sorted_nonneg(self):
+        zeros = np.array([0.0, 0.5, 1.0, 1.5, 2.0, 2.5, 3.0])
+        builder = TransportMapBuilder(K=6, sigma=0.5)
+        lap = SparseSheafLaplacian(builder, zeros)
+        eigs = lap.smallest_eigenvalues(1.5, k=10)
+        assert len(eigs) == 10
+        assert np.all(eigs[:-1] <= eigs[1:] + 1e-10)  # sorted
+        assert np.all(eigs > -1e-10)  # nonneg
+
+    def test_matches_dense_eigenvalues(self):
+        """Sparse eigsh should match dense eigh for small problem."""
+        zeros = np.array([0.0, 1.0, 2.0, 3.0, 4.0])
+        builder = TransportMapBuilder(K=3, sigma=0.5)
+        lap = SparseSheafLaplacian(builder, zeros)
+        eigs_sparse = lap.smallest_eigenvalues(1.5, k=10)
+        L_dense = lap.build_matrix(1.5).toarray()
+        eigs_dense = np.sort(np.linalg.eigvalsh(L_dense))[:10]
+        npt.assert_allclose(eigs_sparse, eigs_dense, atol=1e-8)
+
+    def test_eps_zero_returns_zeros(self):
+        """At epsilon=0, no edges => all eigenvalues are 0."""
+        zeros = np.array([0.0, 1.0, 2.0])
+        builder = TransportMapBuilder(K=3, sigma=0.5)
+        lap = SparseSheafLaplacian(builder, zeros)
+        eigs = lap.smallest_eigenvalues(0.0, k=5)
+        npt.assert_allclose(eigs, np.zeros(5), atol=1e-14)
+
+    def test_spectral_sum(self):
+        zeros = np.array([0.0, 0.5, 1.0, 1.5, 2.0])
+        builder = TransportMapBuilder(K=6, sigma=0.5)
+        lap = SparseSheafLaplacian(builder, zeros)
+        eigs = lap.smallest_eigenvalues(1.0, k=10)
+        s = lap.spectral_sum(1.0, k=10)
+        npt.assert_allclose(s, float(np.sum(eigs)), atol=1e-14)
+
+    def test_spectral_sum_eps_zero(self):
+        zeros = np.array([0.0, 1.0, 2.0])
+        builder = TransportMapBuilder(K=3, sigma=0.5)
+        lap = SparseSheafLaplacian(builder, zeros)
+        s = lap.spectral_sum(0.0, k=5)
+        assert s == 0.0
