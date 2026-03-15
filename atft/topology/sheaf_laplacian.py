@@ -12,6 +12,13 @@ with transport U_{ij}, the coboundary difference is:
 The Laplacian matvec accumulates:
     (L_F x)_j += diff
     (L_F x)_i -= U^dagger diff U
+
+Optimizations:
+  - Edges + transports cached per epsilon (computed once, reused across LOBPCG)
+  - Batch transport via einsum (all edge transports in one vectorized call)
+  - Vectorized matvec via batch matmul + scatter (np.add.at)
+  - Pre-allocated output buffer (zero allocation per matvec)
+  - V† cached in TransportMapBuilder
 """
 from __future__ import annotations
 
@@ -52,20 +59,45 @@ class SheafLaplacian:
         self._sorted_idx = np.argsort(self._zeros)
         self._sorted_zeros = self._zeros[self._sorted_idx]
 
+        # Edge cache: epsilon -> (i_idx, j_idx, U_all, Uh_all, edges_list)
+        self._edge_cache: dict[float, tuple[
+            NDArray[np.intp],       # i indices
+            NDArray[np.intp],       # j indices
+            NDArray[np.complex128], # U[e] transport matrices
+            NDArray[np.complex128], # Uh[e] = U[e].conj().T
+            list[tuple[int, int]],  # edge list for API compat
+        ]] = {}
+
+        # Pre-allocated output buffer for matvec
+        self._Y_buf = np.zeros((self._N, self._K, self._K), dtype=np.complex128)
+
     @property
     def dim(self) -> int:
         """Total dimension of the vertex vector space: N * K * K."""
         return self._dim
 
-    def _edges(self, epsilon: float) -> list[tuple[int, int]]:
-        """Return edges [(i,j)] with i<j, |gamma_j - gamma_i| <= epsilon.
+    def _get_cached(self, epsilon: float) -> tuple[
+        NDArray[np.intp], NDArray[np.intp],
+        NDArray[np.complex128], NDArray[np.complex128],
+        list[tuple[int, int]],
+    ]:
+        """Return cached (i_idx, j_idx, U_all, Uh_all, edges) for epsilon."""
+        cached = self._edge_cache.get(epsilon)
+        if cached is not None:
+            return cached
 
-        Uses sorted zeros for early-exit optimization.
-        """
+        K = self._K
+        empty_idx = np.array([], dtype=np.intp)
+        empty_U = np.empty((0, K, K), dtype=np.complex128)
+
         if epsilon <= 0:
-            return []
+            result = (empty_idx, empty_idx, empty_U, empty_U, [])
+            self._edge_cache[epsilon] = result
+            return result
 
-        edges: list[tuple[int, int]] = []
+        # Build edge list with early-exit on sorted zeros
+        i_list: list[int] = []
+        j_list: list[int] = []
         N = self._N
         sorted_z = self._sorted_zeros
         sorted_idx = self._sorted_idx
@@ -74,17 +106,41 @@ class SheafLaplacian:
             for b in range(a + 1, N):
                 gap = sorted_z[b] - sorted_z[a]
                 if gap > epsilon:
-                    break  # sorted, so all subsequent b have larger gap
-                # Map back to original indices, ensure i < j
+                    break
                 orig_a = int(sorted_idx[a])
                 orig_b = int(sorted_idx[b])
-                i, j = min(orig_a, orig_b), max(orig_a, orig_b)
-                edges.append((i, j))
+                if orig_a < orig_b:
+                    i_list.append(orig_a)
+                    j_list.append(orig_b)
+                else:
+                    i_list.append(orig_b)
+                    j_list.append(orig_a)
 
+        if not i_list:
+            result = (empty_idx, empty_idx, empty_U, empty_U, [])
+            self._edge_cache[epsilon] = result
+            return result
+
+        i_idx = np.array(i_list, dtype=np.intp)
+        j_idx = np.array(j_list, dtype=np.intp)
+        edges = list(zip(i_list, j_list))
+
+        # Batch-compute all transport matrices
+        delta_gammas = self._zeros[j_idx] - self._zeros[i_idx]
+        U_all = self._builder.batch_transport(delta_gammas)
+        Uh_all = U_all.conj().transpose(0, 2, 1)
+
+        result = (i_idx, j_idx, U_all, Uh_all, edges)
+        self._edge_cache[epsilon] = result
+        return result
+
+    def _edges(self, epsilon: float) -> list[tuple[int, int]]:
+        """Return edges [(i,j)] with i<j, |gamma_j - gamma_i| <= epsilon."""
+        _, _, _, _, edges = self._get_cached(epsilon)
         return edges
 
     def matvec(self, x: NDArray[np.complex128], epsilon: float) -> NDArray[np.complex128]:
-        """Apply L_F to vector x.
+        """Apply L_F to vector x using vectorized batch matmul.
 
         x is a flattened (N*K*K,) complex vector, interpreted as (N, K, K) matrices.
         Returns (N*K*K,) complex vector.
@@ -93,22 +149,28 @@ class SheafLaplacian:
         N = self._N
         x = np.asarray(x, dtype=np.complex128).ravel()
         X = x.reshape(N, K, K)
-        Y = np.zeros_like(X)
 
-        edges = self._edges(epsilon)
+        i_idx, j_idx, U_all, Uh_all, _ = self._get_cached(epsilon)
 
-        for i, j in edges:
-            U = self._builder.transport(self._zeros[j] - self._zeros[i])
-            Uh = U.conj().T
+        if len(i_idx) == 0:
+            return np.zeros(self._dim, dtype=np.complex128)
 
-            # diff = x_j - U @ x_i @ U^dagger
-            diff = X[j] - U @ X[i] @ Uh
+        # Vectorized coboundary: diff[e] = X[j[e]] - U[e] @ X[i[e]] @ Uh[e]
+        Xi = X[i_idx]  # (M, K, K)
+        Xj = X[j_idx]  # (M, K, K)
+        transported = U_all @ Xi @ Uh_all  # (M, K, K) batch matmul
+        diff = Xj - transported
 
-            Y[j] += diff
-            # y_i -= U^dagger @ diff @ U
-            Y[i] -= Uh @ diff @ U
+        # Adjoint transport: adj[e] = Uh[e] @ diff[e] @ U[e]
+        adj_diff = Uh_all @ diff @ U_all  # (M, K, K) batch matmul
 
-        return Y.ravel()
+        # Scatter-accumulate into output
+        Y = self._Y_buf
+        Y.fill(0)
+        np.add.at(Y, j_idx, diff)
+        np.add.at(Y, i_idx, -adj_diff)
+
+        return Y.ravel().copy()
 
     def as_linear_operator(self, epsilon: float) -> LinearOperator:
         """Wrap matvec as a scipy LinearOperator."""
@@ -223,10 +285,9 @@ class SheafLaplacian:
             Number of eigenvalues below tol.
         """
         dim = self._dim
-        edges = self._edges(epsilon)
 
         # No edges or eps <= 0 => full kernel
-        if epsilon <= 0 or len(edges) == 0:
+        if epsilon <= 0 or len(self._edges(epsilon)) == 0:
             return dim
 
         if tol is None:

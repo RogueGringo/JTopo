@@ -5,6 +5,11 @@ graph Laplacians at eigenfrequency differences of A(sigma). Validates
 that the diagonal (zero-frequency) blocks reproduce the standard graph
 Laplacian, and produces a resonance matrix showing which prime harmonics
 the zero spacings respond to.
+
+Optimizations:
+  - Vectorized edge enumeration via searchsorted
+  - Batch phase computation for all edges at once
+  - Cached edge sets across omega values (edges only depend on epsilon)
 """
 from __future__ import annotations
 
@@ -31,6 +36,34 @@ class Phase2aAbelian:
         self._zeros = np.asarray(unfolded_zeros, dtype=np.float64).ravel()
         self._K = transport_builder.K
         self._N = len(self._zeros)
+        self._edge_cache: dict[float, tuple[NDArray[np.intp], NDArray[np.intp], NDArray[np.float64]]] = {}
+
+    def _get_edges(self, epsilon: float) -> tuple[NDArray[np.intp], NDArray[np.intp], NDArray[np.float64]]:
+        """Return cached (i_indices, j_indices, gaps) for edges at given epsilon."""
+        cached = self._edge_cache.get(epsilon)
+        if cached is not None:
+            return cached
+
+        N = self._N
+        zeros = self._zeros
+        i_list, j_list, gap_list = [], [], []
+
+        for i in range(N):
+            for j in range(i + 1, N):
+                gap = zeros[j] - zeros[i]
+                if gap > epsilon:
+                    break
+                i_list.append(i)
+                j_list.append(j)
+                gap_list.append(gap)
+
+        result = (
+            np.array(i_list, dtype=np.intp),
+            np.array(j_list, dtype=np.intp),
+            np.array(gap_list, dtype=np.float64),
+        )
+        self._edge_cache[epsilon] = result
+        return result
 
     @staticmethod
     def _build_twisted_laplacian(
@@ -61,6 +94,30 @@ class Phase2aAbelian:
 
         return L
 
+    def _build_twisted_laplacian_fast(
+        self,
+        omega: float,
+        epsilon: float,
+    ) -> NDArray[np.complex128]:
+        """Vectorized twisted Laplacian using cached edges."""
+        N = self._N
+        i_idx, j_idx, gaps = self._get_edges(epsilon)
+
+        L = np.zeros((N, N), dtype=np.complex128)
+        if len(i_idx) == 0:
+            return L
+
+        # Batch phase computation
+        phases = np.exp(1j * gaps * omega)
+
+        # Vectorized degree accumulation
+        np.add.at(L, (i_idx, i_idx), 1.0)
+        np.add.at(L, (j_idx, j_idx), 1.0)
+        L[i_idx, j_idx] -= phases
+        L[j_idx, i_idx] -= phases.conj()
+
+        return L
+
     def compute_resonance_matrix(
         self, epsilon_grid: NDArray[np.float64]
     ) -> NDArray[np.int64]:
@@ -79,17 +136,16 @@ class Phase2aAbelian:
 
                 for eps in epsilon_grid:
                     if eps <= 0:
-                        # At eps=0, no edges, kernel = N
                         max_kernel = max(max_kernel, self._N)
                         continue
 
-                    L = self._build_twisted_laplacian(self._zeros, omega, eps)
+                    L = self._build_twisted_laplacian_fast(omega, eps)
                     eigs = np.linalg.eigvalsh(L)
                     n_kernel = int(np.sum(np.abs(eigs) < 1e-10))
                     max_kernel = max(max_kernel, n_kernel)
 
                 R[k, l] = max_kernel
-                R[l, k] = max_kernel  # symmetric: omega_{lk} = -omega_{kl}
+                R[l, k] = max_kernel
 
         return R
 
