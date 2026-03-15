@@ -45,12 +45,14 @@ class SheafLaplacian:
         self,
         transport_builder: TransportMapBuilder,
         unfolded_zeros: NDArray[np.float64],
+        transport_mode: str = "resonant",
     ) -> None:
         self._builder = transport_builder
         self._zeros = np.asarray(unfolded_zeros, dtype=np.float64).ravel()
         self._N = len(self._zeros)
         self._K = transport_builder.K
         self._dim = self._N * self._K * self._K
+        self._transport_mode = transport_mode  # "resonant" or "global"
 
         # Ensure eigendecomp is cached
         transport_builder.build_generator_sum()
@@ -127,7 +129,12 @@ class SheafLaplacian:
 
         # Batch-compute all transport matrices
         delta_gammas = self._zeros[j_idx] - self._zeros[i_idx]
-        U_all = self._builder.batch_transport(delta_gammas)
+        if self._transport_mode == "fe":
+            U_all = self._builder.batch_transport_fe(delta_gammas)
+        elif self._transport_mode == "resonant":
+            U_all = self._builder.batch_transport_resonant(delta_gammas)
+        else:
+            U_all = self._builder.batch_transport(delta_gammas)
         Uh_all = U_all.conj().transpose(0, 2, 1)
 
         result = (i_idx, j_idx, U_all, Uh_all, edges)

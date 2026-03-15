@@ -23,7 +23,7 @@ from atft.topology.sheaf_laplacian import SheafLaplacian
 # ── Helper ──────────────────────────────────────────────────────────────────
 
 
-def _build_explicit_laplacian_via_coboundary(zeros, builder, epsilon):
+def _build_explicit_laplacian_via_coboundary(zeros, builder, epsilon, transport_mode="global"):
     """Build L_F = delta_0^dagger delta_0 via explicit coboundary assembly.
 
     Only for tiny N, K — used as ground-truth in dense-equivalence tests.
@@ -42,7 +42,11 @@ def _build_explicit_laplacian_via_coboundary(zeros, builder, epsilon):
     edge_dim = len(edges) * K * K
     delta = np.zeros((edge_dim, vertex_dim), dtype=np.complex128)
     for e_idx, (i, j) in enumerate(edges):
-        U = builder.transport(zeros[j] - zeros[i])
+        dg = zeros[j] - zeros[i]
+        if transport_mode == "resonant":
+            U = builder.transport_resonant(dg)
+        else:
+            U = builder.transport(dg)
         Uh = U.conj().T
         for a in range(K):
             for b in range(K):
@@ -62,15 +66,16 @@ def _build_explicit_laplacian_via_coboundary(zeros, builder, epsilon):
 class TestSheafLaplacianMatvec:
     """Verify matvec matches explicit coboundary construction."""
 
-    def test_dense_equivalence_K2_N3(self):
+    @pytest.mark.parametrize("transport_mode", ["global", "resonant"])
+    def test_dense_equivalence_K2_N3(self, transport_mode):
         """K=2, N=3 with all edges present."""
         zeros = np.array([0.0, 0.5, 1.0])
         builder = TransportMapBuilder(K=2, sigma=0.5)
         builder.build_generator_sum()
-        lap = SheafLaplacian(builder, zeros)
+        lap = SheafLaplacian(builder, zeros, transport_mode=transport_mode)
         epsilon = 2.0  # all pairs connected
 
-        L_dense = _build_explicit_laplacian_via_coboundary(zeros, builder, epsilon)
+        L_dense = _build_explicit_laplacian_via_coboundary(zeros, builder, epsilon, transport_mode)
         dim = len(zeros) * builder.K * builder.K
 
         rng = np.random.default_rng(42)
@@ -80,15 +85,16 @@ class TestSheafLaplacianMatvec:
             y_dense = L_dense @ x
             assert_allclose(y_matvec, y_dense, atol=1e-12)
 
-    def test_dense_equivalence_K3_N4(self):
+    @pytest.mark.parametrize("transport_mode", ["global", "resonant"])
+    def test_dense_equivalence_K3_N4(self, transport_mode):
         """K=3, N=4 with all edges present."""
         zeros = np.array([0.0, 0.3, 0.7, 1.2])
         builder = TransportMapBuilder(K=3, sigma=0.5)
         builder.build_generator_sum()
-        lap = SheafLaplacian(builder, zeros)
+        lap = SheafLaplacian(builder, zeros, transport_mode=transport_mode)
         epsilon = 5.0  # all pairs connected
 
-        L_dense = _build_explicit_laplacian_via_coboundary(zeros, builder, epsilon)
+        L_dense = _build_explicit_laplacian_via_coboundary(zeros, builder, epsilon, transport_mode)
         dim = len(zeros) * builder.K * builder.K
 
         rng = np.random.default_rng(99)
@@ -98,15 +104,16 @@ class TestSheafLaplacianMatvec:
             y_dense = L_dense @ x
             assert_allclose(y_matvec, y_dense, atol=1e-12)
 
-    def test_dense_equivalence_partial_edges(self):
+    @pytest.mark.parametrize("transport_mode", ["global", "resonant"])
+    def test_dense_equivalence_partial_edges(self, transport_mode):
         """Only some edges present (small epsilon)."""
         zeros = np.array([0.0, 0.5, 2.0, 2.3])
         builder = TransportMapBuilder(K=2, sigma=0.5)
         builder.build_generator_sum()
-        lap = SheafLaplacian(builder, zeros)
+        lap = SheafLaplacian(builder, zeros, transport_mode=transport_mode)
         epsilon = 0.6  # only (0,1) and (2,3) connected
 
-        L_dense = _build_explicit_laplacian_via_coboundary(zeros, builder, epsilon)
+        L_dense = _build_explicit_laplacian_via_coboundary(zeros, builder, epsilon, transport_mode)
         dim = len(zeros) * builder.K * builder.K
 
         rng = np.random.default_rng(7)

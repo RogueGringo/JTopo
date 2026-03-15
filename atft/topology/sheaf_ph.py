@@ -25,18 +25,20 @@ class SheafPH:
         self,
         transport_builder: TransportMapBuilder,
         unfolded_zeros: NDArray[np.float64],
+        transport_mode: str = "resonant",
     ) -> None:
         self._builder = transport_builder
         self._zeros = np.asarray(unfolded_zeros, dtype=np.float64).ravel()
         self._K = transport_builder.K
         self._N = len(self._zeros)
+        self._transport_mode = transport_mode
 
     def sweep(self, epsilon_grid: NDArray[np.float64], m: int = 20) -> SheafBettiCurve:
         """Compute sheaf Betti curve beta_0^F(epsilon) across filtration.
 
         At epsilon=0, returns N*K^2 without calling the eigensolver.
         """
-        lap = SheafLaplacian(self._builder, self._zeros)
+        lap = SheafLaplacian(self._builder, self._zeros, self._transport_mode)
         n_steps = len(epsilon_grid)
         kernel_dims = np.zeros(n_steps, dtype=np.int64)
         all_eigs = np.zeros((n_steps, m), dtype=np.float64)
@@ -78,7 +80,7 @@ class SheafPH:
 
         for s_idx, sigma in enumerate(sigma_grid):
             builder = TransportMapBuilder(K=self._K, sigma=sigma)
-            ph = SheafPH(builder, self._zeros)
+            ph = SheafPH(builder, self._zeros, self._transport_mode)
             curve = ph.sweep(epsilon_grid, m=m)
             heatmap[s_idx, :] = curve.kernel_dimensions
 
