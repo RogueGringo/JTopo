@@ -109,3 +109,88 @@ class SparseSheafLaplacian:
             else np.array([], dtype=np.float64)
         )
         return i_idx, j_idx, gaps
+
+    def _compute_transport(
+        self, gaps: NDArray[np.float64]
+    ) -> NDArray[np.complex128]:
+        """Compute transport matrices for all edges."""
+        if self._transport_mode == "superposition":
+            return self._builder.batch_transport_superposition(
+                gaps, normalize=self._normalize
+            )
+        elif self._transport_mode == "fe":
+            return self._builder.batch_transport_fe(gaps)
+        elif self._transport_mode == "resonant":
+            return self._builder.batch_transport_resonant(gaps)
+        else:
+            raise ValueError(
+                f"Unknown transport_mode {self._transport_mode!r}. "
+                "Must be 'superposition', 'fe', or 'resonant'."
+            )
+
+    def build_matrix(self, epsilon: float) -> sp.csr_matrix:
+        """Assemble the N*K x N*K sparse sheaf Laplacian.
+
+        Block structure per edge (i -> j) with transport U:
+          L[i,j] = -U†,  L[j,i] = -U   (off-diagonal K x K blocks)
+          L[i,i] += U†U,  L[j,j] += I   (diagonal K x K blocks)
+
+        Returns a Hermitian PSD sparse matrix in CSR format.
+        """
+        N = self._N
+        K = self._K
+        dim = N * K
+
+        i_idx, j_idx, gaps = self.build_edge_list(epsilon)
+        M = len(i_idx)
+
+        if M == 0:
+            return sp.csr_matrix((dim, dim), dtype=np.complex128)
+
+        # Compute all transport matrices: (M, K, K)
+        U_all = self._compute_transport(gaps)
+        Uh_all = np.conj(np.transpose(U_all, (0, 2, 1)))  # U†: (M, K, K)
+
+        # --- Build diagonal blocks: (N, K, K) ---
+        diag_blocks = np.zeros((N, K, K), dtype=np.complex128)
+        I_K = np.eye(K, dtype=np.complex128)
+
+        # Accumulate U†U at tail vertices (i)
+        UhU = Uh_all @ U_all  # (M, K, K) batched matmul
+        np.add.at(diag_blocks, i_idx, UhU)
+
+        # Accumulate I at head vertices (j)
+        head_degrees = np.bincount(j_idx, minlength=N)
+        for v in range(N):
+            if head_degrees[v] > 0:
+                diag_blocks[v] += head_degrees[v] * I_K
+
+        # --- Collect all blocks ---
+        n_blocks = N + 2 * M
+        all_rows = np.empty(n_blocks, dtype=np.int64)
+        all_cols = np.empty(n_blocks, dtype=np.int64)
+        all_data = np.empty((n_blocks, K, K), dtype=np.complex128)
+
+        # Diagonal blocks
+        all_rows[:N] = np.arange(N)
+        all_cols[:N] = np.arange(N)
+        all_data[:N] = diag_blocks
+
+        # Off-diagonal: -U† at (i, j)
+        all_rows[N:N+M] = i_idx
+        all_cols[N:N+M] = j_idx
+        all_data[N:N+M] = -Uh_all
+
+        # Off-diagonal: -U at (j, i)
+        all_rows[N+M:] = j_idx
+        all_cols[N+M:] = i_idx
+        all_data[N+M:] = -U_all
+
+        # --- Expand blocks to element-level COO ---
+        rr, cc = np.meshgrid(np.arange(K), np.arange(K), indexing='ij')
+        row_exp = (all_rows[:, None, None] * K + rr[None, :, :]).ravel()
+        col_exp = (all_cols[:, None, None] * K + cc[None, :, :]).ravel()
+        data_exp = all_data.ravel()
+
+        L = sp.coo_matrix((data_exp, (row_exp, col_exp)), shape=(dim, dim))
+        return L.tocsr()
