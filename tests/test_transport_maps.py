@@ -371,3 +371,71 @@ class TestSuperpositionGenerator:
         builder = TransportMapBuilder(K=1, sigma=0.5)
         A = builder.build_generator_superposition(1.0)
         np.testing.assert_allclose(A, np.zeros((1, 1), dtype=np.complex128), atol=1e-14)
+
+
+class TestBatchSuperpositionTransport:
+    """Tests for batch_transport_superposition()."""
+
+    def test_shape(self):
+        builder = TransportMapBuilder(K=6, sigma=0.5)
+        gaps = np.array([0.5, 1.0, 1.5, 2.0])
+        U = builder.batch_transport_superposition(gaps)
+        assert U.shape == (4, 6, 6)
+        assert U.dtype == np.complex128
+
+    def test_empty_input(self):
+        builder = TransportMapBuilder(K=6, sigma=0.5)
+        U = builder.batch_transport_superposition(np.array([]))
+        assert U.shape == (0, 6, 6)
+
+    def test_invertible(self):
+        """All transport matrices should be invertible (det != 0)."""
+        builder = TransportMapBuilder(K=6, sigma=0.5)
+        gaps = np.array([0.5, 1.0, 1.5, 2.0, 3.0])
+        U = builder.batch_transport_superposition(gaps)
+        for e in range(5):
+            assert abs(np.linalg.det(U[e])) > 1e-10
+
+    def test_zero_gap_is_identity(self):
+        """At dg=0 with normalize=False: A = sum(B_p) real, U = exp(i*sum(B_p))."""
+        builder = TransportMapBuilder(K=6, sigma=0.5)
+        U = builder.batch_transport_superposition(np.array([0.0]), normalize=False)
+        # U is exp(i * real_matrix) — should be unitary
+        I = np.eye(6, dtype=np.complex128)
+        np.testing.assert_allclose(U[0] @ U[0].conj().T, I, atol=1e-12)
+
+    def test_matches_single_edge(self):
+        """Batch result should match single-edge computation."""
+        builder = TransportMapBuilder(K=6, sigma=0.5)
+        gaps = np.array([0.7, 1.3, 2.1])
+        U_batch = builder.batch_transport_superposition(gaps, normalize=True)
+        for e, dg in enumerate(gaps):
+            A = builder.build_generator_superposition(dg, normalize=True)
+            eigenvals, P = np.linalg.eig(A)
+            P_inv = np.linalg.inv(P)
+            U_single = (P * np.exp(1j * eigenvals)) @ P_inv
+            np.testing.assert_allclose(U_batch[e], U_single, atol=1e-10)
+
+    def test_no_primes_returns_identity(self):
+        builder = TransportMapBuilder(K=1, sigma=0.5)
+        U = builder.batch_transport_superposition(np.array([1.0, 2.0]))
+        I = np.eye(1, dtype=np.complex128)
+        for e in range(2):
+            np.testing.assert_allclose(U[e], I, atol=1e-14)
+
+    def test_unitary_at_resonant_gap_single_prime(self):
+        """K=3, max_prime=2 (only prime 2), sigma=0.5, gap = 2*pi/log(2): phase = 1.
+        Generator is Hermitian => transport is unitary."""
+        builder = TransportMapBuilder(K=3, sigma=0.5, max_prime=2)
+        dg = 2 * np.pi / np.log(2)
+        U = builder.batch_transport_superposition(np.array([dg]), normalize=False)
+        I = np.eye(3, dtype=np.complex128)
+        np.testing.assert_allclose(U[0] @ U[0].conj().T, I, atol=1e-10)
+
+    def test_normalized_vs_unnormalized_different(self):
+        """Normalized and unnormalized should give different transport matrices."""
+        builder = TransportMapBuilder(K=6, sigma=0.5)
+        gaps = np.array([1.0])
+        U_norm = builder.batch_transport_superposition(gaps, normalize=True)
+        U_raw = builder.batch_transport_superposition(gaps, normalize=False)
+        assert not np.allclose(U_norm, U_raw, atol=1e-6)

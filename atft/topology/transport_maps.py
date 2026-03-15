@@ -450,3 +450,66 @@ class TransportMapBuilder:
                 A = A / norm
 
         return A
+
+    def batch_transport_superposition(
+        self,
+        delta_gammas: NDArray[np.float64],
+        normalize: bool = True,
+    ) -> NDArray[np.complex128]:
+        """Batch superposition transport for M edges.
+
+        Computes U[e] = exp(i * A[e]) where A[e] is the superposition
+        generator for each edge. Uses batched eigendecomposition with
+        scipy.linalg.expm fallback for defective matrices.
+
+        Args:
+            delta_gammas: (M,) array of gap values.
+            normalize: If True, Frobenius-normalize each generator.
+
+        Returns:
+            (M, K, K) complex128 array of transport matrices.
+        """
+        bases = self.build_superposition_bases()
+        M = len(delta_gammas)
+        K = self._K
+
+        if M == 0:
+            return np.empty((0, K, K), dtype=np.complex128)
+
+        if len(bases) == 0:
+            return np.tile(np.eye(K, dtype=np.complex128), (M, 1, 1))
+
+        # Phase matrix: (M, P) complex
+        phases = np.exp(
+            1j * delta_gammas[:, np.newaxis] * self._log_primes[np.newaxis, :]
+        )
+
+        # Generator batch: (M, K, K) complex via tensor contraction
+        A_batch = np.einsum('ep,pij->eij', phases, bases)
+
+        # Optional per-edge Frobenius normalization
+        if normalize:
+            norms = np.linalg.norm(A_batch.reshape(M, -1), axis=1)
+            mask = norms > 0
+            A_batch[mask] /= norms[mask, np.newaxis, np.newaxis]
+
+        # Matrix exponential via batched eigendecomposition
+        eigenvals, P_mat = np.linalg.eig(A_batch)  # (M,K), (M,K,K)
+        P_inv = np.linalg.inv(P_mat)  # (M, K, K)
+
+        # exp(i * A) = P @ diag(exp(i * lambda)) @ P_inv
+        exp_eigenvals = np.exp(1j * eigenvals)  # (M, K)
+        result = np.einsum('mik,mk,mkj->mij', P_mat, exp_eigenvals, P_inv)
+
+        # Check for defective matrices and fix with expm fallback
+        P_norms = np.linalg.norm(P_mat.reshape(M, -1), axis=1)
+        P_inv_norms = np.linalg.norm(P_inv.reshape(M, -1), axis=1)
+        cond_est = P_norms * P_inv_norms
+        defective = cond_est > 1e12
+
+        if np.any(defective):
+            from scipy.linalg import expm
+            for idx in np.where(defective)[0]:
+                result[idx] = expm(1j * A_batch[idx])
+
+        return result
