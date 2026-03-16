@@ -1,0 +1,34 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.egg-info/
+dist/
+build/
+*.egg
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Output (regenerable)
+output/*.log
+output/*.png
+
+# Claude internals
+.claude/
+
+# Large data files (tracked via LFS or separate download)
+# data/odlyzko_zeros.txt is kept in repo (~1.8MB, essential)
+
+# Virtual environments
+venv/
+.venv/
+env/

@@ -242,18 +242,27 @@ class SparseSheafLaplacian:
             # Clamp tiny negatives from numerical noise
             eigs = np.maximum(eigs, 0.0)
         except Exception:
-            # Fallback: standard eigsh targeting smallest eigenvalues
+            # Fallback 1: LOBPCG — iterative, no LU factorization, low memory
             try:
-                eigs, _ = eigsh(L, k=k_actual, which='SM', tol=1e-6)
-                eigs = np.sort(eigs.real)
+                from scipy.sparse.linalg import lobpcg
+                rng = np.random.default_rng(42)
+                X0 = rng.standard_normal((dim, k_actual)) + 1j * rng.standard_normal((dim, k_actual))
+                eigs_raw, _ = lobpcg(L, X0, largest=False, tol=1e-6, maxiter=500, verbosityLevel=0)
+                eigs = np.sort(eigs_raw.real)
                 eigs = np.maximum(eigs, 0.0)
             except Exception:
-                # Last resort: dense
-                eigs = np.sort(np.linalg.eigvalsh(L.toarray()).real)
-                eigs = np.maximum(eigs[:k], 0.0)
-                if len(eigs) < k:
-                    eigs = np.concatenate([eigs, np.zeros(k - len(eigs))])
-                return eigs
+                # Fallback 2: standard eigsh targeting smallest eigenvalues
+                try:
+                    eigs, _ = eigsh(L, k=k_actual, which='SM', tol=1e-6)
+                    eigs = np.sort(eigs.real)
+                    eigs = np.maximum(eigs, 0.0)
+                except Exception:
+                    # Last resort: dense
+                    eigs = np.sort(np.linalg.eigvalsh(L.toarray()).real)
+                    eigs = np.maximum(eigs[:k], 0.0)
+                    if len(eigs) < k:
+                        eigs = np.concatenate([eigs, np.zeros(k - len(eigs))])
+                    return eigs
 
         # Pad with zeros if we got fewer than k
         if len(eigs) < k:

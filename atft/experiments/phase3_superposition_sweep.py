@@ -33,7 +33,7 @@ from atft.topology.transport_maps import TransportMapBuilder
 class Phase3Config:
     """Configuration for the Phase 3 superposition sweep."""
     n_points: int = 9877
-    K: int = 50
+    K: int = 20
     sigma_grid: NDArray[np.float64] = field(default_factory=lambda: np.array(
         [0.25, 0.30, 0.35, 0.40, 0.45, 0.48, 0.50, 0.52, 0.55, 0.60, 0.65, 0.70, 0.75]
     ))

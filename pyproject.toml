@@ -3,9 +3,9 @@ requires = ["setuptools>=68.0"]
 build-backend = "setuptools.build_meta"
 
 [project]
-name = "atft"
+name = "ti"
 version = "0.1.0"
-description = "Adaptive Topological Field Theory framework"
+description = "Ti — Topological Investigation of the Riemann Hypothesis via Sheaf-Theoretic Gauge Fields"
 requires-python = ">=3.11"
 dependencies = [
     "numpy>=1.24",
@@ -15,7 +15,7 @@ dependencies = [
 ]
 
 [project.optional-dependencies]
-gpu = ["torch>=2.1"]
+gpu = ["cupy-cuda12x"]
 dev = ["pytest>=7.4", "pytest-cov>=4.1", "scikit-learn>=1.3"]
 
 [tool.pytest.ini_options]
