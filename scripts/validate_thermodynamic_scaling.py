@@ -27,7 +27,7 @@ from atft.topology.kpm_sheaf_laplacian import KPMSheafLaplacian
 
 
 def run_kpm_sweep(zeros, K, sigma_values, epsilon, degree=300,
-                  num_vectors=30, device=None):
+                  num_vectors=30, device=None, fixed_cutoff=None):
     results = {}
     for sigma in sigma_values:
         builder = TransportMapBuilder(K=K, sigma=sigma)
@@ -36,17 +36,30 @@ def run_kpm_sweep(zeros, K, sigma_values, epsilon, degree=300,
             degree=degree, num_vectors=num_vectors,
         )
         mu = kpm.compute_moments(epsilon)
-        idos_val = kpm.spectral_density_at_zero()
+
+        # Use fixed cutoff if provided (avoids the moving-goalpost trap
+        # where lambda_max grows with K, widening the integration window)
+        if fixed_cutoff is not None:
+            idos_val = kpm.idos(cutoff=fixed_cutoff)
+            resolution = np.pi * kpm._lam_max / degree
+            if resolution > fixed_cutoff:
+                print(f"  WARNING: KPM resolution {resolution:.3f} > cutoff "
+                      f"{fixed_cutoff:.3f}. Increase degree for K={K}.")
+        else:
+            idos_val = kpm.spectral_density_at_zero()
+
         s_sum = kpm.spectral_sum(epsilon)
         results[sigma] = {
             "idos_at_zero": idos_val,
             "spectral_sum": s_sum,
             "lam_max": kpm._lam_max,
             "dim": kpm._dim,
+            "resolution_limit": np.pi * kpm._lam_max / degree,
             "moments": mu.tolist(),
         }
         print(f"  K={K}, sigma={sigma:.2f}: IDOS={idos_val:.6f}, "
-              f"S={s_sum:.4f}, dim={kpm._dim}")
+              f"S={s_sum:.4f}, lam_max={kpm._lam_max:.2f}, "
+              f"res={np.pi * kpm._lam_max / degree:.3f}")
     return results
 
 
@@ -145,12 +158,16 @@ def main():
     parser.add_argument("--epsilon", type=float, default=3.0)
     parser.add_argument("--degree", type=int, default=300)
     parser.add_argument("--num-vectors", type=int, default=30)
+    parser.add_argument("--n-zeros", type=int, default=9877,
+                        help="Number of zeros to use (default: all 9877)")
+    parser.add_argument("--fixed-cutoff", type=float, default=None,
+                        help="Fixed IDOS cutoff (avoids lambda_max goalpost drift)")
     parser.add_argument("--output", type=str, default=None)
     args = parser.parse_args()
 
     data_path = Path(__file__).resolve().parent.parent / "data" / "odlyzko_zeros.txt"
     source = ZetaZerosSource(data_path=data_path)
-    cloud = source.generate(n_points=9877)
+    cloud = source.generate(n_points=args.n_zeros)
     unfolding = SpectralUnfolding(method="zeta")
     unfolded = unfolding.transform(cloud)
     zeros = unfolded.points[:, 0]
@@ -163,17 +180,28 @@ def main():
         K_values = args.k_values or [20, 50]
         sigma_values = [0.25, 0.30, 0.40, 0.50, 0.60, 0.70, 0.75]
 
+    # Auto-scale degree to ensure resolution < fixed_cutoff
+    if args.fixed_cutoff:
+        print(f"Fixed cutoff: {args.fixed_cutoff} (degree will auto-scale per K)")
     print(f"Zeros: {len(zeros)}, K values: {K_values}")
     print(f"Sigma grid: {sigma_values}")
-    print(f"Epsilon: {args.epsilon}, Degree: {args.degree}")
+    print(f"Epsilon: {args.epsilon}, Base degree: {args.degree}")
     print("=" * 60)
 
     all_results = {}
     for K in K_values:
-        print(f"\n--- K = {K} ---")
+        # Auto-scale degree: ensure pi * lam_max_est / D < fixed_cutoff
+        # Rough estimate: lam_max ~ 2*K for moderate epsilon
+        degree = args.degree
+        if args.fixed_cutoff:
+            lam_max_est = 2.0 * K  # conservative estimate
+            min_degree = int(np.pi * lam_max_est / args.fixed_cutoff) + 10
+            degree = max(degree, min_degree)
+        print(f"\n--- K = {K} (degree={degree}) ---")
         all_results[K] = run_kpm_sweep(
             zeros, K, sigma_values, args.epsilon,
-            degree=args.degree, num_vectors=args.num_vectors,
+            degree=degree, num_vectors=args.num_vectors,
+            fixed_cutoff=args.fixed_cutoff,
         )
 
     print("\n" + "=" * 60)
