@@ -148,10 +148,12 @@ def main():
     parser.add_argument("--output", type=str, default=None)
     args = parser.parse_args()
 
-    source = ZetaZerosSource()
-    raw_zeros = source.load()
-    unfolding = SpectralUnfolding()
-    zeros = unfolding.transform(raw_zeros)
+    data_path = Path(__file__).resolve().parent.parent / "data" / "odlyzko_zeros.txt"
+    source = ZetaZerosSource(data_path=data_path)
+    cloud = source.generate(n_points=9877)
+    unfolding = SpectralUnfolding(method="zeta")
+    unfolded = unfolding.transform(cloud)
+    zeros = unfolded.points[:, 0]
 
     if args.quick:
         zeros = zeros[:200]
