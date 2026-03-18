@@ -154,14 +154,7 @@ class HeatKernelSheafLaplacian(TorchSheafLaplacian):
         )
 
         # 4. Rademacher probe matrix Z in {-1, +1}^{dim x num_vectors}
-        rng = torch.Generator(device=device)
-        rng.manual_seed(42)
-        Z = (
-            torch.randint(
-                0, 2, (dim, num_vectors),
-                device=device, dtype=torch.double, generator=rng,
-            ) * 2 - 1
-        ).to(dtype)
+        Z = self._rademacher_probes(dim, num_vectors, seed=42)
 
         # 5. Chebyshev recurrence: T_k(L_norm) @ Z
         #    L_norm = (2/lam_max)L - I maps spectrum from [0, lam_max] to [-1, 1]
@@ -193,31 +186,6 @@ class HeatKernelSheafLaplacian(TorchSheafLaplacian):
             torch.cuda.empty_cache()
 
         return trace_estimate
-
-    def _power_iteration_lam_max(
-        self, L_csr, dim: int, n_iter: int = 30,
-    ) -> float:
-        """Estimate largest eigenvalue via power iteration."""
-        device = self.device
-        dtype = torch.cdouble
-
-        rng = torch.Generator(device=device)
-        rng.manual_seed(123)
-        v = torch.randn(
-            dim, dtype=torch.double, device=device, generator=rng,
-        ).to(dtype)
-        v = v / torch.linalg.norm(v)
-
-        lam = torch.tensor(0.0, device=device)
-        for _ in range(n_iter):
-            w = torch.mv(L_csr, v)
-            lam = torch.real(torch.dot(v.conj(), w))
-            norm_w = torch.linalg.norm(w).real
-            if norm_w < 1e-14:
-                return 0.0
-            v = w / norm_w
-
-        return float(lam.cpu()) * 1.05  # 5% safety margin
 
     def smallest_eigenvalues(
         self, epsilon: float, k: int = 100,

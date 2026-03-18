@@ -240,6 +240,57 @@ class TorchSheafLaplacian(BaseSheafLaplacian):
                 device = "cpu"
         self.device = torch.device(device)
 
+    def _power_iteration_lam_max(
+        self, L_csr, dim: int, n_iter: int = 30,
+    ) -> float:
+        """Estimate largest eigenvalue via power iteration.
+
+        Universal SLQ primitive: required by any Chebyshev-based trace
+        estimator to normalize the spectrum to [-1, 1].
+
+        Returns lam_max with 5% safety margin.
+        """
+        device = self.device
+        dtype = torch.cdouble
+
+        rng = torch.Generator(device=device)
+        rng.manual_seed(123)
+        v = torch.randn(
+            dim, dtype=torch.double, device=device, generator=rng,
+        ).to(dtype)
+        v = v / torch.linalg.norm(v)
+
+        lam = torch.tensor(0.0, device=device)
+        for _ in range(n_iter):
+            w = torch.mv(L_csr, v)
+            lam = torch.real(torch.dot(v.conj(), w))
+            norm_w = torch.linalg.norm(w).real
+            if norm_w < 1e-14:
+                return 0.0
+            v = w / norm_w
+
+        return float(lam.cpu()) * 1.05  # 5% safety margin
+
+    def _rademacher_probes(
+        self, dim: int, num_vectors: int, seed: int = 42,
+    ) -> torch.Tensor:
+        """Generate Rademacher probe matrix Z in {-1, +1}^{dim x num_vectors}.
+
+        Universal SLQ primitive: provides stochastic trace estimation
+        via Hutchinson's method. Returns complex128 tensor on self.device.
+        """
+        device = self.device
+        dtype = torch.cdouble
+        rng = torch.Generator(device=device)
+        rng.manual_seed(seed)
+        Z = (
+            torch.randint(
+                0, 2, (dim, num_vectors),
+                device=device, dtype=torch.double, generator=rng,
+            ) * 2 - 1
+        ).to(dtype)
+        return Z
+
     def gpu_transport(
         self, gaps: NDArray[np.float64]
     ) -> torch.Tensor:
