@@ -1,0 +1,700 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>B. Jones — Topological Research</title>
+  <meta name="description" content="B. Jones — Independent researcher applying ATFT gauge theory to the Riemann Hypothesis. Home of JTopo / Ti V0.1." />
+  <meta property="og:title" content="B. Jones — Topological Research" />
+  <meta property="og:description" content="Independent researcher. Computational mathematics. Sheaf theory. Alpha the Doberman." />
+  <meta property="og:type" content="website" />
+
+  <link href="https://api.fontshare.com/v2/css?f[]=zodiak@400,500,700&f[]=satoshi@300,400,500,700&display=swap" rel="stylesheet">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;500&display=swap" rel="stylesheet">
+  <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.js"></script>
+
+  <style>
+    :root, [data-theme="light"] {
+      --font-display: 'Zodiak', Georgia, serif;
+      --font-body:    'Satoshi', 'Helvetica Neue', sans-serif;
+      --font-mono:    'JetBrains Mono', 'Fira Code', monospace;
+      --text-xs:   clamp(0.75rem,  0.7rem  + 0.25vw, 0.875rem);
+      --text-sm:   clamp(0.875rem, 0.8rem  + 0.35vw, 1rem);
+      --text-base: clamp(1rem,     0.95rem + 0.25vw, 1.125rem);
+      --text-lg:   clamp(1.125rem, 1rem    + 0.75vw, 1.5rem);
+      --text-xl:   clamp(1.5rem,   1.2rem  + 1.25vw, 2.25rem);
+      --text-2xl:  clamp(2rem,     1.2rem  + 2.5vw,  3.5rem);
+      --text-3xl:  clamp(2.5rem,   1rem    + 4vw,    5rem);
+      --text-hero: clamp(3rem,     0.5rem  + 7vw,    8rem);
+      --space-1:0.25rem;--space-2:0.5rem;--space-3:0.75rem;--space-4:1rem;
+      --space-5:1.25rem;--space-6:1.5rem;--space-8:2rem;--space-10:2.5rem;
+      --space-12:3rem;--space-16:4rem;--space-20:5rem;--space-24:6rem;--space-32:8rem;
+      --color-bg:#f8f6f1;--color-surface:#faf8f4;--color-surface-2:#fdfcfa;
+      --color-surface-offset:#f1ede5;--color-surface-dynamic:#e9e4d9;
+      --color-divider:#ddd7cb;--color-border:#d3cfc4;
+      --color-text:#201c14;--color-text-muted:#7a7364;--color-text-faint:#bab4a6;
+      --color-text-inverse:#faf8f4;
+      --color-primary:#a05c00;--color-primary-hover:#7d4500;
+      --color-primary-highlight:#ecdfc6;
+      --color-teal:#00848c;--color-teal-hover:#006970;--color-teal-highlight:#c8e0e2;
+      --color-success:#3d7022;
+      --radius-sm:0.375rem;--radius-md:0.5rem;--radius-lg:0.75rem;
+      --radius-xl:1rem;--radius-full:9999px;
+      --transition-interactive:180ms cubic-bezier(0.16, 1, 0.3, 1);
+      --shadow-sm:0 1px 2px oklch(0.2 0.02 60 / 0.06);
+      --shadow-md:0 4px 12px oklch(0.2 0.02 60 / 0.08);
+      --shadow-lg:0 12px 32px oklch(0.2 0.02 60 / 0.12);
+      --content-narrow:640px;--content-default:960px;--content-wide:1200px;
+    }
+    [data-theme="dark"] {
+      --color-bg:#0f0d08;--color-surface:#16140d;--color-surface-2:#1b1911;
+      --color-surface-offset:#19170f;--color-surface-dynamic:#232013;
+      --color-divider:#282510;--color-border:#35311e;
+      --color-text:#d6d0be;--color-text-muted:#817a66;--color-text-faint:#544f3e;
+      --color-text-inverse:#16140d;
+      --color-primary:#d08a28;--color-primary-hover:#eda040;
+      --color-primary-highlight:#3a2d10;
+      --color-teal:#45a8b0;--color-teal-hover:#68c8d0;--color-teal-highlight:#112a2c;
+      --color-success:#6daa45;
+      --shadow-sm:0 1px 2px oklch(0 0 0 / 0.25);
+      --shadow-md:0 4px 12px oklch(0 0 0 / 0.38);
+      --shadow-lg:0 12px 32px oklch(0 0 0 / 0.52);
+    }
+    @media (prefers-color-scheme: light) {
+      :root:not([data-theme]) {
+        --color-bg:#f8f6f1;--color-surface:#faf8f4;--color-text:#201c14;
+        --color-primary:#a05c00;--color-teal:#00848c;
+      }
+    }
+
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+    html{-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale;text-rendering:optimizeLegibility;scroll-behavior:smooth;scroll-padding-top:var(--space-16);}
+    body{min-height:100dvh;line-height:1.65;font-family:var(--font-body);font-size:var(--text-base);color:var(--color-text);background:var(--color-bg);}
+    img,video,canvas,svg{display:block;max-width:100%;height:auto;}
+    ul[role="list"],ol[role="list"]{list-style:none;}
+    input,button,textarea,select{font:inherit;color:inherit;}
+    h1,h2,h3,h4,h5,h6{text-wrap:balance;line-height:1.1;}
+    p,li,figcaption{text-wrap:pretty;max-width:72ch;}
+    ::selection{background:oklch(from var(--color-primary) l c h / 0.22);color:var(--color-text);}
+    :focus-visible{outline:2px solid var(--color-primary);outline-offset:3px;border-radius:var(--radius-sm);}
+    button{cursor:pointer;background:none;border:none;}
+    a,button,[role="button"]{transition:color var(--transition-interactive),background var(--transition-interactive),opacity var(--transition-interactive),box-shadow var(--transition-interactive);}
+    .sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border-width:0;}
+    @media (prefers-reduced-motion:reduce){*,*::before,*::after{animation-duration:0.01ms!important;transition-duration:0.01ms!important;scroll-behavior:auto!important;}}
+
+    /* Skip */
+    .skip-link{position:fixed;top:var(--space-4);left:var(--space-4);z-index:9999;padding:var(--space-3) var(--space-6);background:var(--color-primary);color:var(--color-text-inverse);border-radius:var(--radius-md);font-size:var(--text-sm);font-weight:600;opacity:0;pointer-events:none;text-decoration:none;}
+    .skip-link:focus{opacity:1;pointer-events:auto;}
+
+    /* Layout */
+    .container{max-width:var(--content-default);margin-inline:auto;padding-inline:var(--space-6);}
+    .container--wide{max-width:var(--content-wide);margin-inline:auto;padding-inline:var(--space-6);}
+    .container--narrow{max-width:var(--content-narrow);margin-inline:auto;padding-inline:var(--space-6);}
+
+    /* Header */
+    .site-header{position:sticky;top:0;z-index:100;background:oklch(from var(--color-bg) l c h / 0.88);backdrop-filter:blur(18px) saturate(1.3);-webkit-backdrop-filter:blur(18px) saturate(1.3);border-bottom:1px solid var(--color-divider);}
+    .nav-inner{display:flex;align-items:center;justify-content:space-between;padding-block:var(--space-4);}
+    .nav-logo{display:flex;align-items:center;gap:var(--space-3);text-decoration:none;color:var(--color-text);}
+    .nav-logo-wordmark{font-family:var(--font-display);font-size:var(--text-lg);font-weight:500;letter-spacing:-0.02em;}
+    .nav-links{display:flex;align-items:center;gap:var(--space-8);list-style:none;}
+    .nav-links a{font-size:var(--text-sm);font-weight:500;text-decoration:none;color:var(--color-text-muted);letter-spacing:0.025em;text-transform:uppercase;}
+    .nav-links a:hover{color:var(--color-text);}
+    .nav-actions{display:flex;align-items:center;gap:var(--space-3);}
+    .theme-toggle{width:40px;height:40px;display:flex;align-items:center;justify-content:center;border-radius:var(--radius-full);color:var(--color-text-muted);}
+    .theme-toggle:hover{background:var(--color-surface-offset);color:var(--color-text);}
+    .nav-gh-btn{display:flex;align-items:center;gap:var(--space-2);padding:var(--space-2) var(--space-5);border-radius:var(--radius-full);font-size:var(--text-sm);font-weight:700;text-decoration:none;color:var(--color-bg);background:var(--color-primary);white-space:nowrap;}
+    .nav-gh-btn:hover{background:var(--color-primary-hover);}
+    .hamburger{display:none;width:40px;height:40px;align-items:center;justify-content:center;color:var(--color-text-muted);}
+    .mobile-nav{display:none;padding:var(--space-4) 0 var(--space-6);border-top:1px solid var(--color-divider);}
+    .mobile-nav.open{display:block;}
+    .mobile-nav ul{list-style:none;display:flex;flex-direction:column;gap:var(--space-1);}
+    .mobile-nav a{display:block;padding:var(--space-3) 0;font-size:var(--text-base);font-weight:500;text-decoration:none;color:var(--color-text-muted);}
+    .mobile-nav a:hover{color:var(--color-text);}
+    @media(max-width:768px){.nav-links,.nav-gh-btn{display:none;}.hamburger{display:flex;}}
+    @media(min-width:769px){.mobile-nav{display:none!important;}}
+
+    /* Hero */
+    .hero{position:relative;overflow:hidden;min-height:92vh;display:flex;align-items:flex-end;padding-bottom:clamp(var(--space-12),8vw,var(--space-24));}
+    .hero-bg{position:absolute;inset:0;z-index:0;}
+    .hero-bg img{width:100%;height:100%;object-fit:cover;object-position:center 25%;filter:brightness(0.3) saturate(0.65);}
+    .hero-bg::after{content:'';position:absolute;inset:0;background:linear-gradient(in oklch to bottom,transparent 0%,oklch(from var(--color-bg) l c h / 0.25) 45%,var(--color-bg) 100%);}
+    .hero-content{position:relative;z-index:1;max-width:820px;}
+    .hero-eyebrow{display:inline-flex;align-items:center;gap:var(--space-2);font-family:var(--font-mono);font-size:var(--text-xs);letter-spacing:0.14em;text-transform:uppercase;color:var(--color-primary);margin-bottom:var(--space-6);}
+    .eyebrow-dot{width:6px;height:6px;border-radius:50%;background:var(--color-primary);animation:pdot 2.4s ease-in-out infinite;}
+    @keyframes pdot{0%,100%{opacity:1;transform:scale(1)}50%{opacity:0.45;transform:scale(0.65)}}
+    .hero-title{font-family:var(--font-display);font-size:var(--text-3xl);font-weight:400;letter-spacing:-0.035em;line-height:1.05;margin-bottom:var(--space-6);color:var(--color-text);}
+    .hero-title em{font-style:italic;color:var(--color-primary);}
+    .hero-subtitle{font-size:var(--text-lg);color:var(--color-text-muted);max-width:58ch;margin-bottom:var(--space-10);line-height:1.65;}
+    .hero-ctas{display:flex;flex-wrap:wrap;gap:var(--space-4);align-items:center;}
+    .btn-primary{display:inline-flex;align-items:center;gap:var(--space-2);padding:var(--space-3) var(--space-8);background:var(--color-primary);color:var(--color-bg);border-radius:var(--radius-full);font-size:var(--text-sm);font-weight:700;text-decoration:none;letter-spacing:0.02em;}
+    .btn-primary:hover{background:var(--color-primary-hover);}
+    .btn-ghost{display:inline-flex;align-items:center;gap:var(--space-2);padding:var(--space-3) var(--space-8);border:1px solid var(--color-border);color:var(--color-text-muted);border-radius:var(--radius-full);font-size:var(--text-sm);font-weight:600;text-decoration:none;}
+    .btn-ghost:hover{border-color:var(--color-text-muted);color:var(--color-text);}
+
+    /* Sections */
+    .section{padding-block:clamp(var(--space-12),8vw,var(--space-24));}
+    .section-label{font-family:var(--font-mono);font-size:var(--text-xs);letter-spacing:0.12em;text-transform:uppercase;color:var(--color-primary);display:flex;align-items:center;gap:var(--space-3);margin-bottom:var(--space-4);}
+    .section-label::after{content:'';flex:1;max-width:3rem;height:1px;background:var(--color-primary);opacity:0.4;}
+    .section-title{font-family:var(--font-display);font-size:var(--text-2xl);font-weight:500;letter-spacing:-0.03em;line-height:1.08;}
+    .section-desc{font-size:var(--text-base);color:var(--color-text-muted);margin-top:var(--space-4);max-width:58ch;line-height:1.75;}
+    .section-header{margin-bottom:var(--space-12);}
+    .divider{height:1px;background:var(--color-divider);}
+
+    /* Project layout */
+    .project-feature{display:grid;grid-template-columns:1fr 1fr;gap:clamp(var(--space-8),5vw,var(--space-16));align-items:center;margin-bottom:var(--space-16);}
+    .project-feature:last-of-type{margin-bottom:0;}
+    .project-feature--rev{direction:rtl;}
+    .project-feature--rev>*{direction:ltr;}
+    .project-visual{border-radius:var(--radius-xl);overflow:hidden;position:relative;aspect-ratio:4/3;box-shadow:var(--shadow-lg);}
+    .project-visual img{width:100%;height:100%;object-fit:cover;}
+    .project-visual-overlay{position:absolute;inset:0;background:linear-gradient(in oklch 135deg,oklch(from var(--color-primary) l c h / 0.1),oklch(from var(--color-teal) l c h / 0.06));pointer-events:none;}
+    .project-badge{display:inline-flex;align-items:center;gap:var(--space-2);padding:var(--space-1) var(--space-3);background:var(--color-primary-highlight);color:var(--color-primary);border-radius:var(--radius-full);font-size:var(--text-xs);font-family:var(--font-mono);font-weight:500;text-transform:uppercase;letter-spacing:0.08em;margin-bottom:var(--space-4);}
+    .badge-dot{width:5px;height:5px;border-radius:50%;background:var(--color-primary);}
+    .project-title{font-family:var(--font-display);font-size:var(--text-xl);font-weight:500;letter-spacing:-0.025em;margin-bottom:var(--space-4);line-height:1.18;}
+    .project-desc{font-size:var(--text-base);color:var(--color-text-muted);line-height:1.8;margin-bottom:var(--space-6);}
+    .phases{display:flex;flex-direction:column;gap:var(--space-3);margin-bottom:var(--space-8);}
+    .phase{display:flex;align-items:flex-start;gap:var(--space-3);}
+    .pdot{width:8px;height:8px;border-radius:50%;flex-shrink:0;margin-top:0.3em;}
+    .pdot.done{background:var(--color-success);}
+    .pdot.partial{background:var(--color-primary);}
+    .pdot.todo{background:var(--color-text-faint);}
+    .phase-text{font-size:var(--text-sm);color:var(--color-text-muted);}
+    .phase-text strong{color:var(--color-text);font-weight:600;}
+    .proj-links{display:flex;gap:var(--space-4);flex-wrap:wrap;}
+    .pill{display:inline-flex;align-items:center;gap:var(--space-2);padding:var(--space-2) var(--space-5);border:1px solid var(--color-border);border-radius:var(--radius-full);font-size:var(--text-sm);font-weight:600;text-decoration:none;color:var(--color-text-muted);}
+    .pill:hover{border-color:var(--color-primary);color:var(--color-primary);}
+    .pill-primary{background:var(--color-primary);border-color:var(--color-primary);color:var(--color-bg);}
+    .pill-primary:hover{background:var(--color-primary-hover);border-color:var(--color-primary-hover);color:var(--color-bg);}
+
+    /* Math block */
+    .math-block{background:var(--color-surface);border:1px solid var(--color-border);border-radius:var(--radius-xl);padding:var(--space-8) var(--space-10);font-family:var(--font-mono);overflow-x:auto;margin-top:var(--space-12);}
+    .math-block-label{font-size:var(--text-xs);letter-spacing:0.1em;text-transform:uppercase;color:var(--color-text-faint);margin-bottom:var(--space-6);}
+    .math-body{font-size:clamp(0.85rem,0.75rem + 0.5vw,1.05rem);color:var(--color-text);line-height:2.4;}
+    .kw{color:var(--color-teal);}
+    .num{color:var(--color-primary);}
+    .cmt{color:var(--color-text-faint);font-size:var(--text-xs);}
+
+    /* About */
+    .about-grid{display:grid;grid-template-columns:1fr 1.65fr;gap:clamp(var(--space-8),6vw,var(--space-20));align-items:start;}
+    .about-aside{position:sticky;top:calc(var(--space-16) + var(--space-6));}
+    .portrait-wrap{border-radius:var(--radius-xl);overflow:hidden;aspect-ratio:3/4;box-shadow:var(--shadow-lg);}
+    .portrait-wrap img{width:100%;height:100%;object-fit:cover;}
+    .about-name{font-family:var(--font-display);font-size:var(--text-xl);font-weight:500;letter-spacing:-0.02em;margin-top:var(--space-5);}
+    .about-role{font-size:var(--text-sm);color:var(--color-text-muted);margin-top:var(--space-1);}
+    .about-loc{display:flex;align-items:center;gap:var(--space-2);font-size:var(--text-xs);color:var(--color-text-faint);margin-top:var(--space-3);font-family:var(--font-mono);}
+    .about-body{display:flex;flex-direction:column;gap:var(--space-8);}
+    .about-body p{font-size:var(--text-base);line-height:1.82;color:var(--color-text-muted);max-width:65ch;}
+    .about-body p strong{color:var(--color-text);font-weight:600;}
+
+    /* Tags */
+    .tags{display:flex;flex-wrap:wrap;gap:var(--space-2);margin-top:var(--space-4);}
+    .tag{padding:var(--space-1) var(--space-3);border:1px solid var(--color-border);border-radius:var(--radius-full);font-size:var(--text-xs);font-family:var(--font-mono);color:var(--color-text-muted);letter-spacing:0.04em;cursor:default;}
+    .tag:hover{border-color:var(--color-primary);color:var(--color-primary);}
+
+    /* Alpha */
+    .alpha-section{background:var(--color-surface);border-top:1px solid var(--color-divider);border-bottom:1px solid var(--color-divider);}
+    .alpha-inner{display:grid;grid-template-columns:1.1fr 1fr;gap:clamp(var(--space-8),5vw,var(--space-16));align-items:center;}
+    .alpha-img-wrap{border-radius:var(--radius-xl);overflow:hidden;aspect-ratio:1;box-shadow:var(--shadow-lg);}
+    .alpha-img-wrap img{width:100%;height:100%;object-fit:cover;object-position:center top;}
+    .alpha-eyebrow{font-family:var(--font-mono);font-size:var(--text-xs);letter-spacing:0.14em;text-transform:uppercase;color:var(--color-text-faint);margin-bottom:var(--space-4);}
+    .alpha-name{font-family:var(--font-display);font-size:var(--text-2xl);font-weight:500;letter-spacing:-0.03em;line-height:1.08;margin-bottom:var(--space-6);}
+    .alpha-name span{color:var(--color-primary);}
+    .alpha-desc{font-size:var(--text-base);color:var(--color-text-muted);line-height:1.82;max-width:55ch;}
+    .specs{display:flex;flex-direction:column;gap:var(--space-3);margin-top:var(--space-8);}
+    .spec{display:flex;align-items:baseline;gap:var(--space-4);}
+    .spec-k{font-family:var(--font-mono);font-size:var(--text-xs);letter-spacing:0.08em;text-transform:uppercase;color:var(--color-text-faint);width:80px;flex-shrink:0;}
+    .spec-v{font-size:var(--text-sm);color:var(--color-text);font-weight:500;}
+
+    /* Blog */
+    .blog-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(300px,100%),1fr));gap:var(--space-6);}
+    .blog-card{background:var(--color-surface);border:1px solid oklch(from var(--color-text) l c h / 0.08);border-radius:var(--radius-xl);padding:var(--space-6);text-decoration:none;color:var(--color-text);display:flex;flex-direction:column;gap:var(--space-3);box-shadow:var(--shadow-sm);transition:box-shadow var(--transition-interactive),border-color var(--transition-interactive);}
+    .blog-card:hover{box-shadow:var(--shadow-md);border-color:oklch(from var(--color-primary) l c h / 0.35);}
+    .blog-meta{display:flex;align-items:center;justify-content:space-between;}
+    .blog-date{font-family:var(--font-mono);font-size:var(--text-xs);color:var(--color-text-faint);}
+    .blog-tag{font-size:var(--text-xs);font-family:var(--font-mono);padding:2px var(--space-2);background:var(--color-primary-highlight);color:var(--color-primary);border-radius:var(--radius-sm);text-transform:uppercase;letter-spacing:0.06em;}
+    .blog-title{font-family:var(--font-display);font-size:var(--text-lg);font-weight:500;letter-spacing:-0.015em;line-height:1.28;}
+    .blog-excerpt{font-size:var(--text-sm);color:var(--color-text-muted);line-height:1.72;max-width:100%;}
+    .blog-arrow{margin-top:auto;display:flex;align-items:center;gap:var(--space-2);font-size:var(--text-xs);font-weight:700;color:var(--color-primary);text-transform:uppercase;letter-spacing:0.08em;}
+
+    /* Contact */
+    .contact-row{display:flex;align-items:center;gap:var(--space-4);padding:var(--space-5) 0;border-bottom:1px solid var(--color-divider);}
+    .contact-row:last-child{border-bottom:none;}
+    .contact-icon{width:42px;height:42px;border-radius:var(--radius-md);background:var(--color-surface-offset);display:flex;align-items:center;justify-content:center;color:var(--color-text-muted);flex-shrink:0;}
+    .contact-label{font-size:var(--text-xs);text-transform:uppercase;letter-spacing:0.08em;color:var(--color-text-faint);font-family:var(--font-mono);margin-bottom:var(--space-1);}
+    .contact-value{font-size:var(--text-sm);color:var(--color-text);font-weight:500;text-decoration:none;}
+    .contact-value:hover{color:var(--color-primary);}
+
+    /* Footer */
+    .site-footer{padding-block:var(--space-12) var(--space-10);border-top:1px solid var(--color-divider);}
+    .footer-inner{display:flex;align-items:flex-start;justify-content:space-between;gap:var(--space-8);flex-wrap:wrap;}
+    .footer-tagline{font-size:var(--text-xs);color:var(--color-text-faint);max-width:32ch;line-height:1.65;font-family:var(--font-mono);margin-top:var(--space-3);}
+    .footer-col{display:flex;flex-direction:column;gap:var(--space-2);}
+    .footer-col-title{font-size:var(--text-xs);font-family:var(--font-mono);letter-spacing:0.1em;text-transform:uppercase;color:var(--color-text-faint);margin-bottom:var(--space-3);}
+    .footer-col a{font-size:var(--text-sm);color:var(--color-text-muted);text-decoration:none;}
+    .footer-col a:hover{color:var(--color-text);}
+    .footer-bottom{margin-top:var(--space-8);padding-top:var(--space-6);border-top:1px solid var(--color-divider);display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:var(--space-4);}
+    .footer-copy{font-size:var(--text-xs);color:var(--color-text-faint);font-family:var(--font-mono);}
+
+    /* Scroll reveals */
+    @supports (animation-timeline: scroll()) {
+      .fade-in {
+        opacity: 0;
+        animation: rfade linear both;
+        animation-timeline: view();
+        animation-range: entry 0% entry 80%;
+      }
+      @keyframes rfade { to { opacity: 1; } }
+    }
+
+    /* Responsive */
+    @media(max-width:900px){
+      .project-feature{grid-template-columns:1fr;}
+      .project-feature--rev{direction:ltr;}
+      .about-grid{grid-template-columns:1fr;}
+      .about-aside{position:static;}
+      .portrait-wrap{aspect-ratio:4/3;max-width:380px;}
+      .alpha-inner{grid-template-columns:1fr;}
+      .alpha-img-wrap{max-width:400px;}
+    }
+    @media(max-width:640px){
+      .hero-ctas,.proj-links{flex-direction:column;align-items:flex-start;}
+      .math-block{padding:var(--space-6);}
+    }
+  </style>
+</head>
+<body>
+
+<a href="#main" class="skip-link">Skip to content</a>
+
+<!-- HEADER -->
+<header class="site-header">
+  <div class="container nav-inner">
+    <a href="#" class="nav-logo" aria-label="B. Jones — Home">
+      <svg width="32" height="32" viewBox="0 0 32 32" fill="none" aria-hidden="true">
+        <circle cx="16" cy="16" r="14" stroke="currentColor" stroke-width="1.2" opacity="0.14"/>
+        <line x1="16" y1="4" x2="16" y2="28" stroke="var(--color-primary)" stroke-width="1.6" stroke-dasharray="2 2.5"/>
+        <circle cx="16" cy="9" r="2.2" fill="var(--color-primary)"/>
+        <circle cx="16" cy="16" r="2.7" fill="var(--color-teal)"/>
+        <circle cx="16" cy="23" r="2.2" fill="var(--color-primary)"/>
+        <line x1="16" y1="9" x2="8" y2="24" stroke="currentColor" stroke-width="0.9" opacity="0.3"/>
+        <line x1="16" y1="9" x2="24" y2="24" stroke="currentColor" stroke-width="0.9" opacity="0.3"/>
+        <line x1="8" y1="24" x2="24" y2="24" stroke="currentColor" stroke-width="0.9" opacity="0.3"/>
+      </svg>
+      <span class="nav-logo-wordmark">B. Jones</span>
+    </a>
+
+    <nav aria-label="Main navigation">
+      <ul class="nav-links">
+        <li><a href="#research">Research</a></li>
+        <li><a href="#about">About</a></li>
+        <li><a href="#alpha">Alpha</a></li>
+        <li><a href="#blog">Notes</a></li>
+        <li><a href="#contact">Contact</a></li>
+      </ul>
+    </nav>
+
+    <div class="nav-actions">
+      <button class="theme-toggle" data-theme-toggle aria-label="Toggle theme">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="5"/><path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/></svg>
+      </button>
+      <a href="https://github.com/RogueGringo/JTopo" target="_blank" rel="noopener noreferrer" class="nav-gh-btn">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.531 1.032 1.531 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0022 12.017C22 6.484 17.522 2 12 2z"/></svg>
+        GitHub
+      </a>
+      <button class="hamburger" aria-label="Open menu" onclick="document.querySelector('.mobile-nav').classList.toggle('open')">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+      </button>
+    </div>
+  </div>
+  <div class="container">
+    <nav class="mobile-nav" aria-label="Mobile navigation">
+      <ul>
+        <li><a href="#research" onclick="this.closest('.mobile-nav').classList.remove('open')">Research</a></li>
+        <li><a href="#about" onclick="this.closest('.mobile-nav').classList.remove('open')">About</a></li>
+        <li><a href="#alpha" onclick="this.closest('.mobile-nav').classList.remove('open')">Alpha</a></li>
+        <li><a href="#blog" onclick="this.closest('.mobile-nav').classList.remove('open')">Notes</a></li>
+        <li><a href="#contact" onclick="this.closest('.mobile-nav').classList.remove('open')">Contact</a></li>
+        <li style="margin-top:var(--space-4)"><a href="https://github.com/RogueGringo/JTopo" target="_blank" rel="noopener noreferrer" class="nav-gh-btn" style="display:inline-flex">GitHub</a></li>
+      </ul>
+    </nav>
+  </div>
+</header>
+
+<!-- MAIN -->
+<main id="main">
+
+<!-- ===== HERO ===== -->
+<section class="hero" aria-label="Introduction">
+  <div class="hero-bg">
+    <img src="https://user-gen-media-assets.s3.amazonaws.com/seedream_images/573b71f4-8153-4e8e-ba3c-b4a8a74e372c.png"
+         alt="Researcher at work late at night with doberman companion"
+         width="1920" height="1080" loading="eager"/>
+  </div>
+  <div class="container">
+    <div class="hero-content">
+      <p class="hero-eyebrow"><span class="eyebrow-dot"></span> Independent Research &nbsp;·&nbsp; Edmond, OK</p>
+      <h1 class="hero-title">
+        Where <em>topology</em><br>
+        meets arithmetic
+      </h1>
+      <p class="hero-subtitle">
+        Applying gauge-theoretic sheaf theory to hard problems in number theory.
+        Building the tools. Doing the mathematics. Accompanied by Alpha.
+      </p>
+      <div class="hero-ctas">
+        <a href="#research" class="btn-primary">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M9 18l6-6-6-6"/></svg>
+          View Research
+        </a>
+        <a href="#about" class="btn-ghost">About B. Jones</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== RESEARCH ===== -->
+<section class="section" id="research" aria-labelledby="research-h">
+  <div class="container">
+
+    <div class="section-header fade-in">
+      <p class="section-label">Active Research</p>
+      <h2 class="section-title" id="research-h">
+        Ti V0.1 — Riemann Hypothesis<br>via Sheaf-Theoretic Gauge Fields
+      </h2>
+      <p class="section-desc">
+        An Adaptive Topological Field Theory (ATFT) framework investigating whether the arithmetic structure of
+        the primes is topologically detectable as a spectral phase transition on the critical line Re(s)&nbsp;=&nbsp;1/2.
+      </p>
+    </div>
+
+    <!-- Feature 1: visualization + phases -->
+    <div class="project-feature fade-in">
+      <div class="project-visual">
+        <img src="https://user-gen-media-assets.s3.amazonaws.com/seedream_images/ecd4d132-3b96-4508-9c52-05c52e343ee4.png"
+             alt="Abstract visualization of Riemann zeta function critical line with glowing zero points"
+             width="800" height="600" loading="lazy"/>
+        <div class="project-visual-overlay"></div>
+      </div>
+      <div>
+        <div class="project-badge"><span class="badge-dot"></span> Active · Ti&nbsp;V0.1</div>
+        <h3 class="project-title">Topological Investigation of the Riemann Hypothesis</h3>
+        <p class="project-desc">
+          A sheaf of vector spaces is constructed over the Vietoris-Rips complex of Odlyzko zeta zeros,
+          equipped with a u(K) gauge connection derived from prime representations, and the spectral sum
+          S(σ, ε) is measured across σ ∈ [0.25, 0.75]. If RH holds, S develops a sharp peak at σ = 1/2
+          as K → ∞ — for zeta zeros, not for GUE or Poisson controls.
+        </p>
+        <div class="phases">
+          <div class="phase"><div class="pdot done"></div><p class="phase-text"><strong>Phase 1 &amp; 2</strong> — Spectral baseline; u(K) connection validated; FE unitarity at σ=1/2 confirmed; FE mode ruled out</p></div>
+          <div class="phase"><div class="pdot done"></div><p class="phase-text"><strong>Phase 3 K=20 (CPU)</strong> — 670× signal over controls; Fourier truncation explains monotone profile</p></div>
+          <div class="phase"><div class="pdot done"></div><p class="phase-text"><strong>Phase 3b K=50 (GPU, RTX 4080)</strong> — First spectral turnover at ε=5.0; peak near σ ≈ 0.40–0.50</p></div>
+          <div class="phase"><div class="pdot partial"></div><p class="phase-text"><strong>Phase 3c K=100 (GPU)</strong> — ε=3.0 signal reversal confirmed; Fourier sharpening at narrower bandwidth</p></div>
+          <div class="phase"><div class="pdot todo"></div><p class="phase-text"><strong>Phase 4</strong> — K=100+ full sweep on RunPod A100/MI300X; scaling analysis C(σ*, K) vs K → ∞</p></div>
+        </div>
+        <div class="proj-links">
+          <a href="https://github.com/RogueGringo/JTopo" target="_blank" rel="noopener noreferrer" class="pill pill-primary">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.531 1.032 1.531 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0022 12.017C22 6.484 17.522 2 12 2z"/></svg>
+            JTopo on GitHub
+          </a>
+          <a href="#blog" class="pill">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+            Research Notes
+          </a>
+        </div>
+      </div>
+    </div>
+
+    <!-- Math block -->
+    <div class="math-block fade-in">
+      <div class="math-block-label">Core Mathematical Objects</div>
+      <div class="math-body">
+        <span class="cmt">// Sheaf Laplacian — spectral rigidity measure</span><br>
+        L<sub>𝓕</sub> = δ₀<sup>†</sup> δ₀ &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        <span class="cmt">// δ₀ is the sheaf coboundary: (δ₀x)<sub>e</sub> = U<sub>e</sub> x<sub>i</sub> − x<sub>j</sub></span><br><br>
+        <span class="cmt">// Superposition / Explicit Formula transport (primary mode)</span><br>
+        A<sub>ij</sub>(<span class="kw">σ</span>) = Σ<sub>p≤K</sub> e<sup>iΔγ·log p</sup> · <span class="num">B<sub>p</sub></span>(<span class="kw">σ</span>),
+        &nbsp; <span class="num">B<sub>p</sub></span>(<span class="kw">σ</span>) = log(p) [ p<sup>−σ</sup> ρ(p) + p<sup>−(1−σ)</sup> ρ(p)<sup>T</sup> ]<br><br>
+        <span class="cmt">// Spectral sum — the central observable</span><br>
+        S(<span class="kw">σ</span>, <span class="kw">ε</span>) = Σ<sub>k=1</sub><sup>k<sub>eig</sub></sup> λ<sub>k</sub>(L<sub>𝓕</sub>)
+        &nbsp;&nbsp;&nbsp;&nbsp;
+        <span class="cmt">// Prediction: sharp peak at σ = 1/2 as K → ∞</span>
+      </div>
+    </div>
+
+    <!-- Feature 2: GPU architecture -->
+    <div class="project-feature project-feature--rev fade-in" style="margin-top:var(--space-16);">
+      <div class="project-visual">
+        <img src="https://user-gen-media-assets.s3.amazonaws.com/seedream_images/80c0f703-3cd0-4893-a0bb-a287b5f59890.png"
+             alt="Vietoris-Rips simplicial complex over zeta zero point cloud"
+             width="800" height="600" loading="lazy"/>
+        <div class="project-visual-overlay"></div>
+      </div>
+      <div>
+        <div class="project-badge"><span class="badge-dot"></span> Infrastructure</div>
+        <h3 class="project-title">Multi-Backend GPU Compute</h3>
+        <p class="project-desc">
+          Three compute backends — SciPy BSR (CPU), CuPy CUDA (NVIDIA), and PyTorch (NVIDIA + AMD ROCm) —
+          cross-validated to 1.5×10⁻¹⁵ precision. The distributed sweep partitions the (σ, ε) grid across
+          machines by role string. The PyTorch Lanczos solver uses a spectral flip trick to extract the
+          smallest eigenvalues of the NK×NK sparse sheaf Laplacian without dense factorization.
+        </p>
+        <div class="tags">
+          <span class="tag">Python 3.11+</span><span class="tag">NumPy / SciPy</span>
+          <span class="tag">PyTorch ≥ 2.1</span><span class="tag">CuPy CUDA 12x</span>
+          <span class="tag">BSR Sparse</span><span class="tag">Lanczos eigensolver</span>
+          <span class="tag">AMD ROCm 6.x</span><span class="tag">RunPod A100</span>
+          <span class="tag">h5py / HDF5</span><span class="tag">Odlyzko dataset</span>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- ===== ABOUT ===== -->
+<section class="section" id="about" aria-labelledby="about-h">
+  <div class="container">
+    <div class="about-grid">
+
+      <aside class="about-aside fade-in">
+        <div class="portrait-wrap">
+          <img src="https://user-gen-media-assets.s3.amazonaws.com/seedream_images/573b71f4-8153-4e8e-ba3c-b4a8a74e372c.png"
+               alt="B. Jones working late at night" width="480" height="640" loading="lazy"/>
+        </div>
+        <div class="about-name">B. Jones</div>
+        <div class="about-role">Independent Researcher &amp; Developer</div>
+        <div class="about-loc">
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+          Edmond, Oklahoma
+        </div>
+        <div class="tags" style="margin-top:var(--space-6);">
+          <span class="tag">Number Theory</span><span class="tag">Topology</span>
+          <span class="tag">Gauge Theory</span><span class="tag">AI / LLMs</span>
+          <span class="tag">Physics</span><span class="tag">Semantics</span>
+          <span class="tag">Prompt Engineering</span><span class="tag">Open Source</span>
+        </div>
+      </aside>
+
+      <div class="about-body">
+        <div class="section-header">
+          <p class="section-label">About</p>
+          <h2 class="section-title" id="about-h">Autodidact.<br>Researcher.<br>Builder.</h2>
+        </div>
+
+        <p>I'm <strong>B. Jones</strong> — an independent researcher working at the intersection of computational mathematics, geometric topology, and artificial intelligence. Self-taught, operating outside academia, driven by the conviction that the most interesting problems don't wait for institutional permission.</p>
+
+        <p>My current focus is <strong>Ti V0.1 (JTopo)</strong>, a gauge-theoretic investigation of the Riemann Hypothesis using sheaf Laplacians over zeta zero point clouds. The approach is unconventional: rather than attacking RH analytically, I ask whether the arithmetic structure of the primes is topologically detectable as a spectral phase transition on the critical line σ = 1/2.</p>
+
+        <p>Alongside the mathematics, I work extensively with <strong>large language models</strong> — prompt engineering, semantic vector spaces, agent pipeline design, and the emergent behavior of frontier models. I think of these as different facets of the same question: how does structure encode meaning in a high-dimensional space?</p>
+
+        <p>I believe deep, focused, solitary work — long stretches in flow state, a good dog at your feet — remains the most reliable path to original thought. <strong>Alpha agrees.</strong></p>
+
+        <div>
+          <h3 style="font-family:var(--font-display);font-size:var(--text-lg);font-weight:500;margin-bottom:var(--space-4);letter-spacing:-0.01em;">Interests &amp; Hobbies</h3>
+          <p>Outside the research: music (Nas, Corbin — lyrical structure as mathematical architecture), game theory and poker, philosophical inquiry into cognition and computation, and maintaining an environment where Alpha can train, work, and rest with the dignity the breed demands.</p>
+          <div class="tags">
+            <span class="tag">Music</span><span class="tag">Poker / Game Theory</span>
+            <span class="tag">Philosophy of Mind</span><span class="tag">Doberman Sport</span>
+            <span class="tag">CLI / Command Line</span><span class="tag">GitHub</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- ===== ALPHA ===== -->
+<section class="alpha-section section" id="alpha" aria-labelledby="alpha-h">
+  <div class="container">
+    <div class="alpha-inner">
+      <div class="fade-in">
+        <div class="alpha-eyebrow">Companion · Chief Research Officer</div>
+        <h2 class="alpha-name" id="alpha-h"><span>Alpha</span><br>Male European Doberman</h2>
+        <p class="alpha-desc">
+          Alpha is a male European Doberman Pinscher — a working-line dog of the highest character.
+          Where the American Doberman was bred toward elegance and show, the European line retained
+          its drive, bone, and substance. Alpha is not merely a pet; he is a partner in the particular
+          solitude that serious research demands. Steady, alert, and loyal without performance.
+        </p>
+        <p class="alpha-desc" style="margin-top:var(--space-5);">
+          The European Doberman's combination of raw intelligence and physical presence is a daily reminder
+          that excellence in any domain requires both structure and instinct — qualities that good
+          mathematics also demands.
+        </p>
+        <div class="specs">
+          <div class="spec"><span class="spec-k">Breed</span><span class="spec-v">European Doberman Pinscher</span></div>
+          <div class="spec"><span class="spec-k">Sex</span><span class="spec-v">Male</span></div>
+          <div class="spec"><span class="spec-k">Coat</span><span class="spec-v">Black &amp; Tan</span></div>
+          <div class="spec"><span class="spec-k">Title</span><span class="spec-v">Chief Research Officer</span></div>
+          <div class="spec"><span class="spec-k">Duties</span><span class="spec-v">Floor guard, moral anchor</span></div>
+        </div>
+      </div>
+      <div class="alpha-img-wrap fade-in">
+        <img src="https://user-gen-media-assets.s3.amazonaws.com/seedream_images/5403f540-2cbd-4058-85ab-59ff06469a49.png"
+             alt="Alpha — male European Doberman Pinscher portrait"
+             width="600" height="600" loading="lazy"/>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- ===== BLOG ===== -->
+<section class="section" id="blog" aria-labelledby="blog-h">
+  <div class="container">
+    <div class="section-header fade-in">
+      <p class="section-label">Notes &amp; Writing</p>
+      <h2 class="section-title" id="blog-h">Research notes,<br>scattered observations</h2>
+      <p class="section-desc">Informal write-ups on mathematics, computation, AI, and whatever else demands a paragraph. Not peer review — just thinking out loud.</p>
+    </div>
+
+    <div class="blog-grid">
+      <article class="blog-card fade-in">
+        <div class="blog-meta"><time class="blog-date" datetime="2026-03-10">Mar 2026</time><span class="blog-tag">ATFT</span></div>
+        <h3 class="blog-title">Why the FE transport mode fails as a discriminator</h3>
+        <p class="blog-excerpt">The functional-equation connection produces a σ=1/2 peak for any point cloud — it is geometric, not arithmetic. Here's why this rules it out and motivates the superposition mode.</p>
+        <span class="blog-arrow">Read note <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg></span>
+      </article>
+
+      <article class="blog-card fade-in">
+        <div class="blog-meta"><time class="blog-date" datetime="2026-02-18">Feb 2026</time><span class="blog-tag">Compute</span></div>
+        <h3 class="blog-title">K=50 GPU sweep: the first spectral turnover</h3>
+        <p class="blog-excerpt">With 15 primes in the gauge connection, the σ-profile stopped being monotone. What the RTX 4080 found at ε=5.0, and what it means for Fourier sharpening toward σ=1/2.</p>
+        <span class="blog-arrow">Read note <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg></span>
+      </article>
+
+      <article class="blog-card fade-in">
+        <div class="blog-meta"><time class="blog-date" datetime="2026-01-22">Jan 2026</time><span class="blog-tag">Theory</span></div>
+        <h3 class="blog-title">The spectral flip trick for GPU eigensolvers</h3>
+        <p class="blog-excerpt">Neither CuPy nor PyTorch sparse eigensolvers support shift-invert. Estimate λ_max via power iteration, form (λ_max·I − L), extract largest eigenvalues, reflect back. It works.</p>
+        <span class="blog-arrow">Read note <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg></span>
+      </article>
+
+      <article class="blog-card fade-in">
+        <div class="blog-meta"><time class="blog-date" datetime="2025-12-14">Dec 2025</time><span class="blog-tag">AI</span></div>
+        <h3 class="blog-title">LLMs as semantic manifolds: rough notes</h3>
+        <p class="blog-excerpt">If the activation space of a transformer is a high-dimensional smooth manifold, what does the curvature tell us about how meaning is represented? Very rough, very speculative.</p>
+        <span class="blog-arrow">Read note <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg></span>
+      </article>
+
+      <article class="blog-card fade-in">
+        <div class="blog-meta"><time class="blog-date" datetime="2025-11-08">Nov 2025</time><span class="blog-tag">Math</span></div>
+        <h3 class="blog-title">Rank unfolding is not your friend</h3>
+        <p class="blog-excerpt">Empirical rank-based CDF normalization introduces systematic bias when comparing spectral statistics. Use the smooth analytic CDF: zeta staircase for zeros, Wigner semicircle for GUE.</p>
+        <span class="blog-arrow">Read note <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg></span>
+      </article>
+
+      <article class="blog-card fade-in">
+        <div class="blog-meta"><time class="blog-date" datetime="2025-10-03">Oct 2025</time><span class="blog-tag">Misc</span></div>
+        <h3 class="blog-title">On working alone with a large dog</h3>
+        <p class="blog-excerpt">There is a particular quality of attention that emerges when you are accountable only to the work — and to an animal who requires you to leave the desk. Notes on structure, discipline, and Alpha.</p>
+        <span class="blog-arrow">Read note <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg></span>
+      </article>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- ===== CONTACT ===== -->
+<section class="section" id="contact" aria-labelledby="contact-h">
+  <div class="container--narrow">
+    <div class="section-header fade-in">
+      <p class="section-label">Contact</p>
+      <h2 class="section-title" id="contact-h">Get in touch</h2>
+      <p class="section-desc">Research collaborations, mathematical correspondence, licensing inquiries, or just interesting conversations welcome. Response is slower when GPU jobs are running.</p>
+    </div>
+    <div class="fade-in">
+      <div class="contact-row">
+        <div class="contact-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"/></svg></div>
+        <div><div class="contact-label">GitHub</div><a href="https://github.com/RogueGringo" target="_blank" rel="noopener noreferrer" class="contact-value">github.com/RogueGringo</a></div>
+      </div>
+      <div class="contact-row">
+        <div class="contact-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg></div>
+        <div><div class="contact-label">Research Inquiries</div><span class="contact-value">Open an issue on JTopo</span></div>
+      </div>
+      <div class="contact-row">
+        <div class="contact-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg></div>
+        <div><div class="contact-label">Location</div><span class="contact-value">Edmond, Oklahoma, US</span></div>
+      </div>
+      <div class="contact-row">
+        <div class="contact-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg></div>
+        <div><div class="contact-label">Response Time</div><span class="contact-value">Within a few days (GPU jobs permitting)</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+</main>
+
+<!-- FOOTER -->
+<footer class="site-footer">
+  <div class="container">
+    <div class="footer-inner">
+      <div>
+        <a href="#" class="nav-logo" aria-label="B. Jones — Home">
+          <svg width="28" height="28" viewBox="0 0 32 32" fill="none" aria-hidden="true">
+            <circle cx="16" cy="16" r="14" stroke="currentColor" stroke-width="1.2" opacity="0.14"/>
+            <line x1="16" y1="4" x2="16" y2="28" stroke="var(--color-primary)" stroke-width="1.6" stroke-dasharray="2 2.5"/>
+            <circle cx="16" cy="9" r="2.2" fill="var(--color-primary)"/>
+            <circle cx="16" cy="16" r="2.7" fill="var(--color-teal)"/>
+            <circle cx="16" cy="23" r="2.2" fill="var(--color-primary)"/>
+            <line x1="16" y1="9" x2="8" y2="24" stroke="currentColor" stroke-width="0.9" opacity="0.3"/>
+            <line x1="16" y1="9" x2="24" y2="24" stroke="currentColor" stroke-width="0.9" opacity="0.3"/>
+            <line x1="8" y1="24" x2="24" y2="24" stroke="currentColor" stroke-width="0.9" opacity="0.3"/>
+          </svg>
+          <span class="nav-logo-wordmark">B. Jones</span>
+        </a>
+        <p class="footer-tagline">Independent research in topological number theory and computational mathematics. Edmond, Oklahoma.</p>
+      </div>
+      <div class="footer-col">
+        <div class="footer-col-title">Site</div>
+        <a href="#research">Research</a>
+        <a href="#about">About</a>
+        <a href="#alpha">Alpha</a>
+        <a href="#blog">Notes</a>
+        <a href="#contact">Contact</a>
+      </div>
+      <div class="footer-col">
+        <div class="footer-col-title">External</div>
+        <a href="https://github.com/RogueGringo/JTopo" target="_blank" rel="noopener noreferrer">JTopo on GitHub</a>
+        <a href="https://github.com/RogueGringo" target="_blank" rel="noopener noreferrer">GitHub Profile</a>
+        <a href="https://www.dtc.umn.edu/~odlyzko/zeta_tables/" target="_blank" rel="noopener noreferrer">Odlyzko Zeta Data</a>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span class="footer-copy">&copy; 2026 B. Jones &nbsp;&middot;&nbsp; Research use only &nbsp;&middot;&nbsp; Contact for licensing</span>
+      <span class="footer-copy">Built with topology in mind &nbsp;&middot;&nbsp; Alpha approved</span>
+    </div>
+  </div>
+</footer>
+
+<script>
+  lucide.createIcons();
+
+  // Theme toggle
+  (function(){
+    const t = document.querySelector('[data-theme-toggle]');
+    const r = document.documentElement;
+    let d = r.getAttribute('data-theme') || (matchMedia('(prefers-color-scheme:dark)').matches ? 'dark' : 'light');
+    r.setAttribute('data-theme', d);
+    function upd() {
+      if (!t) return;
+      t.innerHTML = d === 'dark'
+        ? '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="5"/><path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/></svg>'
+        : '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>';
+      t.setAttribute('aria-label', 'Switch to ' + (d==='dark'?'light':'dark') + ' mode');
+    }
+    upd();
+    t && t.addEventListener('click', ()=>{ d = d==='dark'?'light':'dark'; r.setAttribute('data-theme',d); upd(); });
+  })();
+</script>
+</body>
+</html>
