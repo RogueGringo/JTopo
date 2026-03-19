@@ -65,6 +65,9 @@ ssh user@host "cd ~/JTopo && \
     --ghost-left 12 --ghost-right 0 \
     --K 100 --sigma 0.50 --epsilon 3.0 \
     --degree 300 --num-vectors 100 \
+    --lam-max-global 10.5 \
+    --seed 43 \
+    --worker-id ubuntu-5070 \
     --zeros-path data/odlyzko_zeros.txt \
     --output /tmp/jtopo_result.npz"
 ```
@@ -87,6 +90,12 @@ Saved as `.npz` file containing:
 ```
 
 The raw traces preserve full statistical information. The Primary computes moments AND variance from them.
+
+**Spectral scale reconciliation:** The synthesizer computes a global `lam_max` BEFORE partitioning by running a quick power iteration on the full matrix (or estimating from a small subsample). This global `lam_max` is passed to both workers via `--lam-max-global`. Both workers normalize their Chebyshev recurrence to the SAME spectral scale, ensuring moments are directly comparable and mergeable. Workers still report their local `lam_max_local` for diagnostic purposes.
+
+**Per-partition Rademacher seeds:** Each worker receives a unique `--seed` (e.g., `seed = 42 + partition_id`). This prevents probe vector correlation in overlapping ghost regions, which would introduce bias in the merged variance estimate.
+
+**Worker ID:** Passed explicitly via `--worker-id` for deterministic provenance in the ContributionLog.
 
 ### 3. Synthesizer Pipeline
 
@@ -120,14 +129,15 @@ For remote nodes, SSHs in and verifies `jtopo-node` is installed and GPU accessi
 - Prints pre-flight summary before committing
 
 **Dispatcher** — For each node:
-- Local: runs KPM directly in-process, stores raw per-probe traces (shape [D+1, nv])
+- Local: runs the SAME `jtopo_node.compute` kernel as remote workers (not `kpm_sheaf_laplacian.py`), ensuring bit-for-bit identical codepaths
 - Remote: SSH-launches `jtopo_node.worker` with CLI args, waits for exit, SCPs result `.npz` back
 - Both local and remote produce identical `.npz` result files
+- If only one node is available (remote unreachable), falls back to single-partition mode: runs the full problem locally without ghost zones, equivalent to single-node `KPMSheafLaplacian`
 
 **ResultValidator** — Checks each ContributeResult:
 - mu_0 = mean(raw_traces[0, :]) approximately equals 1.0 (within Hutchinson variance)
 - All moments are real (dtype check)
-- Moments decay: |mu_D| < |mu_0|
+- No NaN/Inf values in moments
 - SHA-256 checksum matches
 - If validation fails: log failure, optionally re-dispatch
 
@@ -148,16 +158,18 @@ Each worker normalizes its traces by `dim_local`. The Primary reconstructs globa
 ```python
 traces_global = (dim_A * traces_A + dim_B * traces_B) / dim_global
 mu_global = traces_global.mean(axis=1)      # shape [D+1]
-mu_variance = traces_global.var(axis=1)     # shape [D+1] — proof-grade statistics
+mu_variance = traces_global.var(axis=1)     # shape [D+1]
 ```
 
-This correctly handles asymmetric partitions from throughput-based load balancing and ghost zone overlap.
+**Exactness disclaimer:** The merge arithmetic is exact — the dimension-weighted sum correctly reconstructs the global trace estimator. However, the underlying moments are APPROXIMATE because each worker runs its Chebyshev recurrence on a partition-local Laplacian (with static ghost boundary conditions), not the true global Laplacian. The approximation error is O(h/N) ~ 0.2%, which is negligible compared to the ~10% Hutchinson stochastic variance. The variance computed from `traces_global.var(axis=1)` is an upper bound on the true Hutchinson variance because it conflates estimator variance with the small partition-boundary systematic error.
 
 **Ghost zone computation:**
 
 Given sorted zeros and partition boundary at index `split`:
-- Rank 0 right ghosts: zeros[split : split + h] where h = count of zeros within epsilon of zeros[split-1]
-- Rank 1 left ghosts: zeros[split - h : split] where h = count of zeros within epsilon of zeros[split]
+- Rank 0 right ghosts: `zeros[split : split + h_right]` where `h_right = searchsorted(zeros, zeros[split-1] + epsilon, side='right') - split`
+- Rank 1 left ghosts: `zeros[split - h_left : split]` where `h_left = split - searchsorted(zeros, zeros[split] - epsilon, side='left')`
+- This uses the same binary search pattern as `base_sheaf_laplacian.py:build_edge_list`
+- The planner should prefer placing the split point at a natural gap in the zero sequence (local maximum of spacing) to minimize ghost depth
 - Ghost vertices participate in L_csr assembly but are EXCLUDED from Hutchinson traces
 - This ensures each eigenvalue is counted exactly once across all partitions
 
@@ -255,3 +267,12 @@ Execution:
 - **Clock skew:** Compute time measurements may differ between machines. Mitigated: each worker measures its own wall-clock; Primary logs both.
 - **Static ghost error:** O(h/N) ~ 0.2% boundary perturbation. Mitigated: negligible vs 10% Hutchinson variance. Can be measured by comparing distributed vs single-node results on small problems.
 - **Zeros dataset version mismatch:** Worker and Primary must have identical `odlyzko_zeros.txt`. Mitigated: checksum verification at dispatch time.
+- **Spectral scale mismatch:** Mitigated by computing global `lam_max` before partitioning and passing it to all workers via `--lam-max-global`. Workers normalize to the same spectral scale.
+- **Rademacher seed collision:** If workers use the same seed, probe vectors in overlapping ghost regions are correlated. Mitigated by assigning per-partition seeds: `seed = 42 + partition_id`.
+- **Node package version drift:** If the synthesizer dispatches CLI args the worker doesn't understand, the SSH command fails. Mitigated: the Benchmarker's mini-bench probe also serves as a version handshake — if the benchmark fails, the node is flagged as incompatible.
+- **Code duplication in node package:** `compute.py` re-implements the transport map builder and Chebyshev recurrence. Risk of divergence from canonical `atft/` versions. Mitigated: version-pinned to the same Git commit as the synthesizer. Future: extract a `jtopo-core` shared package if the math kernel evolves frequently.
+
+## Constraints
+
+- **2-partition only for MVP.** The ghost zone, merge, and dispatch logic assumes exactly 2 partitions. N-partition generalization is a follow-up spec.
+- **auth.py scope:** Handles GitHub PAT-based authentication for `pip install git+...` from the private repo. No runtime authentication — SSH key access IS the trust boundary.
