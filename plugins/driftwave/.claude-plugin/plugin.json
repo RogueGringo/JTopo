@@ -3,6 +3,6 @@
   "description": "Adaptive Topological Field Theory operationalized as a cognitive pipeline. Implements sheaf-valued persistent homology across four abstraction layers (L0-L3) with five governing axioms: NO_AVERAGING, UPWARD_FLOW, WAYPOINT_ROUTING, SHAPE_OVER_COUNT, ADAPTIVE_SCALE.",
   "author": {
     "name": "Aaron Jones",
-    "email": "jones.framework@protonmail.com"
+    "email": "b.jones@jtech.ai"
   }
 }

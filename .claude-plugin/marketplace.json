@@ -1,0 +1,15 @@
+{
+  "name": "jtopo-plugins",
+  "description": "Plugin marketplace for JTopo — Adaptive Topological Field Theory tools",
+  "owner": {
+    "name": "Aaron Jones",
+    "email": "b.jones@jtech.ai"
+  },
+  "plugins": [
+    {
+      "name": "driftwave",
+      "source": "./plugins/driftwave",
+      "description": "Adaptive Topological Field Theory cognitive pipeline with sheaf-valued persistent homology across four abstraction layers (L0-L3)"
+    }
+  ]
+}
