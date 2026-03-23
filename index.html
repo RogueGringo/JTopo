@@ -1001,10 +1001,10 @@ a,button,[role="button"]{transition:color var(--transition-interactive),backgrou
         <div class="criteria-card criteria-red">
           <div class="criteria-title"><span class="badge badge-red">Falsification</span> Framework (F1–F4)</div>
           <ul class="criteria-list">
-            <li><span class="criteria-code">F1</span> All transport modes produce identical spectral sums (connection is irrelevant).</li>
-            <li><span class="criteria-code">F2</span> Poisson controls show same σ-dependence as zeta zeros (no special structure).</li>
-            <li><span class="criteria-code">F3</span> Signal ratio &lt; 2× for all K ≥ 50 (framework lacks discriminative power).</li>
-            <li><span class="criteria-code">F4</span> Spectral sum diverges or becomes numerically unstable before K=100.</li>
+            <li><span class="criteria-code">F1</span><span class="badge badge-green" style="font-size:0.55rem;padding:1px 6px;margin-left:4px;vertical-align:middle;">PASS</span> All transport modes produce identical spectral sums (connection is irrelevant).</li>
+            <li><span class="criteria-code">F2</span><span class="badge badge-green" style="font-size:0.55rem;padding:1px 6px;margin-left:4px;vertical-align:middle;">PASS</span> Poisson controls show same σ-dependence as zeta zeros (no special structure).</li>
+            <li><span class="criteria-code">F3</span><span class="badge badge-green" style="font-size:0.55rem;padding:1px 6px;margin-left:4px;vertical-align:middle;">PASS</span> Signal ratio &lt; 2× for all K ≥ 50 (framework lacks discriminative power).</li>
+            <li><span class="criteria-code">F4</span><span class="badge badge-green" style="font-size:0.55rem;padding:1px 6px;margin-left:4px;vertical-align:middle;">PASS</span> Spectral sum diverges or becomes numerically unstable before K=100.</li>
           </ul>
         </div>
 
@@ -1012,9 +1012,9 @@ a,button,[role="button"]{transition:color var(--transition-interactive),backgrou
         <div class="criteria-card criteria-amber">
           <div class="criteria-title"><span class="badge badge-amber">RH Caution</span> Against RH (R1–R3)</div>
           <ul class="criteria-list">
-            <li><span class="criteria-code">R1</span> Phase transition peak consistently at σ ≠ 0.5 (within CI) for K ≥ 100.</li>
-            <li><span class="criteria-code">R2</span> GUE controls show identical phase transition (not specific to zeta zeros).</li>
-            <li><span class="criteria-code">R3</span> σ-profile flattens as K → ∞ (no sharpening toward critical line).</li>
+            <li><span class="criteria-code">R1</span><span class="badge badge-amber" style="font-size:0.55rem;padding:1px 6px;margin-left:4px;vertical-align:middle;">PENDING</span> Phase transition peak consistently at σ ≠ 0.5 (within CI) for K ≥ 100.</li>
+            <li><span class="criteria-code">R2</span><span class="badge badge-amber" style="font-size:0.55rem;padding:1px 6px;margin-left:4px;vertical-align:middle;">PARTIAL</span> GUE controls show identical phase transition (not specific to zeta zeros).</li>
+            <li><span class="criteria-code">R3</span><span class="badge badge-green" style="font-size:0.55rem;padding:1px 6px;margin-left:4px;vertical-align:middle;">PASS</span> σ-profile flattens as K → ∞ (no sharpening toward critical line).</li>
           </ul>
         </div>
 
@@ -1022,10 +1022,10 @@ a,button,[role="button"]{transition:color var(--transition-interactive),backgrou
         <div class="criteria-card criteria-green">
           <div class="criteria-title"><span class="badge badge-green">Positive</span> Evidence for RH (P1–P4)</div>
           <ul class="criteria-list">
-            <li><span class="criteria-code">P1</span> Phase transition peak at σ = 0.50 ± 0.02 for K ≥ 100 (3σ bootstrap CI).</li>
-            <li><span class="criteria-code">P2</span> Peak sharpens monotonically with K (scaling exponent &gt; 0).</li>
-            <li><span class="criteria-code">P3</span> Controls (Poisson, GUE) show no comparable transition at any σ.</li>
-            <li><span class="criteria-code">P4</span> Signal ratio &gt; 10³ at K=100 with bootstrap p &lt; 0.001.</li>
+            <li><span class="criteria-code">P1</span><span class="badge badge-green" style="font-size:0.55rem;padding:1px 6px;margin-left:4px;vertical-align:middle;">EVIDENCE</span> Phase transition peak at σ = 0.50 ± 0.02 for K ≥ 100 (3σ bootstrap CI).</li>
+            <li><span class="criteria-code">P2</span><span class="badge badge-green" style="font-size:0.55rem;padding:1px 6px;margin-left:4px;vertical-align:middle;">EVIDENCE</span> Peak sharpens monotonically with K (scaling exponent &gt; 0).</li>
+            <li><span class="criteria-code">P3</span><span class="badge badge-amber" style="font-size:0.55rem;padding:1px 6px;margin-left:4px;vertical-align:middle;">PARTIAL</span> Controls (Poisson, GUE) show no comparable transition at any σ.</li>
+            <li><span class="criteria-code">P4</span><span class="badge badge-amber" style="font-size:0.55rem;padding:1px 6px;margin-left:4px;vertical-align:middle;">NOT MET</span> Signal ratio &gt; 10³ at K=100 with bootstrap p &lt; 0.001.</li>
           </ul>
         </div>
       </div>
@@ -1033,6 +1033,10 @@ a,button,[role="button"]{transition:color var(--transition-interactive),backgrou
       <div class="protocol-box">
         <div class="protocol-title">▸ Protocol Commitment</div>
         <p class="protocol-text">All thresholds frozen before Phase 3 data collection. Bootstrap confidence intervals (10,000 resamples) used for all estimates. Results reported honestly regardless of outcome — including null results and framework falsification if triggered. No p-hacking, no post-hoc threshold adjustment.</p>
+      </div>
+
+      <div class="logical-sidestep reveal" style="margin-top:var(--space-8);">
+        <p>We didn't try to prove the Riemann Hypothesis. We asked a different question: if you weave forty-six prime numbers into a geometric fabric over the zeros of the zeta function, does the fabric care where the zeros sit? It does. It cares most at exactly the line Riemann predicted. That's not a proof. It's the fabric telling you something.</p>
       </div>
     </div>
 
@@ -1531,16 +1535,13 @@ a,button,[role="button"]{transition:color var(--transition-interactive),backgrou
           </svg>
           <span class="nav-logo-wordmark">B. Jones</span>
         </a>
-        <p class="footer-tagline">Independent research in topological number theory and computational mathematics. Edmond, Oklahoma.</p>
+        <p class="footer-tagline">The harmony is still deepening.</p>
       </div>
       <div class="footer-col">
-        <div class="footer-col-title">Site</div>
-        <a href="#research">Research</a>
-        <a href="#about">About</a>
-        <a href="#alpha">Alpha</a>
-        <a href="#projects">Projects</a>
-        <a href="#blog">Notes</a>
-        <a href="#contact">Contact</a>
+        <div class="footer-col-title">Research</div>
+        <a href="#story">The Story</a>
+        <a href="#sigma-sweep">Interactive Data</a>
+        <a href="#research">Framework</a>
       </div>
       <div class="footer-col">
         <div class="footer-col-title">External</div>
