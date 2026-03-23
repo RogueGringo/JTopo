@@ -86,7 +86,7 @@ Over time, patterns emerge. Ideas that keep coming back session after session â€
 ## Install
 
 ```bash
-claude plugin add gh:RogueGringo/driftwave
+claude plugin add gh:RogueGringo/driftwave-v0
 ```
 
 That's it. Next time you open Claude Code:
