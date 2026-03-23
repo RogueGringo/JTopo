@@ -311,6 +311,26 @@
     });
   }
 
+  /* ─── K-Progression Timeline ─── */
+  var kTimeline = document.getElementById('kTimeline');
+  if (kTimeline && 'IntersectionObserver' in window) {
+    var waypoints = kTimeline.querySelectorAll('.k-waypoint');
+    var timelineObserver = new IntersectionObserver(function (entries) {
+      entries.forEach(function (entry) {
+        if (entry.isIntersecting) {
+          waypoints.forEach(function (wp) {
+            var delay = parseInt(wp.getAttribute('data-delay') || '0', 10);
+            setTimeout(function () {
+              wp.classList.add('visible');
+            }, delay);
+          });
+          timelineObserver.disconnect();
+        }
+      });
+    }, { threshold: 0.15 });
+    timelineObserver.observe(kTimeline);
+  }
+
   /* ─── Hero Particle Animation ─── */
   var heroCanvas = document.getElementById('heroCanvas');
   var heroCtx = heroCanvas ? heroCanvas.getContext('2d') : null;
