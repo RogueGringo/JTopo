@@ -591,6 +591,7 @@
       title: 'The Fourier Kernel',
       category: 'TRANSPORT \u00b7 PHASE FACTORS',
       effect: 'field',
+      ambient: { src: 'assets/ambient/ambient_fourier.png', opacity: 0.18 },
       body: '<p>The explicit formula connects zeta zeros to primes through an oscillatory sum. Each prime p contributes a phase factor to the transport map between zeros \u03b3\u1d62 and \u03b3\u2c7c:</p><div class="eq-block"><div class="eq-label">Phase Factor</div><div class="eq-formula">e^{i \u00b7 \u0394\u03b3 \u00b7 log(p)} where \u0394\u03b3 = \u03b3\u1d62 \u2212 \u03b3\u2c7c</div></div><p>This is the Fourier kernel of the explicit formula \u2014 each prime acts as a frequency, and the log-spacing of primes creates the harmonic structure. More primes = more frequencies = sharper resolution of the spectral peak.</p><div class="eq-block"><div class="eq-label">Superposition Transport</div><div class="eq-formula">A_ij(\u03c3) = \u03a3_{p\u2264K} e^{i\u0394\u03b3\u00b7log p} \u00b7 B_p(\u03c3)</div></div><p>The matrix B_p(\u03c3) encodes the arithmetic weight of each prime at position \u03c3 in the critical strip. At \u03c3 = 0.500, the functional equation symmetry makes the contributions from p^{\u2212\u03c3} and p^{\u2212(1\u2212\u03c3)} equal \u2014 creating maximum constructive interference.</p>',
       data: 'EXPLICIT FORMULA \u00b7 PHASE INTERFERENCE \u00b7 \u03c3=0.500 = MAXIMUM COHERENCE'
     },
@@ -598,6 +599,7 @@
       title: 'Reading the Wrinkle Score',
       category: 'MEASUREMENT \u00b7 S(\u03c3)',
       effect: 'proof',
+      ambient: { src: 'assets/ambient/ambient_spectral.png', opacity: 0.15 },
       body: '<p>The spectral sum S(\u03c3) is the simplest thing in this entire framework. Take the sheaf Laplacian \u2014 the 200,000 \u00d7 200,000 matrix that encodes every prime\'s transport across every edge of the zero graph. Find its smallest eigenvalues. Add them up.</p><p>That\'s it. That\'s the measurement.</p><p>Low S means the transport maps agree with each other. The primes\' phase factors are constructively interfering \u2014 the fabric fits. High S means disagreement. The phases cancel. The fabric wrinkles.</p><p>At \u03c3 = 0.500, S is minimized for zeta zeros. Not for GUE. Not for random. Not for evenly-spaced. The primes find their lowest wrinkle score exactly on the critical line. Every time.</p><div class="eq-block"><div class="eq-label">Order Parameter</div><div class="eq-formula">S(\u03c3) = \u03a3_{k=1}^{k_eig} \u03bb_k(L_\ud835\udca5(\u03c3))</div></div>',
       data: 'LOWER = TIGHTER \u00b7 \u03c3=0.500 = MINIMUM \u00b7 21.5% = PREMIUM'
     },
@@ -605,6 +607,7 @@
       title: 'The Statistical Doppelg\u00e4nger',
       category: 'GUE \u00b7 MONTGOMERY-ODLYZKO',
       effect: 'journey',
+      ambient: { src: 'assets/ambient/ambient_gue.png', opacity: 0.15 },
       body: '<p>In 1973, Hugh Montgomery had dinner with Freeman Dyson and discovered that the gaps between zeta zeros follow the same statistics as the gaps between eigenvalues of random Hermitian matrices. Andrew Odlyzko later confirmed this computationally to extraordinary precision.</p><p>This is the Montgomery-Odlyzko law, and it means that if you look at zeta zeros locally \u2014 pairs, triples, short-range correlations \u2014 they are statistically indistinguishable from GUE random matrices.</p><p>Locally identical. Globally different.</p><p>GUE matrices have level repulsion and local correlations. But they have no primes. No arithmetic. No explicit formula. No reason to care about \u03c3 = 0.500.</p><p>The sheaf Laplacian sees the difference. It threads prime phase factors through the graph and measures coherence. GUE zeros produce transport that\'s 21.5% less coherent than zeta zeros. Same local statistics. Different global phase structure.</p><p>The 21.5% premium is the arithmetic. The part that Montgomery and Odlyzko\'s local statistics can\'t see but the sheaf Laplacian can.</p>',
       data: 'MONTGOMERY (1973) \u00b7 ODLYZKO (1987) \u00b7 PREMIUM = 21.5%'
     },
@@ -612,6 +615,7 @@
       title: 'We Tried to Kill It',
       category: 'PHASE 3e \u00b7 CONTROL BATTERY',
       effect: 'proof',
+      ambient: { src: 'assets/ambient/ambient_killshot.png', opacity: 0.20 },
       body: '<p>A three-agent validation committee attacked every claim.</p><p>The Adversary proposed: if S(\u03c3) just measures edge density in the graph, any ordered set beats random. Evenly-spaced points \u2014 the most ordered configuration mathematics can produce \u2014 should have the lowest S.</p><p>We built it. N=1000 points, perfectly uniform gaps, zero randomness. Ran it through the identical pipeline.</p><p>S(Even) = 12.713. S(Zeta) = 11.784. <strong>Primes won. By 7.3%. At every sigma.</strong></p><p>Then we ran 10 independent GUE ensembles using the proper Dumitriu-Edelman tridiagonal model.</p><div class="eq-block"><div class="eq-label">GUE Ensemble (10 D-E realizations)</div><div class="eq-formula">S(GUE) = 14.970 \u00b1 0.198 &nbsp;|&nbsp; S(\u03b6) = 11.784 &nbsp;|&nbsp; Z = \u221216.06</div></div><p>Then we edge-normalized. Zeta has fewer graph edges (level repulsion creates wider gaps). But per edge, the transport is still 15.3% tighter. The premium survives normalization.</p><p>Three attacks. Three survivals. The primes carry something that order alone doesn\'t, and statistics alone doesn\'t.</p>',
       data: 'EVEN=12.713 \u00b7 ZETA=11.784 \u00b7 GUE=14.970\u00b10.198 \u00b7 Z=\u221216.06'
     },
@@ -619,6 +623,7 @@
       title: 'Prime Arithmetic as Gauge Connection',
       category: 'u(K) \u00b7 LIE ALGEBRA',
       effect: 'field',
+      ambient: { src: 'assets/ambient/ambient_connection.png', opacity: 0.18 },
       body: '<p>Each prime p \u2264 K defines a K\u00d7K representation matrix \u03c1(p) \u2014 the truncated left-regular representation. It encodes "multiply by p" as a matrix operation: \u03c1(p)|n\u27e9 = |pn\u27e9 if pn \u2264 K, else 0.</p><div class="eq-block"><div class="eq-label">Prime Representation</div><div class="eq-formula">\u03c1(p): the alphabet of arithmetic in K dimensions</div></div><p>The transport map between zeros \u03b3\u1d62 and \u03b3\u2c7c is a coherent sum over all primes \u2014 each contributing its phase factor weighted by its arithmetic generator:</p><div class="eq-block"><div class="eq-label">Superposition Transport</div><div class="eq-formula">A_ij(\u03c3) = \u03a3_p exp(i\u0394\u03b3\u00b7log p) \u00b7 B_p(\u03c3)</div></div><p>This connection lives in the unitary group U(K). As K grows, the fiber dimension increases and the connection encodes more of the prime harmonic structure. K=200 uses 46 primes. K=400 uses 78. The premium converges at 21.5%.</p>',
       data: 'K=200 \u2192 46 PRIMES \u00b7 K=400 \u2192 78 PRIMES \u00b7 dim = N\u00d7K'
     },
@@ -626,6 +631,7 @@
       title: 'The Orbit Tightening',
       category: 'K=20 \u2192 K=400 \u00b7 CONVERGENCE',
       effect: 'journey',
+      ambient: { src: 'assets/ambient/ambient_journey.png', opacity: 0.18 },
       body: '<p>K=20. Eight primes. The spectral sum climbed monotonically through \u03c3 = 0.500. No peak. Eight Fourier harmonics isn\'t enough bandwidth to resolve the signal. Like trying to see a face with eight pixels. But the 670\u00d7 signal over random controls was there.</p><p>K=50. Fifteen primes. The first spectral turnover at \u03b5 = 5.0. The summit appeared near \u03c3 \u2248 0.40\u20130.50. Fifteen harmonics resolved what eight couldn\'t.</p><p>K=100. Twenty-five primes. Signal reversal at \u03b5 = 3.0. The premium emerged: 19.6% over GUE at \u03c3 = 0.500. Still broad. Still imprecise. But undeniable.</p><p>K=200. Forty-six primes. RTX 5070. Three tranches across 12 hours. Crashed once (VRAM). Added batched assembly. Crashed again (CPU RAM). Added incremental release. Third time: it ran. Premium peaked at \u03c3 = 0.500 exactly. 21.5%.</p><p>K=400. Seventy-eight primes. The dense solver couldn\'t touch it \u2014 32 GB needed, 12 GB available. So we built a matrix-free engine. Pad\u00e9 approximation. Cached transport on GPU. 47 seconds. Premium: 21.6%.</p><p>From 19.6% to 21.5% to 21.6%. It\'s not growing. It\'s converging. That\'s what a measurement does when it\'s measuring something real.</p>',
       data: 'K=100\u219219.6% \u00b7 K=200\u219221.5% \u00b7 K=400\u219221.6% \u00b7 CONVERGING'
     },
@@ -633,6 +639,7 @@
       title: 'The Lighter Airframe',
       category: 'MATRIX-FREE \u00b7 PAD\u00c9 \u00b7 18\u00d7 SPEEDUP',
       effect: 'journey',
+      ambient: { src: 'assets/ambient/ambient_matfree.png', opacity: 0.15 },
       body: '<p>K=400 needed a 400,000 \u00d7 400,000 matrix. In complex double precision, that\'s 32 GB just for the sparse structure. The GPU has 12.</p><p>Dan\'s problem. Too much weight, not enough lift.</p><p>The matrix-free sheaf Laplacian never materializes L. It computes L\u00b7v \u2014 the Laplacian times a vector \u2014 by streaming through edges one batch at a time. Each edge contributes two matrix-vector products. 2,492 edges \u00d7 2 matmuls = 4,984 operations per Lanczos iteration. All independent. All on GPU.</p><p>Transport computation: replaced eigendecomposition with Pad\u00e9 matrix exponential. Same result to 10\u207b\u00b9\u2074. Four times faster. Because Pad\u00e9 is batched matmuls \u2014 the thing GPUs were literally built to do.</p><p>K=200 dense: 166 seconds. K=200 matrix-free: 9.2 seconds. <strong>18\u00d7 faster.</strong></p><p>K=400 matrix-free: 46.8 seconds. Previously impossible.</p><p>The hardware couldn\'t hold what was being asked of it. So we built a lighter airframe. Stan flies.</p>',
       data: '18\u00d7 SPEEDUP \u00b7 10\u207b\u00b9\u2074 PRECISION \u00b7 K=400 IN 47s \u00b7 PAD\u00c9 NOT EIG'
     },
@@ -640,6 +647,7 @@
       title: '21.5% \u2014 A Physical Constant?',
       category: 'K=100 \u2192 K=400 \u00b7 CONVERGENCE',
       effect: 'proof',
+      ambient: { src: 'assets/ambient/ambient_constant.png', opacity: 0.15 },
       body: '<p>Three K values. Three independent computations. One number.</p><p>K=100 (25 primes): 19.6%</p><p>K=200 (46 primes): 21.5%</p><p>K=400 (78 primes): 21.6%</p><p>The Physicist predicted K=400 would reach 27.7%. It didn\'t. The premium didn\'t grow. It converged.</p><p>That\'s not what a statistical fluctuation does. Fluctuations wander. Constants converge.</p><p>If 21.5% is the asymptotic value of the arithmetic premium \u2014 the transport coherence advantage that zeta zeros carry over GUE random matrices in the sheaf Laplacian framework \u2014 then it\'s a new invariant. A number that characterizes how much tighter the prime fabric is compared to its statistical doppelg\u00e4nger.</p><p>We don\'t know if it\'s a constant yet. Two data points aren\'t enough. K=800 will tell. But the behavior is more constant than trend.</p><p>Open question: does this number have a closed-form expression? Is 21.5% = f(something) for some knowable f? Or is it empirical \u2014 measurable, stable, and unexplained?</p>',
       data: 'K=100\u219219.6% \u00b7 K=200\u219221.5% \u00b7 K=400\u219221.6% \u00b7 ASYMPTOTE?'
     }
