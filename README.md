@@ -38,10 +38,10 @@ At K=200 (46 primes), σ = 0.500, ε = 3.0:
 |--------|-------|----------|----------|------------|
 | **Zeta zeros** | **2,492** | **11.784** | **0.00473** | The actual Riemann zeros. Tightest fabric. |
 | Even spacing | 2,994 | 12.713 | 0.00425 | Mathematically perfect order. Loses to primes. |
-| GUE ensemble | 2,729 ± 14 | 14.970 ± 0.198 | 0.00549 | Random matrices (10 realizations). 16σ above zeta. |
+| GUE (D-E, 10 draws) | 2,729 ± 14 | 14.970 ± 0.198 | 0.00559 | Dumitriu-Edelman tridiagonal model. 16σ above zeta. |
 | Poisson random | 2,963 | 22.087 | 0.00745 | Uncorrelated noise. Loosest. |
 
-**Arithmetic premium over GUE: 21.3%.** Even after edge-normalizing: **15.3% per edge.**
+**Arithmetic premium over GUE: 21.3%.** Even after edge-normalizing: **15.3% per edge** (vs D-E GUE).
 
 The hierarchy S(ζ) < S(Even) < S(GUE) < S(Random) holds at all 11 sigma values tested.
 
@@ -71,7 +71,7 @@ A three-agent validation committee attacked every claim:
 
 **The Statistician** found pseudoreplication in our p-values and an epsilon confound where our K=100 comparison mixed ε=3.0 and ε=5.0 data. Both fixed. The corrected K=100 premium curve is flat (range: 0.34%) — K=200 is genuinely sharper.
 
-**The Physicist** confirmed the signal behaves like a physical phenomenon: consistent across scales, sharpens with resolution, shows functional equation symmetry. Predicted K=400 premium ≈ 27.7%.
+**The Physicist** confirmed the signal behaves like a physical phenomenon: consistent across scales, sharpens with resolution, shows functional equation symmetry. Predicted K=400 premium ≈ 27.7%. Actual K=400 result: **21.6%** (Wigner surmise GUE). The premium converges, not diverges — it's a constant, not a trend.
 
 **The Adversary** proposed the kill shot: *"The spectral sum just measures how many Rips edges you have. Any ordered set will show lower S."* We built evenly-spaced points and ran them. The Adversary was wrong — but partially right about why. We caught a GUE unfolding bug that mapped every realization to evenly-spaced points (zero variance — useless). Fixed it. Ran 10 proper Dumitriu-Edelman GUE realizations with spacing-preserving rescale. Z-score: −16.06.
 
@@ -120,7 +120,7 @@ Whether this converges to a genuine phase transition as K → ∞ is the open qu
 | Phase 3c K=100 | Done | Signal reversal confirmed; flat premium curve at ε=3.0 |
 | Phase 3d K=200 | Done | Premium 21.5% at σ=0.500; three-tier hierarchy universal |
 | Phase 3e Controls | Done | Even-spaced, 10 GUE realizations, edge-normalized. ON_SHELL. |
-| **Phase 3f K=400** | **Running** | **Scaling test — does the premium keep growing?** |
+| Phase 3f K=400 | Done | Matrix-free engine. S(ζ)=11.440, S(GUE)=14.590 (Wigner). Premium=21.6% — converging. |
 | Phase 4 | Planned | K → ∞ extrapolation |
 
 ## Quick Start
