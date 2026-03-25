@@ -1,0 +1,101 @@
+======================================================================
+  P2: SHEAF LAPLACIAN KERNEL SCALING — ATFT PREDICTION 4
+  2026-03-24T21:30:41
+======================================================================
+  Loaded existing eigenvalues for K=[100, 200]
+
+======================================================================
+  PART 1: K SWEEP (sigma=0.5, eps=3.0)
+======================================================================
+  K=50 Zeta: computing...   [MatFree] 2492 edges, K=50, dim=50000. Bases: 0 MB. Transport: cached on GPU (100 MB). Prep: 0.5s
+lambda_1=0.00256214 (1.0s)
+  K=50 GUE: computing...   [MatFree] 2693 edges, K=50, dim=50000. Bases: 0 MB. Transport: cached on GPU (108 MB). Prep: 0.1s
+lambda_1=0.00326718 (0.4s)
+  K=50 Random: computing...   [MatFree] 2963 edges, K=50, dim=50000. Bases: 0 MB. Transport: cached on GPU (119 MB). Prep: 0.1s
+lambda_1=0.00138336 (0.4s)
+  K=100 Zeta: CACHED lambda_1=0.00260190
+  K=100 GUE: CACHED lambda_1=0.00323916
+  K=100 Random: CACHED lambda_1=0.00136169
+  K=200 Zeta: CACHED lambda_1=0.00205017
+  K=200 GUE: CACHED lambda_1=0.00259880
+  K=200 Random: CACHED lambda_1=0.00105409
+  [GPU cleanup: 11818 MB free]
+  K=400 Zeta: computing... lambda_1=0.00180246 (28.8s)
+  [GPU cleanup: 11818 MB free]
+  K=400 GUE: computing... lambda_1=0.00225690 (31.3s)
+  [GPU cleanup: 11818 MB free]
+  K=400 Random: computing... 
+    SUBPROCESS FAILED: large try setting PYTORCH_ALLOC_CONF=expandable_segments:True to avoid fragmentation.  See documentation for Memory Management  (https://pytorch.org/docs/stable/notes/cuda.html#environment-variables)
+
+lambda_1=0.00000000 (2.3s)
+
+======================================================================
+  PART 2: POWER LAW FITS
+======================================================================
+  Zeta: lambda_1 = 0.0056 * K^(-0.187)  R²=0.8764
+  GUE: lambda_1 = 0.0073 * K^(-0.192)  R²=0.9112
+/home/wb1/Desktop/Dev/JTopo/atft/experiments/p2_kernel_scaling.py:221: RuntimeWarning: divide by zero encountered in log
+  log_lam = np.log(lam1_arr)
+/home/wb1/Desktop/Dev/JTopo/atft/experiments/p2_kernel_scaling.py:228: RuntimeWarning: invalid value encountered in subtract
+  ss_tot = np.sum((log_lam - np.mean(log_lam)) ** 2)
+  Random: lambda_1 = nan * K^(nan)  R²=0.0000
+
+======================================================================
+  PART 3: EIGENVALUE RATIO UNIFORMITY (K=200)
+======================================================================
+  Zeta/GUE eigenvalue ratios: ['0.7889', '0.8027', '0.7947', '0.7913', '0.7842']
+  Mean: 0.7924, CV: 0.8%
+  Uniform ratio = premium exists at EVERY eigenvalue, not just sum
+
+======================================================================
+  PART 4: EPSILON SWEEP (K=200, sigma=0.5)
+======================================================================
+  eps=1.5 Zeta: computing...   [MatFree] 1017 edges, K=200, dim=200000. Bases: 15 MB. Transport: cached on GPU (651 MB). Prep: 1.2s
+lambda_1=0.00014705 S=7.4073 (2.7s)
+  eps=1.5 GUE: computing...   [MatFree] 1133 edges, K=200, dim=200000. Bases: 15 MB. Transport: cached on GPU (725 MB). Prep: 1.3s
+lambda_1=0.00015485 S=9.6749 (2.9s)
+  eps=1.5 Random: computing...   [MatFree] 1451 edges, K=200, dim=200000. Bases: 15 MB. Transport: cached on GPU (929 MB). Prep: 1.7s
+lambda_1=0.00022057 S=16.1081 (3.7s)
+  eps=2.0 Zeta: computing...   [MatFree] 1504 edges, K=200, dim=200000. Bases: 15 MB. Transport: cached on GPU (963 MB). Prep: 1.7s
+lambda_1=0.00087709 S=8.8000 (3.8s)
+  eps=2.0 GUE: computing...   [MatFree] 1646 edges, K=200, dim=200000. Bases: 15 MB. Transport: cached on GPU (1053 MB). Prep: 1.9s
+lambda_1=0.00099487 S=11.9407 (4.1s)
+  eps=2.0 Random: computing...   [MatFree] 1948 edges, K=200, dim=200000. Bases: 15 MB. Transport: cached on GPU (1247 MB). Prep: 2.3s
+lambda_1=0.00042277 S=17.9766 (4.8s)
+  eps=3.0 Zeta: CACHED lambda_1=0.00205017
+  eps=3.0 GUE: CACHED lambda_1=0.00259880
+  eps=3.0 Random: CACHED lambda_1=0.00105409
+  eps=4.0 Zeta: computing...   [MatFree] 3471 edges, K=200, dim=200000. Bases: 15 MB. Transport: cached on GPU (2221 MB). Prep: 4.0s
+lambda_1=0.00264765 S=14.7108 (8.3s)
+  eps=4.0 GUE: computing...   [MatFree] 3699 edges, K=200, dim=200000. Bases: 15 MB. Transport: cached on GPU (2367 MB). Prep: 4.3s
+lambda_1=0.00334387 S=18.6046 (9.0s)
+  eps=4.0 Random: computing...   [MatFree] 3981 edges, K=200, dim=200000. Bases: 15 MB. Transport: cached on GPU (2548 MB). Prep: 4.6s
+lambda_1=0.00181129 S=27.8678 (9.5s)
+
+======================================================================
+  ANALYSIS
+======================================================================
+
+  Scaling exponents:
+    Zeta:   alpha = -0.1866
+    GUE:    alpha = -0.1919
+    Random: alpha = nan
+
+  Zeta approaches zero fastest: False
+  Premium uniform across eigenvalues: True (CV=0.8%)
+
+  VERDICT: FAIL
+
+  Epsilon sweep hierarchy check:
+    eps=1.5: lambda_1 Z=0.000147 G=0.000155 R=0.000221 premium=5.0% OK
+    eps=2.0: lambda_1 Z=0.000877 G=0.000995 R=0.000423 premium=11.8% OK
+    eps=3.0: lambda_1 Z=0.002050 G=0.002599 R=0.001054 premium=21.1% OK
+    eps=4.0: lambda_1 Z=0.002648 G=0.003344 R=0.001811 premium=20.8% OK
+
+  Figures saved to assets/validation/
+  Results saved: output/atft_validation/p2_kernel_scaling.json
+
+======================================================================
+  P2 VERDICT: FAIL
+  Lambda_1 scales as K^alpha with alpha(Zeta)=-0.187, alpha(GUE)=-0.192, alpha(Random)=nan. Zeta approaches zero NOT fastest. Eigenvalue ratio CV=0.8% (premium uniform). Epsilon hierarchy holds at all tested scales.
+======================================================================
