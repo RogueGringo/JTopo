@@ -1,0 +1,46 @@
+{
+  "meta": {
+    "task": "ATFT Validation Task 1 \u2014 Novelty Test",
+    "question": "Is S predictable from pair correlations alone?",
+    "ground_truth": {
+      "S_zeta_actual": 11.784,
+      "S_gue_actual": 15.004,
+      "S_random_actual": 22.087,
+      "arithmetic_premium_pct": 21.46
+    }
+  },
+  "correlation_energies": {
+    "E_zeta": 0.446475,
+    "E_gue": 0.42674999999999985,
+    "E_random": 0.07577499999999998,
+    "ratio_zeta_gue": 1.0462214411247808
+  },
+  "predictors": {
+    "r2_correlation_energy": {
+      "S_predicted": 15.69750650263621,
+      "residual_pct": 33.21034031429234,
+      "above_threshold": true
+    },
+    "nn_spacing_distribution": {
+      "S_predicted": 18.170573506357265,
+      "residual_pct": 54.1969917375871,
+      "above_threshold": true
+    },
+    "number_variance": {
+      "S_predicted": 5.237968024135955,
+      "residual_pct": 55.550169516836775,
+      "above_threshold": true
+    }
+  },
+  "verdict": {
+    "result": "NEW INVARIANT",
+    "threshold_pct": 5.0,
+    "min_residual_pct": 33.21034031429234,
+    "all_above_threshold": true,
+    "interpretation": "The sheaf Laplacian spectral sum S detects structure in the Riemann zeta zero distribution that is NOT captured by any of the three pair-correlation-based predictors (all-pair r\u2082(s), nearest-neighbour p(s), number variance \u03a3\u00b2(L)). The arithmetic premium of ~21.5% at sigma=0.5 is a genuinely new invariant."
+  },
+  "figures": {
+    "r2_comparison": "/home/wb1/Desktop/Dev/JTopo/assets/validation/novelty_r2_comparison.png",
+    "residual_bar": "/home/wb1/Desktop/Dev/JTopo/assets/validation/novelty_prediction_residual.png"
+  }
+}
