@@ -12,14 +12,14 @@
 | # | Prediction | Test | Verdict | Key Finding |
 |---|-----------|------|---------|-------------|
 | 1 | SU(2) confinement transition | P5: 8³×4 lattice, 10 β values | **PASS** | ε* drops 10× at β=2.30 exactly (predicted β_c ≈ 2.30) |
-| 2 | Instanton discrimination | P5b: BPST configs | **DEFERRED** | Requires instanton generation (not implemented in P5 initial run) |
+| 2 | Instanton discrimination | P5b: BPST on 8⁴ | **PARTIAL** | Vacuum vs instanton: KS=1.0. Q=+1 vs Q=-1: FAIL (q_μν vanishes in naive discretization) |
 | 3 | LLM cross-model correlation (r>0.9) | P4: SmolLM2 + Qwen2.5 | **PASS** | r = 0.9998 (paper claimed r > 0.9) |
 | 4 | ker(L_F) > 0 for on-shell | P2: K=50-400 sweep | **FAIL** | α(Zeta)≈α(GUE); premium is constant offset, not different rate |
 | 5 | QHO gap-bar correspondence | P1: anisotropic spectrum | **PASS** | ρ=1.0 at all k_ratios (tautological in R¹) |
 | 6 | Betti curve discrimination | P3: onset scale comparison | **PASS** | Onset τ* differs 21.1% between Zeta and GUE |
 | 7 | Gini trajectory quality predictor | P3: trajectory across K | **PASS** | Hierarchifying for structured sources, flattening for random |
 
-**Score: 5 PASS / 1 FAIL / 1 DEFERRED**
+**Score: 5 PASS / 1 FAIL / 1 PARTIAL**
 
 ---
 

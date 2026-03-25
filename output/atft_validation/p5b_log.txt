@@ -1,0 +1,57 @@
+======================================================================
+  P5b: BPST INSTANTON DISCRIMINATION — PREDICTION 2
+  Lattice: (8, 8, 8, 8), Q values: [0, 1, -1, 2]
+  2026-03-25T11:11:43
+======================================================================
+
+  Q = +0:
+    Config generated (0.0s)
+    Feature map: (4096, 12) (0.2s)
+    |s| mean = 0.000000, |q| mean = 0.000000
+    H₀ bars: 499 (full), 499 (s), 499 (q)
+    Gini: 0.0000 (full), 0.0000 (s), 0.0000 (q)
+
+  Q = +1:
+    Config generated (1.4s)
+    Feature map: (4096, 12) (0.2s)
+    |s| mean = 0.006207, |q| mean = 0.000000
+    H₀ bars: 499 (full), 499 (s), 499 (q)
+    Gini: 0.5662 (full), 0.5662 (s), 0.2108 (q)
+
+  Q = -1:
+    Config generated (1.4s)
+    Feature map: (4096, 12) (0.2s)
+    |s| mean = 0.005599, |q| mean = 0.000000
+    H₀ bars: 499 (full), 499 (s), 499 (q)
+    Gini: 0.7240 (full), 0.7240 (s), 0.2338 (q)
+
+  Q = +2:
+    Config generated (2.2s)
+    Feature map: (4096, 12) (0.2s)
+    |s| mean = 0.020187, |q| mean = 0.000000
+    H₀ bars: 499 (full), 499 (s), 499 (q)
+    Gini: 0.5830 (full), 0.5830 (s), 0.2057 (q)
+
+======================================================================
+  ANALYSIS: INSTANTON vs ANTI-INSTANTON
+======================================================================
+  Q=+1 vs Q=-1 (q-features only):
+    KS statistic = 0.0661, p = 2.25e-01
+    Median bar Q=+1: 0.000000
+    Median bar Q=-1: 0.000000
+    |q| norm Q=+1: 0.000000
+    |q| norm Q=-1: 0.000000
+
+  Q=0 (vacuum) vs Q=+1 (instanton):
+    KS = 1.0000, p = 2.96e-299
+
+  |Q|=1 vs |Q|=2:
+    KS = 0.4569, p = 2.43e-47
+
+======================================================================
+  P5b VERDICT: FAIL
+    Q=+1 vs Q=-1: NOT DISCRIMINATED
+    vacuum vs instanton: DISCRIMINATED
+    |Q|=1 vs |Q|=2: DISCRIMINATED
+======================================================================
+  Results saved: output/atft_validation/p5b_instanton.json
