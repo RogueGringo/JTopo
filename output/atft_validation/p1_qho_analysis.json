@@ -1,0 +1,114 @@
+{
+  "prediction": "5",
+  "paper_claim": "Longest H\u2080 bars correspond to largest energy gaps",
+  "criterion": "Spearman rho > 0.9",
+  "timestamp": "2026-03-24T21:12:39",
+  "tests": [
+    {
+      "name": "anisotropic_k2.0",
+      "k_ratio": 2.0,
+      "n_levels": 43,
+      "n_bars": 42,
+      "spearman_rho": 1.0,
+      "p_value": 0.0,
+      "exact_match": true,
+      "max_gap_bar_diff": 0.0,
+      "n_gaps": 42,
+      "top5_gaps": [
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0
+      ],
+      "top5_bar_lengths": [
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0
+      ],
+      "pass": true,
+      "verdict": "PASS"
+    },
+    {
+      "name": "isotropic_k0.5",
+      "k_ratio": 0.5,
+      "n_levels": 29,
+      "spearman_rho": 1.0,
+      "p_value": 0.0,
+      "exact_match": true,
+      "max_gap_bar_diff": 0.0,
+      "n_gaps": 28,
+      "n_bars": 28,
+      "top5_gaps": [
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0
+      ],
+      "top5_bar_lengths": [
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0
+      ],
+      "pass": true,
+      "verdict": "PASS"
+    }
+  ],
+  "anisotropy_sweep": [
+    {
+      "k_ratio": 0.5,
+      "n_levels": 29,
+      "spearman_rho": 1.0,
+      "verdict": "PASS"
+    },
+    {
+      "k_ratio": 1.0,
+      "n_levels": 225,
+      "spearman_rho": 0.9999999999999998,
+      "verdict": "PASS"
+    },
+    {
+      "k_ratio": 1.5,
+      "n_levels": 225,
+      "spearman_rho": 1.0,
+      "verdict": "PASS"
+    },
+    {
+      "k_ratio": 2.0,
+      "n_levels": 43,
+      "spearman_rho": 1.0,
+      "verdict": "PASS"
+    },
+    {
+      "k_ratio": 2.5,
+      "n_levels": 225,
+      "spearman_rho": 0.9999999999999999,
+      "verdict": "PASS"
+    },
+    {
+      "k_ratio": 3.0,
+      "n_levels": 225,
+      "spearman_rho": 1.0,
+      "verdict": "PASS"
+    },
+    {
+      "k_ratio": 3.5,
+      "n_levels": 225,
+      "spearman_rho": 1.0,
+      "verdict": "PASS"
+    },
+    {
+      "k_ratio": 4.0,
+      "n_levels": 225,
+      "spearman_rho": 1.0,
+      "verdict": "PASS"
+    }
+  ],
+  "overall_verdict": "PASS",
+  "summary": "Gap-bar correspondence holds across all tested anisotropy ratios. Spearman rho ranges from 1.000 to 1.000."
+}
