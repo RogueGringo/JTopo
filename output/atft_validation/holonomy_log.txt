@@ -1,0 +1,60 @@
+=================================================================
+  ATFT Holonomy Flatness Test
+  K=50, N=1000, epsilon=3.0
+  sigma grid: [0.25, 0.3, 0.35, 0.4, 0.45, 0.5, 0.55, 0.6, 0.65, 0.7, 0.75]
+  Max triangles: 100
+  Transport: fe (functional-equation, non-Hermitian at sigma!=0.5)
+=================================================================
+
+[1] Loading zeros...
+    1000 zeros, range [0.449, 999.418]
+
+[2] Building Rips complex at epsilon=3.0...
+    2492 edges found.
+
+[3] Finding triangles (cap at 100)...
+    Using 100 triangles.
+
+[4] Computing flatness metrics across sigma...
+    sigma=0.25  unitarity=1.157141  holonomy=2.792958  (0.0s)
+    sigma=0.30  unitarity=0.941265  holonomy=2.783021  (0.0s)
+    sigma=0.35  unitarity=0.711083  holonomy=2.781962  (0.0s)
+    sigma=0.40  unitarity=0.474132  holonomy=2.788715  (0.0s)
+    sigma=0.45  unitarity=0.236427  holonomy=2.797831  (0.0s)
+    sigma=0.50  unitarity=0.000000  holonomy=2.802053  (0.0s)
+    sigma=0.55  unitarity=0.236427  holonomy=2.797668  (0.0s)
+    sigma=0.60  unitarity=0.474132  holonomy=2.787493  (0.0s)
+    sigma=0.65  unitarity=0.711083  holonomy=2.778285  (0.0s)
+    sigma=0.70  unitarity=0.941265  holonomy=2.775662  (0.0s)
+    sigma=0.75  unitarity=1.157141  holonomy=2.781395  (0.0s)
+
+    => Non-unitarity minimum: 0.000000 at sigma=0.50
+    => Holonomy minimum:      2.775662 at sigma=0.70
+
+[5] Plotting...
+    Figure saved to assets/validation/holonomy_flatness.png
+
+[6] Saving results...
+    Results saved to output/atft_validation/holonomy_flatness.json
+
+=================================================================
+  HOLONOMY FLATNESS SUMMARY
+=================================================================
+   sigma     unitarity      holonomy
+    0.25      1.157141           2.792958     
+    0.30      0.941265           2.783021     
+    0.35      0.711083           2.781962     
+    0.40      0.474132           2.788715     
+    0.45      0.236427           2.797831     
+    0.50      0.000000 <--U      2.802053     
+    0.55      0.236427           2.797668     
+    0.60      0.474132           2.787493     
+    0.65      0.711083           2.778285     
+    0.70      0.941265           2.775662 <--H
+    0.75      1.157141           2.781395     
+
+  Non-unitarity minimum at sigma=0.50  (theory: sigma=0.50)
+  Holonomy minimum      at sigma=0.70
+  Verdict: PASS -- non-unitarity min at or near sigma=0.5 (within +-0.1)
+  Total runtime: 0.7s
+=================================================================
