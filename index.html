@@ -600,14 +600,19 @@ body.popout-open{overflow:hidden;}
     <div class="hero-content">
       <p class="hero-eyebrow"><span class="eyebrow-dot"></span> Independent Research &nbsp;·&nbsp; Edmond, OK</p>
       <h1 class="hero-title">
-        Where mathematics meets<br>
-        reality: <em>topology.</em>
+        A topological instrument for<br>
+        spectral coherence at the <em>critical line.</em>
       </h1>
       <p class="hero-subtitle">
-        Forty-six primes threading the zeros of the zeta function — each carrying phase factors
-        that nobody coordinated — and every single thread humming the same frequency at
-        σ&nbsp;=&nbsp;0.500. Tighter than perfect spacing. Sixteen sigma from random.
-        The road was always there. We just built the instrument to measure it.
+        A sheaf-Laplacian onset scale built from forty-six prime phase factors, measured across
+        the zeros of the zeta function. The spectral signal it reports is lowest for the zeta
+        zeros among the controls tested, and its minimum sits near σ&nbsp;=&nbsp;0.500 — tighter
+        than an evenly-spaced control. A detector, not a proof: it reads a spectral signal; it
+        does not settle the Riemann Hypothesis.
+      </p>
+      <p class="hero-disclaimer" style="font-size:var(--text-sm);color:var(--color-text-muted);max-width:46ch;margin-top:var(--space-4);border-left:2px solid var(--color-border);padding-left:var(--space-3);">
+        No claim is made to resolve any Millennium Problem. The contribution is instrumental —
+        a detector positioned against existing literature.
       </p>
       <div class="hero-ctas">
         <a href="#sigma-sweep" class="btn-primary">
@@ -619,24 +624,24 @@ body.popout-open{overflow:hidden;}
       </div>
       <div class="hero-stats">
         <div class="stat-item">
-          <span class="stat-value">σ = 0.500</span>
-          <span class="stat-label">Where the Fabric Fits</span>
+          <span class="stat-value">σ ≈ 0.500</span>
+          <span class="stat-label">Location of the spectral-sum minimum</span>
         </div>
         <div class="stat-item">
           <span class="stat-value">46 primes</span>
-          <span class="stat-label">Each One Found It Alone</span>
+          <span class="stat-label">K = 200</span>
         </div>
         <div class="stat-item">
-          <span class="stat-value">21.5%</span>
-          <span class="stat-label">Tighter Than GUE</span>
+          <span class="stat-value">~21.5%</span>
+          <span class="stat-label">Finite-K spectral premium over GUE</span>
         </div>
         <div class="stat-item">
-          <span class="stat-value">7.3%</span>
-          <span class="stat-label">Tighter Than Perfection</span>
+          <span class="stat-value">~7.3%</span>
+          <span class="stat-label">Premium over evenly-spaced control</span>
         </div>
         <div class="stat-item">
-          <span class="stat-value">K → ∞</span>
-          <span class="stat-label">Harmony Still Deepening</span>
+          <span class="stat-value">K=200→400</span>
+          <span class="stat-label">Premium ≈ flat across K</span>
         </div>
       </div>
     </div>
@@ -656,8 +661,8 @@ body.popout-open{overflow:hidden;}
       <p>Everyone who's looked at primes long enough arrives at the same place. The gaps oscillate. The patterns recur at scale. The structure is multi-dimensional. Some see <a href="https://theprimescalarfield.com/" target="_blank" rel="noopener">standing waves</a>. Some see eigenvalue repulsion. We see <strong>transport coherence</strong> — how well the primes' internal grammar carries information across the zeros of the Riemann zeta function.</p>
       <p>A <strong>prime number</strong> is the simplest thing in mathematics. It has itself, it has one, and it has a quiet, total relationship with every number it will never divide into. That relationship is not absence — it's <em>structure</em>. Every composite number is a sentence written in primes. Every prime is a letter that means exactly one thing.</p>
       <p>We gave forty-six of these letters a space to move through — the zeros of the zeta function, strung like waypoints across the critical strip — and built an <strong>interpreter</strong> from their arithmetic. A sheaf Laplacian with a gauge connection made from prime phase factors — the same math that counts primes, now measuring how coherently they thread through the zero field. Then we asked: <strong>where does the fabric fit best?</strong></p>
-      <p>At σ&nbsp;=&nbsp;0.500. Every time. More primes, tighter fabric, deeper resonance. As if the critical line isn't a boundary but a <em>home frequency</em> — the one place where the prime field and the zero field recognize each other.</p>
-      <p>Then we tried to break it. Built <strong>perfectly spaced points</strong> — the most ordered configuration mathematics can produce. If the interpreter just measured tidiness, perfection should win. It didn't. Built 10 independent random matrix ensembles. The primes fell 16 standard deviations below. Checked if it was just graph density. It wasn't — 15.3% per-edge premium survives. The primes carry something that order alone doesn't. Something that statistics alone doesn't. What something <em>is</em> depends on both the information and the interpreter. The interpreter says coherence. The data says 21.5%.</p>
+      <p>Near σ&nbsp;=&nbsp;0.500. More primes pull the measured minimum closer to the critical line — up through K≈200–400, where the premium levels off. It reads less like a boundary than a <em>home frequency</em> the prime field settles toward — though, as the caveat below notes, part of that pull is built into the operator.</p>
+      <p>Then we tried to break it. Built <strong>perfectly spaced points</strong> — the most ordered configuration mathematics can produce. If the interpreter just measured tidiness, perfection should win. It didn't. Built 10 independent random matrix ensembles. The primes' spectral sum fell below all 10 of them (nonparametric p ≈ 1/11 ≈ 0.09). Checked if it was just graph density. It wasn't — 15.3% per-edge premium survives. The primes carry something that order alone doesn't. Something that statistics alone doesn't. What something <em>is</em> depends on both the information and the interpreter. The interpreter says coherence. The data says 21.5%.</p>
     </div>
     <button class="panel-trigger" data-panel="panel-fourier">+ See the math: The Fourier Kernel</button>
   </div>
@@ -677,26 +682,30 @@ body.popout-open{overflow:hidden;}
         <div class="k-dot"></div>
         <div class="k-label">K=20 — 8 primes</div>
         <div class="k-sigma">σ ≈ 0.65</div>
-        <p class="k-narrative">Eight primes drifted into the manifold the way starlight arrives — each from its own origin, each carrying only what it was born with. They settled near σ&nbsp;≈&nbsp;0.65. Close enough to notice each other.</p>
+        <p class="k-narrative">Eight prime harmonics. The spectral-sum minimum sits near σ&nbsp;≈&nbsp;0.65 — too few harmonics to resolve a feature nearer the critical line.</p>
       </div>
       <div class="k-waypoint" data-delay="400">
         <div class="k-dot"></div>
         <div class="k-label">K=50 — 15 primes</div>
         <div class="k-sigma">σ ≈ 0.58</div>
-        <p class="k-narrative">The harmonics thickened. Not louder — richer. Like voices joining a song they all somehow already knew. σ&nbsp;≈&nbsp;0.58.</p>
+        <p class="k-narrative">Fifteen prime harmonics. The minimum-location estimate moves to σ&nbsp;≈&nbsp;0.58.</p>
       </div>
       <div class="k-waypoint" data-delay="800">
         <div class="k-dot"></div>
         <div class="k-label">K=100 — 25 primes</div>
         <div class="k-sigma">σ ≈ 0.52</div>
-        <p class="k-narrative">Twenty-five primes weaving through the same field, each one's orbit gently bending toward the others. Not pulled. Invited. σ&nbsp;≈&nbsp;0.52.</p>
+        <p class="k-narrative">Twenty-five prime harmonics. The minimum-location estimate moves to σ&nbsp;≈&nbsp;0.52.</p>
       </div>
       <div class="k-waypoint frontier" data-delay="1200">
         <div class="k-dot"></div>
         <div class="k-label">K=200 — 46 primes</div>
         <div class="k-sigma">σ = 0.500 ← critical line</div>
-        <p class="k-narrative">Every prime under 200 — each one irreducible, each one whole, each one threading the zeta zeros along a path no one drew for them. And they meet. σ&nbsp;=&nbsp;0.500. Not collision. <strong>Resonance.</strong> The manifold has a heartbeat and the primes are its pulse.</p>
+        <p class="k-narrative">All 46 primes under 200. The minimum-location estimate reaches σ&nbsp;≈&nbsp;0.500, the critical line. This is the trend in the measured minimum, not a claim about the zeros.</p>
       </div>
+    </div>
+    <div class="caveat-box reveal" style="margin-top:var(--space-6);border:1px solid var(--color-border);border-left:3px solid var(--color-amber,#d8a200);border-radius:8px;padding:var(--space-5);background:rgba(216,162,0,0.05);">
+      <p style="font-weight:600;margin-bottom:var(--space-2);">Caveat — a non-RH explanation that must be excluded</p>
+      <p style="color:var(--color-text-muted);font-size:var(--text-sm);">The migration of the minimum toward σ&nbsp;=&nbsp;½ as K grows has a built-in alternative. The transport generator B<sub>p</sub>(σ) is symmetric about σ&nbsp;=&nbsp;½ and its weights p<sup>−σ</sup>+p<sup>−(1−σ)</sup> are minimized at σ&nbsp;=&nbsp;½ for <em>any</em> point cloud (see The Threads, below), so adding primes strengthens a structural ½-pull. The migration is evidence about the zeros only if the <strong>control minima do not also migrate to ½</strong> as K grows — and the logged sweeps show the Random and GUE controls' minima also drift (e.g. both near σ≈0.65 at low ε). The matched control-vs-K minimum plot that would settle this has not yet been shown.</p>
     </div>
     <button class="panel-trigger" data-panel="panel-k-journey">+ The full story: K=20 to K=400</button>
   </div>
@@ -736,13 +745,13 @@ body.popout-open{overflow:hidden;}
     <div class="section-header reveal">
       <p class="section-label">Signal Analysis</p>
       <h2 class="section-title" id="premium-h">How Much More Than Noise</h2>
-      <p class="section-desc">The arithmetic premium — the ratio of zeta's spectral sum to GUE's — isolates what the primes contribute beyond statistical structure. Watch the minimum march toward σ&nbsp;=&nbsp;0.500 as K increases.</p>
+      <p class="section-desc">The arithmetic premium — the ratio of zeta's spectral sum to GUE's — isolates what the primes contribute beyond statistical structure. As K increases the measured minimum sits closer to σ&nbsp;=&nbsp;0.500, though part of that σ½-pull is built into the operator (see the caveat above) and the controls' minima shift too.</p>
     </div>
     <div class="chart-wrap reveal">
       <canvas id="premiumChart" aria-label="Arithmetic premium chart showing zeta/GUE ratio across sigma for multiple K values"></canvas>
     </div>
     <button class="panel-trigger" data-panel="panel-gue">+ See the math: Why GUE, Not Just Random?</button>
-    <button class="panel-trigger" data-panel="panel-constant">+ The number: 21.5% — A Physical Constant?</button>
+    <button class="panel-trigger" data-panel="panel-constant">+ The number: 21.5% — a finite-K premium, and an open scaling question</button>
   </div>
 </section>
 
@@ -775,7 +784,7 @@ body.popout-open{overflow:hidden;}
       <div class="card" style="border-left:3px solid var(--color-text-muted);">
         <div class="card-label">Tier 3</div>
         <div class="card-title">GUE Random Matrices</div>
-        <p class="card-text">S = 14.970 ± 0.198 at σ = 0.500 (10 Dumitriu-Edelman realizations). Zeta falls 16σ below the GUE mean. Even per-edge: zeta is 15.3% tighter.</p>
+        <p class="card-text">S = 14.970 ± 0.198 at σ = 0.500 (10 Dumitriu-Edelman realizations). Zeta's spectral sum lies below all 10 GUE realizations (nonparametric p ≈ 1/11 ≈ 0.09); per-edge it is ~15% lower. A σ-level claim would require ≥100–1000 Dumitriu–Edelman realizations.</p>
       </div>
       <div class="card" style="border-left:3px solid var(--color-red);">
         <div class="card-label" style="color:var(--color-red);">Tier 4 — Highest</div>
@@ -785,8 +794,8 @@ body.popout-open{overflow:hidden;}
     </div>
 
     <div class="story-text reveal" style="margin-top:var(--space-8);">
-      <p>The ordering <strong>S(ζ) &lt; S(Even) &lt; S(GUE) &lt; S(Random)</strong> holds at every σ tested. But we went further: we edge-normalized. Zeta has fewer Rips edges (2,492) than GUE (2,729 mean) due to level repulsion. So we compared <em>per-edge</em> spectral sums. Zeta is still 15.3% tighter per edge. And across 10 independent GUE draws, zeta falls <strong>16 standard deviations</strong> below the ensemble mean. This is not an edge-count artifact. It is arithmetic transport coherence.</p>
-      <p>The proof that transport matters more than topology: Even-spaced and Random have nearly identical edge counts (2,994 vs 2,963) but S differs by 74%. Same graph, different transport, massive difference. The sheaf Laplacian sees the connection, not just the complex.</p>
+      <p>The ordering <strong>S(ζ) &lt; S(Even) &lt; S(GUE) &lt; S(Random)</strong> holds at every σ tested. But we went further: we edge-normalized. Zeta has fewer Rips edges (2,492) than GUE (2,729 mean) due to level repulsion. So we compared <em>per-edge</em> spectral sums. Zeta is still 15.3% tighter per edge. And across 10 independent GUE draws, zeta's spectral sum lies below all 10 (nonparametric p ≈ 1/11 ≈ 0.09). This is not an edge-count artifact. We do not report a σ-level here: a standard deviation estimated from n = 10 cannot resolve a deep tail, and a σ-level claim would require the larger Dumitriu–Edelman ensemble (≥100–1000 realizations).</p>
+      <p>Evidence that S depends on point configuration (the phase factors), not edge count alone: Even-spaced and Random have nearly identical edge counts (2,994 vs 2,963) but S differs by 74%. Same graph, different transport, large difference — the sheaf Laplacian sees the connection, not just the complex. This shows position-sensitivity, not arithmetic-specificity; isolating an <em>arithmetic</em> signal requires controls matched to zeta's spacing statistics (see Method / next steps).</p>
     </div>
     <button class="panel-trigger" data-panel="panel-killshot">+ See the math: Why Perfect Spacing Loses</button>
   </div>
@@ -892,7 +901,7 @@ body.popout-open{overflow:hidden;}
           <div class="phase"><div class="pdot done"></div><p class="phase-text"><strong>Phase 3c K=100 (GPU)</strong> — ε=3.0 signal reversal confirmed; Fourier sharpening at narrower bandwidth</p></div>
           <div class="phase"><div class="pdot done"></div><p class="phase-text"><strong>Phase 3d K=200 (RTX 5070)</strong> — 46 primes, 37 data points. Premium peaks at σ=0.500; three-tier hierarchy universal</p></div>
           <div class="phase"><div class="pdot partial"></div><p class="phase-text"><strong>Phase 3e Control Battery</strong> — Evenly-spaced control, proper GUE ensemble, edge-count analysis. Four-tier hierarchy confirmed</p></div>
-          <div class="phase"><div class="pdot done"></div><p class="phase-text"><strong>Phase 3f K=400</strong> — Matrix-free engine. 78 primes. Premium = 21.6% (Wigner GUE). Converging, not diverging.</p></div>
+          <div class="phase"><div class="pdot done"></div><p class="phase-text"><strong>Phase 3f K=400</strong> — Matrix-free engine. 78 primes. Premium = 21.6% (Wigner GUE). Flat vs K=200 (21.5%); K→∞ limit open.</p></div>
           <div class="phase"><div class="pdot todo"></div><p class="phase-text"><strong>Phase 4</strong> — Multi-epsilon validation; K=800+; D-E ensemble at K=400; scaling analysis C(σ*, K) vs K → ∞</p></div>
         </div>
         <div class="proj-links">
@@ -921,7 +930,24 @@ body.popout-open{overflow:hidden;}
         <span class="cmt">// Spectral sum — the central observable</span><br>
         S(<span class="kw">σ</span>, <span class="kw">ε</span>) = Σ<sub>k=1</sub><sup>k<sub>eig</sub></sup> λ<sub>k</sub>(L<sub>𝓕</sub>)
         &nbsp;&nbsp;&nbsp;&nbsp;
-        <span class="cmt">// Prediction: sharp peak at σ = 1/2 as K → ∞</span>
+        <span class="cmt">// Prediction (conditional on RH): a feature in S near σ = 1/2 as K → ∞</span>
+      </div>
+      <p style="margin-top:var(--space-4);font-size:var(--text-sm);color:var(--color-text-muted);border-left:3px solid var(--color-amber,#d8a200);padding-left:var(--space-3);">
+        <strong>Note on σ = ½.</strong> B<sub>p</sub>(σ) is symmetric under σ ↔ 1−σ, and its scalar weights
+        p<sup>−σ</sup> + p<sup>−(1−σ)</sup> are minimized at σ = ½ for every prime, independent of the input.
+        A σ = ½ feature in S(σ) is therefore partly built into the operator — the same structural reason the
+        Functional-Equation mode was ruled out as a tautology. The zeta-specific quantity is the
+        <em>magnitude premium</em> over controls, not the σ-location of the minimum.
+      </p>
+    </div>
+
+    <!-- 2b2. Prior Work / Positioning -->
+    <div class="reveal" style="margin-top:var(--space-16);">
+      <p class="section-label">Prior Work</p>
+      <h3 class="section-title" style="font-size:var(--text-xl);margin-bottom:var(--space-4);">Where this sits in the literature</h3>
+      <div class="prose">
+        <p>This is a detector positioned against existing work, not a result in isolation. The sheaf-Laplacian machinery follows <strong>Hansen &amp; Ghrist</strong> (toward a spectral theory of cellular sheaves) and <strong>Curry</strong> (sheaves and cosheaves); persistence stability rests on <strong>Cohen-Steiner, Edelsbrunner &amp; Harer</strong>. The spectral interpretation of the zeta zeros — that they behave like eigenvalues of a self-adjoint operator and share local statistics with random matrices — traces to the Hilbert–Pólya program and to <strong>Montgomery</strong> (pair correlation) and <strong>Odlyzko</strong> (numerical zero spacings). The GUE control uses the <strong>Dumitriu–Edelman</strong> β-ensemble model, and the signal framing draws on <strong>Robinson</strong> (topological signal processing).</p>
+        <p style="font-size:var(--text-sm);color:var(--color-text-muted);">The contribution claimed here is narrow: the sheaf-Laplacian spectral sum carries a premium for the zeta zeros over these controls that the standard two-point (pair-correlation) statistics do not account for — a ~33% minimum residual against three pair-correlation predictors. Everything beyond that — that the premium has a fixed limit, that the σ = ½ minimum is arithmetic rather than operator-symmetry — is open.</p>
       </div>
     </div>
 
@@ -1189,7 +1215,7 @@ body.popout-open{overflow:hidden;}
       </div>
 
       <div class="logical-sidestep reveal" style="margin-top:var(--space-8);">
-        <p>We didn't try to prove the Riemann Hypothesis. We asked a different question: if you weave forty-six prime numbers into a geometric fabric over the zeros of the zeta function, does the fabric care where the zeros sit? It does. It cares most at exactly the line Riemann predicted. That's not a proof. It's the fabric telling you something.</p>
+        <p>We didn't try to prove the Riemann Hypothesis. We asked a different question: if you weave forty-six prime numbers into a geometric fabric over the zeros of the zeta function, does the spectral signal depend on where the zeros sit? It does. The instrument detects a spectral signal that is lowest for the zeta zeros among the controls tested and is minimized near σ = ½. That's not a proof, and the σ = ½ location is partly built into the operator (see the generator note). The interpretation is open; this is not evidence for RH beyond what the falsification table records — where P4 is NOT MET and R1 is PENDING.</p>
       </div>
     </div>
 
@@ -1252,7 +1278,7 @@ body.popout-open{overflow:hidden;}
           <div class="status-indicator amber"></div>
           <div>
             <div class="status-phase">Phase 3f — K=400 (Matrix-Free)</div>
-            <div class="status-detail">Complete. 78 primes, 47s via Padé matrix_exp. Premium = 21.6% (Wigner). Converging.</div>
+            <div class="status-detail">Complete. 78 primes, 47s via Padé matrix_exp. Premium = 21.6% (Wigner). Flat vs K=200; K→∞ limit open.</div>
           </div>
         </div>
       </div>
