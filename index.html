@@ -469,6 +469,13 @@ body.popout-open{overflow:hidden;}
 .story-text p em{color:var(--color-primary);font-style:italic;}
 .logical-sidestep{background:oklch(from var(--color-surface) l c h / 0.85);backdrop-filter:blur(18px);-webkit-backdrop-filter:blur(18px);border:1px solid var(--color-border);border-radius:var(--radius-xl);padding:var(--space-8);margin-top:var(--space-8);}
 .logical-sidestep p{font-size:var(--text-sm);color:var(--color-text-muted);line-height:1.82;font-style:italic;}
+/* alignment callouts (hero disclaimer, monograph caveats, prior-work note) */
+.hero-disclaimer{font-size:var(--text-sm);color:var(--color-text-muted);max-width:46ch;margin-top:var(--space-4);border-left:2px solid var(--color-border);padding-left:var(--space-3);}
+.caveat-box{margin-top:var(--space-6);border:1px solid var(--color-border);border-left:3px solid var(--color-amber,#d8a200);border-radius:8px;padding:var(--space-5);background:rgba(216,162,0,0.05);}
+.caveat-box-title{font-weight:600;margin-bottom:var(--space-2);}
+.caveat-box p.caveat-box-body{color:var(--color-text-muted);font-size:var(--text-sm);}
+.generator-note{margin-top:var(--space-4);font-size:var(--text-sm);color:var(--color-text-muted);border-left:3px solid var(--color-amber,#d8a200);padding-left:var(--space-3);}
+.prior-work-note{font-size:var(--text-sm);color:var(--color-text-muted);}
 
 /* ═══════════════════════════════════════════
    HERO CANVAS
@@ -610,7 +617,7 @@ body.popout-open{overflow:hidden;}
         than an evenly-spaced control. A detector, not a proof: it reads a spectral signal; it
         does not settle the Riemann Hypothesis.
       </p>
-      <p class="hero-disclaimer" style="font-size:var(--text-sm);color:var(--color-text-muted);max-width:46ch;margin-top:var(--space-4);border-left:2px solid var(--color-border);padding-left:var(--space-3);">
+      <p class="hero-disclaimer">
         No claim is made to resolve any Millennium Problem. The contribution is instrumental —
         a detector positioned against existing literature.
       </p>
@@ -629,7 +636,7 @@ body.popout-open{overflow:hidden;}
         </div>
         <div class="stat-item">
           <span class="stat-value">46 primes</span>
-          <span class="stat-label">K = 200</span>
+          <span class="stat-label">Prime harmonics threaded (K = 200)</span>
         </div>
         <div class="stat-item">
           <span class="stat-value">~21.5%</span>
@@ -703,9 +710,9 @@ body.popout-open{overflow:hidden;}
         <p class="k-narrative">All 46 primes under 200. The minimum-location estimate reaches σ&nbsp;≈&nbsp;0.500, the critical line. This is the trend in the measured minimum, not a claim about the zeros.</p>
       </div>
     </div>
-    <div class="caveat-box reveal" style="margin-top:var(--space-6);border:1px solid var(--color-border);border-left:3px solid var(--color-amber,#d8a200);border-radius:8px;padding:var(--space-5);background:rgba(216,162,0,0.05);">
-      <p style="font-weight:600;margin-bottom:var(--space-2);">Caveat — a non-RH explanation that must be excluded</p>
-      <p style="color:var(--color-text-muted);font-size:var(--text-sm);">The migration of the minimum toward σ&nbsp;=&nbsp;½ as K grows has a built-in alternative. The transport generator B<sub>p</sub>(σ) is symmetric about σ&nbsp;=&nbsp;½ and its weights p<sup>−σ</sup>+p<sup>−(1−σ)</sup> are minimized at σ&nbsp;=&nbsp;½ for <em>any</em> point cloud (see The Threads, below), so adding primes strengthens a structural ½-pull. The migration is evidence about the zeros only if the <strong>control minima do not also migrate to ½</strong> as K grows — and the logged sweeps show the Random and GUE controls' minima also drift (e.g. both near σ≈0.65 at low ε). The matched control-vs-K minimum plot that would settle this has not yet been shown.</p>
+    <div class="caveat-box reveal">
+      <p class="caveat-box-title">Caveat — a non-RH explanation that must be excluded</p>
+      <p class="caveat-box-body">The migration of the minimum toward σ&nbsp;=&nbsp;½ as K grows has a built-in alternative. The transport generator B<sub>p</sub>(σ) is symmetric about σ&nbsp;=&nbsp;½ and its weights p<sup>−σ</sup>+p<sup>−(1−σ)</sup> are minimized at σ&nbsp;=&nbsp;½ for <em>any</em> point cloud (see The Threads, below), so adding primes strengthens a structural ½-pull. The migration is evidence about the zeros only if the <strong>control minima do not also migrate to ½</strong> as K grows — and the logged sweeps show the Random and GUE controls' minima also drift (e.g. both near σ≈0.65 at low ε). The matched control-vs-K minimum plot that would settle this has not yet been shown.</p>
     </div>
     <button class="panel-trigger" data-panel="panel-k-journey">+ The full story: K=20 to K=400</button>
   </div>
@@ -932,7 +939,7 @@ body.popout-open{overflow:hidden;}
         &nbsp;&nbsp;&nbsp;&nbsp;
         <span class="cmt">// Prediction (conditional on RH): a feature in S near σ = 1/2 as K → ∞</span>
       </div>
-      <p style="margin-top:var(--space-4);font-size:var(--text-sm);color:var(--color-text-muted);border-left:3px solid var(--color-amber,#d8a200);padding-left:var(--space-3);">
+      <p class="generator-note">
         <strong>Note on σ = ½.</strong> B<sub>p</sub>(σ) is symmetric under σ ↔ 1−σ, and its scalar weights
         p<sup>−σ</sup> + p<sup>−(1−σ)</sup> are minimized at σ = ½ for every prime, independent of the input.
         A σ = ½ feature in S(σ) is therefore partly built into the operator — the same structural reason the
@@ -947,7 +954,7 @@ body.popout-open{overflow:hidden;}
       <h3 class="section-title" style="font-size:var(--text-xl);margin-bottom:var(--space-4);">Where this sits in the literature</h3>
       <div class="prose">
         <p>This is a detector positioned against existing work, not a result in isolation. The sheaf-Laplacian machinery follows <strong>Hansen &amp; Ghrist</strong> (toward a spectral theory of cellular sheaves) and <strong>Curry</strong> (sheaves and cosheaves); persistence stability rests on <strong>Cohen-Steiner, Edelsbrunner &amp; Harer</strong>. The spectral interpretation of the zeta zeros — that they behave like eigenvalues of a self-adjoint operator and share local statistics with random matrices — traces to the Hilbert–Pólya program and to <strong>Montgomery</strong> (pair correlation) and <strong>Odlyzko</strong> (numerical zero spacings). The GUE control uses the <strong>Dumitriu–Edelman</strong> β-ensemble model, and the signal framing draws on <strong>Robinson</strong> (topological signal processing).</p>
-        <p style="font-size:var(--text-sm);color:var(--color-text-muted);">The contribution claimed here is narrow: the sheaf-Laplacian spectral sum carries a premium for the zeta zeros over these controls that the standard two-point (pair-correlation) statistics do not account for — a ~33% minimum residual against three pair-correlation predictors. Everything beyond that — that the premium has a fixed limit, that the σ = ½ minimum is arithmetic rather than operator-symmetry — is open.</p>
+        <p class="prior-work-note">The contribution claimed here is narrow: the sheaf-Laplacian spectral sum carries a premium for the zeta zeros over these controls that the standard two-point (pair-correlation) statistics do not account for — a ~33% minimum residual against three pair-correlation predictors. Everything beyond that — that the premium has a fixed limit, that the σ = ½ minimum is arithmetic rather than operator-symmetry — is open.</p>
       </div>
     </div>
 
