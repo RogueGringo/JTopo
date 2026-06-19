@@ -45,6 +45,20 @@ def _lanczos_largest(
 
     Uses full reorthogonalization to prevent ghost eigenvalues.
 
+    .. warning::
+       **Under-converges on dense near-kernels** (convergence audit, 2026-06).
+       The Krylov dimension is fixed at m = min(max(2k+20, k+50), dim) = 70 for
+       k=20, *independent of ``max_iter``*. When ``smallest_eigenvalues`` flips
+       the spectrum to find a sheaf Laplacian's smallest eigenvalues, the bottom
+       of that operator is a **dense cluster of ≥30 near-zero modes**; a 70-vector
+       Krylov space cannot resolve a cluster that large and returns a *spread*
+       of Ritz values (summing to ~12) instead of the true near-zero values
+       (summing to ~0.003). This produced the entire (now-retracted) "arithmetic
+       premium". For spectral sums on near-kernel-heavy operators, cross-check
+       against the CPU ``SparseSheafLaplacian`` (ARPACK shift-invert / spectral
+       flip with implicit restarts), which converges correctly. See
+       ``docs/CONVERGENCE_AUDIT_findings.md``.
+
     Args:
         matvec_fn: Callable that computes M @ v for a given vector v.
         dim: Dimension of the matrix.

@@ -14,6 +14,30 @@
 
 ---
 
+> ## ⚠️ CORRECTION IN PROGRESS (2026-06) — read before the claims below
+>
+> An independent convergence audit found that the headline numbers in this
+> README — **21.5% premium, "16σ", "670×", the S(σ) hierarchy, and "β₀ = 0"** —
+> were produced by an eigensolver that **does not converge** on this operator.
+>
+> The GPU `smallest_eigenvalues` uses a fixed 70-vector Lanczos that cannot
+> resolve the sheaf Laplacian's dense **near-kernel**. It reports a spread of
+> Ritz values (summing to ~12) instead of the true smallest eigenvalues (~0).
+>
+> | Quantity (K=100) | Published | Converged (robust solver) |
+> |---|---|---|
+> | S(ζ) | 12.480 | **0.0034** |
+> | smallest eigenvalue | 0.002 | **5.5e-12** (genuine, residual 1e-12) |
+> | β₀ (kernel dim) | "0" | **≥ 30** |
+>
+> The premium *magnitude* is refuted. Whether any *small* real ζ-vs-GUE signal
+> survives a converged solver — and whether it lives in **β₀** (the kernel), not
+> the eigenvalue sum — is being re-derived. Full audit:
+> [`docs/CONVERGENCE_AUDIT_findings.md`](docs/CONVERGENCE_AUDIT_findings.md).
+> **Treat every quantitative claim below as under revision.**
+
+---
+
 ## Primes Aren't a List. They're a Field.
 
 Everyone who's looked at primes long enough arrives at the same place: the gaps oscillate, the patterns recur at scale, the structure is multi-dimensional. Some see standing waves. Some see eigenvalue repulsion. We see **transport coherence** — how well the primes' internal grammar carries information across the zeros of the zeta function.
@@ -30,18 +54,25 @@ The primes carry something that order alone doesn't. Something that statistics a
 
 ## The Numbers
 
-At K=200 (46 primes), σ = 0.500, ε = 3.0:
+> **⚠️ This table is RETRACTED — every S value is a 70-vector-Lanczos artifact.**
+> The converged values (robust ARPACK, K=100) are ~3,700× smaller and tell a
+> different story. See [`docs/CONVERGENCE_AUDIT_findings.md`](docs/CONVERGENCE_AUDIT_findings.md).
 
-| Source | Edges | S(σ=0.5) | S / Edge | What It Is |
-|--------|-------|----------|----------|------------|
-| **Zeta zeros** | **2,492** | **11.784** | **0.00473** | The actual Riemann zeros. Tightest fabric. |
-| Even spacing | 2,994 | 12.713 | 0.00425 | Mathematically perfect order. Loses to primes. |
-| GUE (D-E, 10 draws) | 2,729 ± 14 | 14.970 ± 0.198 | 0.00559 | Dumitriu-Edelman tridiagonal model. 16σ above zeta. |
-| Poisson random | 2,963 | 22.087 | 0.00745 | Uncorrelated noise. Loosest. |
+| Source | Published S (RETRACTED) | Converged S (K=100) |
+|--------|-------|--------|
+| Zeta zeros | ~~11.784~~ | **0.0034–0.0057** |
+| Even spacing | ~~12.713~~ | 0.0081 |
+| GUE (D-E) | ~~14.970~~ | 0.0065–0.0078 |
+| Poisson random | ~~22.087~~ | 0.0099 |
 
-**Arithmetic premium over GUE: 21.3%.** Even after edge-normalizing: **15.3% per edge** (vs D-E GUE).
-
-The hierarchy S(ζ) < S(Even) < S(GUE) < S(Random) holds at all 11 sigma values tested.
+~~**Arithmetic premium over GUE: 21.3%.**~~ The ~12 premium was **~99.97% artifact**.
+Under a converged solver the residual ζ-tighter effect is **edge-count** (ζ's level
+repulsion → fewer Rips edges → bigger sheaf kernel β₀ → lower S) — and GUE shares
+level repulsion. Re-measured at **matched edge count and matched solver tolerance**,
+ζ's kernel (≈24) sits *within* the GUE draws' own scatter (20–24). **No arithmetic
+signal beyond local statistics survives.** Even the published hierarchy
+~~S(ζ) < S(Even) < S(GUE) < S(Random)~~ does not hold converged (even-spaced lands
+looser than GUE). (Final controls + a scrambled-connection test pending.)
 
 ## How We Got Here
 
@@ -97,7 +128,7 @@ The exponential factor `exp(iΔγ·log p)` is the explicit formula's Fourier ker
 
 ### What we're NOT claiming
 
-This is not a proof of the Riemann Hypothesis. The sheaf Laplacian kernel dimension β₀ᶠ = 0 at all points tested — no topological phase transition has been observed. What we have is a **spectral order parameter** that:
+This is not a proof of the Riemann Hypothesis. ~~The sheaf Laplacian kernel dimension β₀ᶠ = 0 at all points tested~~ **[RETRACTED — exactly inverted.** The 70-vector Lanczos reported kernel modes as ~0.002, so it concluded β₀=0. Converged, **β₀ ≥ 24** with residual-certified zero-eigenvectors. The topological content the framework claimed was absent is in fact its *dominant* feature — and it is **graph-determined** (β₀ = NK − rank δ₀, set by edge count), carrying no arithmetic signal once edges are matched.**]** What the framework actually has is a near-kernel-dominated spectral quantity that, once converged and edge-matched, **does not distinguish ζ from GUE** beyond their shared local statistics. The original (refuted) claim list followed:
 
 1. Distinguishes zeta zeros from all tested controls (16σ from GUE)
 2. Peaks at the critical line (σ = 0.500)
@@ -106,6 +137,44 @@ This is not a proof of the Riemann Hypothesis. The sheaf Laplacian kernel dimens
 5. Cannot be reproduced by geometric order alone (evenly-spaced control)
 
 Whether this converges to a genuine phase transition as K → ∞ is the open question. K=400 is running now.
+
+## Where the Real Arithmetic Signal Would Be — A Roadmap
+
+The convergence audit established what this instrument *can't* see, and — usefully —
+exactly where the signal it was hunting actually lives. The sheaf-kernel observable
+detects only **local spacing statistics**, which Montgomery–Odlyzko proves ζ and GUE
+*share*. Quantified (`scripts/diagnostics/spacing_delta.py`): **D_KL(ζ ‖ GUE) ≈ 0.006
+nats** at N=20,000 zeros — *below* the 0.014-nat finite-sample floor. The arithmetic is
+real but **submerged in this projection.** Whoever wants the genuine signal should
+change the projection, not tighten this one. Where it lives:
+
+1. **Number variance Σ²(L)** — variance of the count of (unfolded) zeros in an interval
+   of length L. GUE: Σ²(L) ≈ (1/π²)(ln 2πL + γ + 1), growing logarithmically forever.
+   The zeros track this for small L but **saturate** at large L (Berry 1988), at a scale
+   set by the *lowest prime* (~log 2). **This is the cleanest imprint of the primes** —
+   it concentrates the diffuse spacing-delta into one feature that *grows* with L instead
+   of sitting at the noise floor.
+2. **Spectral form factor K(τ)** — Fourier dual of pair correlation. GUE: ramp K(τ)=τ
+   (τ<1), plateau =1. The zeros show the GUE ramp **plus** arithmetic oscillations at
+   small τ from off-diagonal prime pairs (Berry–Keating semiclassical theory: diagonal
+   term → GUE, prime pairs → the correction).
+3. **Pair-correlation deviations** — Montgomery's R₂(r) = 1 − (sin πr/πr)² matches GUE,
+   but the O(1/log) corrections carry von Mangoldt / prime content (Rudnick–Sarnak
+   n-level results and their range limits).
+
+**Sizing it honestly:** the signal is ~0.006 nats in the *spacing* projection. To
+resolve it you must either (a) push the finite-sample floor below it — N ≳ 10⁵–10⁶
+zeros (Odlyzko's tables reach the 10²²-nd zero, so the data exists) — or, better,
+(b) use Σ²(L) or K(τ), which *concentrate* the arithmetic into a feature that grows
+with the observable rather than staying diffuse. The right move is (b): **a projection
+matched to where the primes are, not a finer sweep of where they aren't.**
+
+**Sheaf analog (optional):** a complement-observable in *this* framework would build
+transport coherence over **long-range** zero pairs (large Δγ, where `exp(iΔγ·log p)`
+oscillates fastest) rather than short-range Rips edges — projecting onto long-range
+rigidity instead of the local kernel. Whether that recovers the number-variance signal
+is an open, honest experiment, and the only one this repo's machinery is natively suited
+to attempt.
 
 ## Project Status
 

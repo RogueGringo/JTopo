@@ -5,6 +5,26 @@ evidentiary claim in the site's visible copy is traced to a source and given a
 verdict. This ledger was built **before** any copy was edited; the edits in the
 accompanying commit implement its verdicts.
 
+> ## ⚠️ SUPERSEDED IN PART BY THE CONVERGENCE AUDIT (2026-06)
+>
+> This ledger verified **provenance** — does the website match EXP/LOG? It did
+> **not** verify that EXP/LOG's numbers were themselves *converged*. The
+> [convergence audit](docs/CONVERGENCE_AUDIT_findings.md) found that the source
+> spectral sums (S(ζ)=11.784, S(GUE)=14.970, the 21.5% premium, 16σ, 670×, and
+> the "β₀ = 0" claim) were produced by a **70-vector Lanczos that does not
+> converge** on this operator. Converged S(ζ, K=100) = **0.0034**, not 12.480;
+> smallest eigenvalue **5.5e-12**, not 0.002; **β₀ ≥ 30**, not 0.
+>
+> **Consequence:** every row below whose source is a spectral-sum number (the
+> Hero stats, Premium section, Validation Battery S-values, the per-edge premium,
+> the hierarchy) is **provenance-correct but truth-refuted** — the website
+> faithfully reproduced numbers that are artifacts. The lesson for this ledger:
+> *tracing a claim to a source is necessary, not sufficient; the source must
+> itself be verified at the level of the computation.* This is the verify-at-
+> source discipline applied one layer deeper than provenance. Rows are being
+> re-derived against converged values; until then treat all S-derived rows as
+> **OPEN — pending converged re-derivation**.
+
 ## Sources of truth
 
 - **MONO** — *Adaptive Topological Field Theory: From Continuous Geometry to
