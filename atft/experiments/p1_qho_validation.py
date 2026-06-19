@@ -249,7 +249,8 @@ def main():
 
     bars = compute_h0_persistence(levels)
     print(f"  Persistence bars: {len(bars)}")
-    print(f"  Top-3 bar lengths: {[f'{b['persistence']:.6f}' for b in bars[:3]]}")
+    top3 = [f"{b['persistence']:.6f}" for b in bars[:3]]
+    print(f"  Top-3 bar lengths: {top3}")
 
     validation = validate_gap_bar_correspondence(levels, bars)
     print(f"  Spearman rho = {validation['spearman_rho']:.4f} (p = {validation['p_value']:.2e})")
