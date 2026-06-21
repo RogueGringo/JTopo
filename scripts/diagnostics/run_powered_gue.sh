@@ -14,8 +14,20 @@ N_WORKERS="${3:-6}"
 OUT="${4:-output/powered_gue_K${K}}"
 
 ROOT="$(cd "$(dirname "$0")/../.." && pwd)"
-PY="$ROOT/.venv-cpu/Scripts/python.exe"
-[ -x "$PY" ] || PY="$ROOT/.venv-cpu/bin/python"
+# Interpreter: explicit $PYTHON override > repo-local venv (Windows/POSIX) > PATH.
+if [ -n "${PYTHON:-}" ]; then
+  PY="$PYTHON"
+elif [ -x "$ROOT/.venv-cpu/Scripts/python.exe" ]; then
+  PY="$ROOT/.venv-cpu/Scripts/python.exe"
+elif [ -x "$ROOT/.venv-cpu/bin/python" ]; then
+  PY="$ROOT/.venv-cpu/bin/python"
+else
+  PY="$(command -v python3 || command -v python || true)"
+fi
+if [ -z "${PY:-}" ] || ! command -v "$PY" >/dev/null 2>&1 && [ ! -x "$PY" ]; then
+  echo "error: no Python interpreter found (set \$PYTHON, create .venv-cpu, or add python3 to PATH)" >&2
+  exit 2
+fi
 
 export OMP_NUM_THREADS=1 OPENBLAS_NUM_THREADS=1 MKL_NUM_THREADS=1 \
        NUMEXPR_NUM_THREADS=1 VECLIB_MAXIMUM_THREADS=1

@@ -11,6 +11,9 @@ against an EXACT dense eigendecomposition — the one reference no iterative sol
 can dispute. If a future change reintroduces an under-converged solver, the
 spectral sum jumps from ~0.1 to ~14 and these tests fail loudly.
 
+They build a dense matrix at dim ~3000-4000 and run a full dense eigendecomposition,
+so they are marked ``slow`` — exclude from the fast suite with ``-m "not slow"``.
+
 See docs/CONVERGENCE_AUDIT_findings.md.
 """
 from __future__ import annotations
@@ -27,24 +30,26 @@ EPS, SIGMA, KEIG = 3.0, 0.5, 20
 DATA = "data/odlyzko_zeros.txt"
 
 
-def _build(n, k):
+def _build(n, K):
+    """Build the (Hermitian-symmetrized) sheaf Laplacian for N=n zeros, fiber dim K."""
     zeros = SpectralUnfolding(method="zeta").transform(
         ZetaZerosSource(DATA).generate(n)).points[:, 0]
-    lap = SparseSheafLaplacian(TransportMapBuilder(K=k, sigma=SIGMA), zeros,
+    lap = SparseSheafLaplacian(TransportMapBuilder(K=K, sigma=SIGMA), zeros,
                                transport_mode="superposition")
     L = lap.build_matrix(EPS)
     return lap, (L + L.getH()) * 0.5
 
 
-def _dense_spectral_sum(L, k):
+def _dense_spectral_sum(L, keig):
     eigs = np.sort(np.linalg.eigvalsh(L.toarray()).real)
-    return float(np.maximum(eigs[:k], 0.0).sum())
+    return float(np.maximum(eigs[:keig], 0.0).sum())
 
 
-@pytest.mark.parametrize("n,k", [(150, 20), (200, 20)])
-def test_smallest_eigenvalues_match_exact_dense(n, k):
+@pytest.mark.slow
+@pytest.mark.parametrize("n,K", [(150, 20), (200, 20)])
+def test_smallest_eigenvalues_match_exact_dense(n, K):
     """SparseSheafLaplacian must match exact dense at dim>500 (the iterative path)."""
-    lap, L = _build(n, k)
+    lap, L = _build(n, K)
     assert L.shape[0] > 500                       # genuinely the iterative branch
     dense = _dense_spectral_sum(L, KEIG)
     got = float(np.sum(lap.smallest_eigenvalues(EPS, k=KEIG)))
@@ -55,6 +60,7 @@ def test_smallest_eigenvalues_match_exact_dense(n, k):
         f"(ratio {got/max(dense,1e-9):.1f}x) — eigensolver under-converged?")
 
 
+@pytest.mark.slow
 def test_under_converged_solver_would_be_caught():
     """Document the failure mode: a 70-vector spectral-flip Lanczos over-estimates.
 
@@ -62,7 +68,6 @@ def test_under_converged_solver_would_be_caught():
     same matrix and assert it is FAR from the truth — so the guard above is known
     to bite. (Not a solver we ship; a tripwire for the bug.)
     """
-    import scipy.sparse as sp
     from scipy.sparse.linalg import eigsh
 
     lap, L = _build(150, 20)

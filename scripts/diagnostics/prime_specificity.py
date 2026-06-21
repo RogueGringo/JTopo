@@ -72,8 +72,14 @@ def eps_for_edges(pts, target):
 
 def make_builder(K, scramble_seed=None):
     b = TransportMapBuilder(K=K, sigma=SIGMA)
-    b.build_superposition_bases()
+    b.build_superposition_bases()   # builds the prime generators AND sets b._log_primes
     if scramble_seed is not None:
+        # DIAGNOSTIC-ONLY coupling: overwrite the internal frequency vector to scramble
+        # the explicit-formula phases exp(i*dgamma*log p) while KEEPING the prime
+        # generators fixed. This deliberately reaches into builder internals (there is no
+        # public frequency setter); it is isolated to these one-off audit scripts and asserts
+        # the attribute exists so it fails loudly, not silently, if the builder changes.
+        assert hasattr(b, "_log_primes"), "TransportMapBuilder internals changed; update scramble hook"
         lp = np.array([np.log(p) for p in b.primes])
         rng = np.random.default_rng(scramble_seed)
         b._log_primes = rng.uniform(lp.min(), lp.max(), size=len(b.primes))

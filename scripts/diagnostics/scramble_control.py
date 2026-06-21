@@ -53,6 +53,11 @@ def make_builder(K, scramble_seed=None):
     b = TransportMapBuilder(K=K, sigma=SIGMA)
     b.build_superposition_bases()  # builds B_p AND sets b._log_primes = [log p]
     if scramble_seed is not None:
+        # DIAGNOSTIC-ONLY coupling: overwrite the internal frequency vector to scramble
+        # the explicit-formula phases while keeping the prime generators B_p fixed. There
+        # is no public frequency setter; isolated to this audit script. Assert so a future
+        # builder change fails loudly rather than silently mis-scrambling.
+        assert hasattr(b, "_log_primes"), "TransportMapBuilder internals changed; update scramble hook"
         lp = np.array([np.log(p) for p in b.primes])
         rng = np.random.default_rng(scramble_seed)
         # random frequencies over the SAME range as the prime log-frequencies,

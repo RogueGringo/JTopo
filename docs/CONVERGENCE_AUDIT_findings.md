@@ -1,6 +1,6 @@
 # Convergence Audit — Findings
 
-**Status:** ζ resolved; GUE/even/random rows + β₀ comparison in progress.
+**Status:** COMPLETE — converged ζ/GUE/even/random rows, edge-matched confound test, and the β₀ comparison are all filled in below. (One open thread, explicitly marked: the scrambled-connection prime-specificity flicker, recorded as un-earned/below-resolution.)
 **Method discipline:** IG-PRIMON pre-registration (see `CONVERGENCE_AUDIT_prereg.md`).
 **Machine:** RTX 5070 (12 GB) + i9-9900K + 32 GB. The original project hardware.
 
