@@ -31,4 +31,10 @@ output/*.png
 # Virtual environments
 venv/
 .venv/
+.venv-cpu/
+.venv-gpu/
+.venv*/
 env/
+
+# Test / tooling caches
+.pytest_cache/

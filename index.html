@@ -596,6 +596,28 @@ body.popout-open{overflow:hidden;}
 <!-- ═══════════════════════════════════════════
      1. HERO
      ═══════════════════════════════════════════ -->
+<aside role="note" aria-live="polite" style="background:#2a0d0d;border-bottom:2px solid #c0392b;color:#f5d6d2;padding:14px 18px;font:14px/1.55 system-ui,sans-serif;">
+  <div style="max-width:920px;margin:0 auto;">
+    <strong style="color:#ff7a6b;">⚠️ CORRECTION (2026-06) — headline result retracted.</strong>
+    An independent convergence audit found the numbers below —
+    <strong>21.5% premium, "16σ", "670×", the S(σ) hierarchy, and "β₀ = 0"</strong> —
+    were produced by an eigensolver that does <em>not converge</em> on this operator:
+    a fixed 70-vector Lanczos cannot resolve the sheaf Laplacian's dense near-kernel,
+    so it returns a spread of mis-converged values (summing to ~12) instead of the true
+    smallest eigenvalues (~0). Converged recomputation gives
+    <strong>S(ζ, K=100) ≈ 0.003–0.006</strong> (published: 12.480), a genuine smallest
+    eigenvalue of <strong>5.5e-12</strong> with a residual-certified eigenvector
+    (published: 0.002), and a real kernel <strong>β₀ ≥ 24</strong> (published: 0).
+    The ~12 premium was ~99.97% artifact. The small residual "ζ-tighter" effect that
+    remains is <em>edge-count</em> (ζ's level repulsion → fewer Rips edges → bigger
+    sheaf kernel) — a property GUE shares; with edge count and solver tolerance matched,
+    ζ falls <em>within the controls' own scatter</em>. <strong>No arithmetic signal
+    beyond local statistics survives.</strong> (Final controls + a scrambled-connection
+    test pending.) Full audit: <code>docs/CONVERGENCE_AUDIT_findings.md</code>.
+    The original claims below are preserved for transparency but are <strong>retracted</strong>.
+  </div>
+</aside>
+
 <section class="hero" aria-label="Introduction">
   <div class="hero-bg">
     <img src="./assets/researcher-doberman-lab.jpg"
@@ -781,28 +803,29 @@ body.popout-open{overflow:hidden;}
       <div class="card" style="border-left:3px solid var(--color-primary);">
         <div class="card-label" style="color:var(--color-primary);">Tier 1 — Lowest</div>
         <div class="card-title">Zeta Zeros</div>
-        <p class="card-text">S = 11.784 at σ = 0.500. The primes produce the tightest fabric tested — tighter than mathematical perfection.</p>
+        <p class="card-text"><s>S = 11.784 at σ = 0.500. The primes produce the tightest fabric tested.</s> <strong>RETRACTED</strong> — unconverged. Converged S(ζ, K=100) ≈ 0.003–0.006; the true smallest eigenvalue is 5.5e-12 (a genuine kernel mode), not 0.002. The "tightest fabric" was a 70-vector-Lanczos artifact.</p>
       </div>
       <div class="card" style="border-left:3px solid var(--color-teal);">
         <div class="card-label" style="color:var(--color-teal);">Tier 2</div>
         <div class="card-title">Even Spacing</div>
-        <p class="card-text">S = 12.713 at σ = 0.500. Perfectly uniform gaps. The most ordered possible configuration. Loses to primes by 7.3%.</p>
+        <p class="card-text"><s>S = 12.713 at σ = 0.500. Loses to primes by 7.3%.</s> <strong>RETRACTED</strong> — unconverged. Converged S(even, K=100) ≈ 0.008. The 7.3% margin was an artifact; under a converged solver the published S(ζ)&lt;S(even)&lt;S(GUE) ordering does not even hold (even-spaced lands looser than GUE).</p>
       </div>
       <div class="card" style="border-left:3px solid var(--color-text-muted);">
         <div class="card-label">Tier 3</div>
         <div class="card-title">GUE Random Matrices</div>
-        <p class="card-text">S = 14.970 ± 0.198 at σ = 0.500 (10 Dumitriu-Edelman realizations). Zeta's spectral sum lies below all 10 GUE realizations (nonparametric p ≈ 1/11 ≈ 0.09); per-edge it is ~15% lower. A σ-level claim would require ≥100–1000 Dumitriu–Edelman realizations.</p>
+        <p class="card-text"><s>S = 14.970 ± 0.198; zeta below all 10 GUE realizations (p ≈ 1/11).</s> <strong>RETRACTED</strong> — both S-values unconverged. Converged S(GUE, K=100) ≈ 0.006–0.008. The ζ-tighter effect that remains is <em>edge-count</em>: ζ's level repulsion gives it fewer Rips edges → a bigger sheaf kernel → lower S — and GUE has the same level repulsion. With edge count and tolerance matched, ζ sits <em>inside</em> the GUE scatter. No arithmetic separation survives.</p>
       </div>
       <div class="card" style="border-left:3px solid var(--color-red);">
         <div class="card-label" style="color:var(--color-red);">Tier 4 — Highest</div>
         <div class="card-title">Poisson Random</div>
-        <p class="card-text">S = 22.087 at σ = 0.500. Uncorrelated noise. The loosest fabric. Nearly twice the wrinkle score of zeta.</p>
+        <p class="card-text"><s>S = 22.087 at σ = 0.500. The loosest fabric.</s> <strong>RETRACTED</strong> — unconverged. Converged S(random, K=100) ≈ 0.010. Random does stay loosest under convergence, but at the O(0.01) near-kernel scale, not the published O(22).</p>
       </div>
     </div>
 
     <div class="story-text reveal" style="margin-top:var(--space-8);">
-      <p>The ordering <strong>S(ζ) &lt; S(Even) &lt; S(GUE) &lt; S(Random)</strong> holds at every σ tested. But we went further: we edge-normalized. Zeta has fewer Rips edges (2,492) than GUE (2,729 mean) due to level repulsion. So we compared <em>per-edge</em> spectral sums. Zeta is still 15.3% tighter per edge. And across 10 independent GUE draws, zeta's spectral sum lies below all 10 (nonparametric p ≈ 1/11 ≈ 0.09). This is not an edge-count artifact. We do not report a σ-level here: a standard deviation estimated from n = 10 cannot resolve a deep tail, and a σ-level claim would require the larger Dumitriu–Edelman ensemble (≥100–1000 realizations).</p>
-      <p>Evidence that S depends on point configuration (the phase factors), not edge count alone: Even-spaced and Random have nearly identical edge counts (2,994 vs 2,963) but S differs by 74%. Same graph, different transport, large difference — the sheaf Laplacian sees the connection, not just the complex. This shows position-sensitivity, not arithmetic-specificity; isolating an <em>arithmetic</em> signal requires controls matched to zeta's spacing statistics (see Method / next steps).</p>
+      <p><strong>↑ The two paragraphs below are retracted; kept for transparency.</strong> The convergence audit showed the S-values they rest on are 70-vector-Lanczos artifacts (true values are ~3,700× smaller), and the residual "ζ-tighter" effect, chased honestly, reduces to edge count. Corrected account follows.</p>
+      <p><s>The ordering S(ζ) &lt; S(Even) &lt; S(GUE) &lt; S(Random) holds at every σ tested … zeta is still 15.3% tighter per edge … below all 10 (p ≈ 1/11).</s></p>
+      <p><strong>Corrected:</strong> Under a converged solver the "premium" lives entirely in the <em>kernel dimension</em> β₀ (= NK − rank δ₀), which is governed by the <em>edge count</em>, not the prime connection. ζ has the fewest Rips edges (2,492) — a consequence of level repulsion — so it gets the biggest kernel and the lowest S. But level repulsion is exactly what GUE shares (Montgomery–Odlyzko). Re-measuring every control at the ε that gives it ζ's edge count (2,492), with one consistent solver tolerance, ζ's kernel (≈24) lands <em>within the GUE draws' own spread</em> (20–24). The earlier "+11 surplus" was two stacked confounds — ζ measured at a tighter tolerance than its controls, plus ζ's sparser graph. <strong>No arithmetic signal beyond local spacing statistics survives.</strong> (Final controls and a scrambled-connection test — does the effect need the <em>prime</em> frequencies at all — are in progress; see <code>docs/CONVERGENCE_AUDIT_findings.md</code>.)</p>
     </div>
     <button class="panel-trigger" data-panel="panel-killshot">+ See the math: Why Perfect Spacing Loses</button>
   </div>
