@@ -1,5 +1,6 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/RogueGringo/JTopo/blob/master/plugins/driftwave/schemas/raw_cloud.json",
   "title": "RawCloud",
   "description": "L0 artifact — raw artifact scan with no interpretation. Entropy gate rejects low-variance inputs.",
   "type": "object",

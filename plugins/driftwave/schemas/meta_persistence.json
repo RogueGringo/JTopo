@@ -1,5 +1,6 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/RogueGringo/JTopo/blob/master/plugins/driftwave/schemas/meta_persistence.json",
   "title": "MetaPersistence",
   "description": "Accumulated artifact history across sessions. Running persistence on THIS produces a barcode of the development process itself — what ideas kept coming back (long bars), what was consistently rejected (short bars), what design patterns are sheaf-consistent across time.",
   "type": "object",

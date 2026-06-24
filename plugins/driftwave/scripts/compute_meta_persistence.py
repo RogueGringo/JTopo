@@ -1,4 +1,4 @@
-#!/home/wb1/Desktop/Dev/JTopo/.venv/bin/python
+#!/usr/bin/env python3
 """Compute meta-persistence across accumulated session artifacts.
 
 The same mathematics applied at two levels:

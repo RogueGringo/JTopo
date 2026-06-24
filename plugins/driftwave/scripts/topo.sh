@@ -30,7 +30,15 @@ SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 PLUGIN_ROOT="$(dirname "$SCRIPT_DIR")"
 PROJECT_ROOT="$(dirname "$(dirname "$PLUGIN_ROOT")")"
 DOCS_SITE="$PLUGIN_ROOT/docs-site"
-MEMORY_DIR="$HOME/.claude/projects/-home-wb1-Desktop-Dev-JTopo/memory"
+# Claude Code stores per-project memory under a slugified absolute project path
+# (path separators and drive colons replaced by '-'). Derive it from PROJECT_ROOT
+# so this works on any machine; override with DW_MEMORY_DIR if your layout differs.
+if [ -n "${DW_MEMORY_DIR:-}" ]; then
+  MEMORY_DIR="$DW_MEMORY_DIR"
+else
+  _proj_slug="$(printf '%s' "$PROJECT_ROOT" | sed 's#[/\\:]#-#g')"
+  MEMORY_DIR="$HOME/.claude/projects/${_proj_slug}/memory"
+fi
 FRAMEWORK_DIR="$PROJECT_ROOT/docs/framework_theories"
 EXPERIMENT_LOG="$PROJECT_ROOT/docs/EXPERIMENT_LOG.md"
 ARTIFACT_LOG="$PLUGIN_ROOT/.topo-artifacts.json"

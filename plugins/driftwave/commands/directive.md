@@ -94,7 +94,7 @@ The driftwave axioms emerge naturally from this process:
 If the directive reveals complexity:
 - Gap list has >5 actions → consider `/driftwave:run` (full L0→L3 with persistence)
 - Multiple independent workstreams → consider parallel subagent dispatch
-- Design decisions needed → consider `/driftwave:topological-brainstorm`
+- Design decisions needed → consider the `topological-brainstorm` skill
 - Need to check cross-session patterns → consider `/driftwave:meta`
 
 The directive is the atomic unit. Everything else is the directive applied at scale.

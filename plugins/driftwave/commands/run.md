@@ -1,5 +1,5 @@
 ---
-description: "Full pipeline — runs L0→L1→L2→L3 sequentially with automatic routing. The /wavefront command as a single invocation."
+description: "Full pipeline — runs L0→L1→L2→L3 sequentially with automatic routing. The `wavefront` skill as a single invocation."
 arguments: "[task description]"
 ---
 
@@ -9,7 +9,7 @@ Execute the full driftwave pipeline from ingestion to verdict.
 
 ## What to do
 
-This is the operational form of `/driftwave:wavefront`. Run all four layers sequentially:
+This is the operational form of the `wavefront` skill. Run all four layers sequentially:
 
 1. **L0 — Ingest**: Scan the codebase, produce RawCloud
    - `mkdir -p /tmp/dw-artifacts`

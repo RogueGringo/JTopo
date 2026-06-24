@@ -1,5 +1,6 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/RogueGringo/JTopo/blob/master/plugins/driftwave/schemas/semantic_address.json",
   "title": "SemanticAddress",
   "description": "The (context, intent, value) coordinate of any artifact in the development sheaf. Every artifact, every routing decision, every speculative reject has an address in this space. Proximity in this space = relevance. Distance = irrelevance. Persistence across time = truth.",
   "type": "object",
