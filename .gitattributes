@@ -2,3 +2,6 @@
 # platform the repo was checked out on. A bash script with CRLF fails with
 # "$'\r': command not found" — and driftwave's SessionStart hook runs topo.sh.
 *.sh text eol=lf
+# The driftwave reference-pipeline scripts are invoked directly via their
+# shebang (see commands/filter.md, commands/meta.md), so they need LF too.
+plugins/driftwave/scripts/*.py text eol=lf

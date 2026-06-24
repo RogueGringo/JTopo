@@ -105,6 +105,12 @@ That's it. Next time you open Claude Code:
 /driftwave:directive <what you want>
 ```
 
+> **Optional — the analysis pipeline.** `/driftwave:run`, `/driftwave:filter`, and
+> `/driftwave:meta` can shell out to Python scripts that compute persistent
+> homology. Those need `numpy`:
+> `pip install -r plugins/driftwave/scripts/requirements.txt`. The core
+> `/driftwave:directive` loop has no Python dependency.
+
 ## The Deeper Layer
 
 Under the hood, driftwave uses the same mathematics that finds structure in prime numbers. Not metaphorically — literally. The clustering algorithm is persistent homology. The quality check is sheaf consistency. The log analysis is a persistence barcode.
