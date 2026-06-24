@@ -107,8 +107,8 @@ That's it. Next time you open Claude Code:
 
 > **Optional — the analysis pipeline.** `/driftwave:run`, `/driftwave:filter`, and
 > `/driftwave:meta` can shell out to Python scripts that compute persistent
-> homology. Those need `numpy`:
-> `pip install -r plugins/driftwave/scripts/requirements.txt`. The core
+> homology. Those need `numpy` — run `pip install numpy` (the same dependency is
+> pinned in `scripts/requirements.txt` for repo/dev installs). The core
 > `/driftwave:directive` loop has no Python dependency.
 
 ## The Deeper Layer

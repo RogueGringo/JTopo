@@ -36,6 +36,11 @@ DOCS_SITE="$PLUGIN_ROOT/docs-site"
 if [ -n "${DW_MEMORY_DIR:-}" ]; then
   MEMORY_DIR="$DW_MEMORY_DIR"
 else
+  # Slugify the project path (/, \, : -> -) to match Claude Code's per-project
+  # memory slug. sed's bracket expression [/\\:] is used rather than bash
+  # parameter expansion because backslash matching in ${var//\\/-} is
+  # inconsistent across bash builds (MSYS bash needs \\\\, POSIX bash needs \\),
+  # whereas the sed form is portable. Override with DW_MEMORY_DIR if it differs.
   _proj_slug="$(printf '%s' "$PROJECT_ROOT" | sed 's#[/\\:]#-#g')"
   MEMORY_DIR="$HOME/.claude/projects/${_proj_slug}/memory"
 fi
