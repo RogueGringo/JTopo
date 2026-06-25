@@ -1,5 +1,6 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:jtopo:driftwave:schema:sheaved_verdict",
   "title": "SheavedVerdict",
   "description": "L3 artifact — sheaf consistency check with kernel dimension and obstruction report.",
   "type": "object",

@@ -18,7 +18,11 @@ Run meta-persistence analysis across session history.
    mv /tmp/dw-artifacts/meta_updated.json /tmp/dw-artifacts/meta.json
    ```
 
-3. Report the convergence signature:
+3. Validate the result: confirm `/tmp/dw-artifacts/meta.json` conforms to
+   `${CLAUDE_PLUGIN_ROOT}/schemas/meta_persistence.json` (required keys present,
+   types correct) before reporting.
+
+4. Report the convergence signature:
    - **Dominant clusters**: ideas/patterns appearing in >50% of sessions
    - **Gini meta-trajectory**: is the project hierarchifying over time?
    - **Sheaf consistency rate**: fraction of sessions where L3 said ON_SHELL

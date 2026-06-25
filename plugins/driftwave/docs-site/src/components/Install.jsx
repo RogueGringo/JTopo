@@ -2,7 +2,7 @@ import { useState } from 'react'
 
 export default function Install() {
   const [copied, setCopied] = useState(false)
-  const cmd = 'claude plugin add gh:RogueGringo/driftwave-v0'
+  const cmd = 'claude plugin marketplace add RogueGringo/JTopo && claude plugin install driftwave@jtopo-plugins'
 
   const copy = () => {
     navigator.clipboard.writeText(cmd).then(() => {

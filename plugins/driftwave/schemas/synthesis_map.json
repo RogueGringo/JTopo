@@ -1,5 +1,6 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:jtopo:driftwave:schema:synthesis_map",
   "title": "SynthesisMap",
   "description": "L2 artifact — design sections with coherence scores, Gini trajectory, and H₁ loop detection.",
   "type": "object",

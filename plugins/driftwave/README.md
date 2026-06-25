@@ -85,8 +85,18 @@ Over time, patterns emerge. Ideas that keep coming back session after session �
 
 ## Install
 
+**From the JTopo plugin marketplace (recommended):**
+
 ```bash
-claude plugin add gh:RogueGringo/driftwave-v0
+claude plugin marketplace add RogueGringo/JTopo
+claude plugin install driftwave@jtopo-plugins
+```
+
+**Standalone one-liner** (mirror repo, same plugin):
+
+```bash
+claude plugin marketplace add RogueGringo/driftwave
+claude plugin install driftwave@driftwave
 ```
 
 That's it. Next time you open Claude Code:
@@ -94,6 +104,12 @@ That's it. Next time you open Claude Code:
 ```
 /driftwave:directive <what you want>
 ```
+
+> **Optional — the analysis pipeline.** `/driftwave:run`, `/driftwave:filter`, and
+> `/driftwave:meta` can shell out to Python scripts that compute persistent
+> homology. Those need `numpy` — run `pip install numpy` (the same dependency is
+> pinned in `scripts/requirements.txt` for repo/dev installs). The core
+> `/driftwave:directive` loop has no Python dependency.
 
 ## The Deeper Layer
 

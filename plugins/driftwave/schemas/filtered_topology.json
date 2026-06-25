@@ -1,5 +1,6 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:jtopo:driftwave:schema:filtered_topology",
   "title": "FilteredTopology",
   "description": "L1 artifact — persistent clusters with barcode, distances, and routing decision.",
   "type": "object",

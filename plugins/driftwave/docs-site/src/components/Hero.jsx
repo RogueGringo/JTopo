@@ -8,7 +8,7 @@ export default function Hero() {
       {/* Background */}
       <div style={{ position: 'absolute', inset: 0, zIndex: 0 }}>
         <img
-          src="/images/Hero_banner_—_mathematician's_cosmos_with_Doberman_silhouett.jpg"
+          src={`${import.meta.env.BASE_URL}images/Hero_banner_—_mathematician's_cosmos_with_Doberman_silhouett.jpg`}
           alt=""
           style={{ width: '100%', height: '100%', objectFit: 'cover', objectPosition: 'center 25%', filter: 'brightness(0.3) saturate(0.65)' }}
         />

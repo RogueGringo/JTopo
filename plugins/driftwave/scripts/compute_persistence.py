@@ -1,4 +1,4 @@
-#!/home/wb1/Desktop/Dev/JTopo/.venv/bin/python
+#!/usr/bin/env python3
 """Compute persistent homology on artifact distance matrices.
 
 Same mathematics as atft/topology/ but applied to code/idea spaces
