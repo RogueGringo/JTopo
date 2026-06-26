@@ -1,9 +1,0 @@
-# Python dependencies for the driftwave reference-pipeline scripts
-# (compute_persistence.py, compute_meta_persistence.py).
-#
-# The core /driftwave:directive loop needs none of this; these are only
-# required when /driftwave:run, /driftwave:filter, or /driftwave:meta shell
-# out to the persistent-homology computations.
-#
-#   pip install -r plugins/driftwave/scripts/requirements.txt
-numpy>=1.24
