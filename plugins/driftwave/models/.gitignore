@@ -1,4 +1,0 @@
-*.gguf
-*.bin
-llm_server.log
-llm_server.pid
